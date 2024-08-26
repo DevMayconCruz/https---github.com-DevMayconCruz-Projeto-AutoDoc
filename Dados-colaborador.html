@@ -50,6 +50,28 @@
             font-size: 14px;
         }
 
+        #progressBar {
+            width: 80%;
+            height: 10px;
+            background-color: #ddd;
+            border-radius: 5px;
+            margin-top: 20px;
+            overflow: hidden;
+        }
+
+        #progress {
+            height: 100%;
+            width: 0;
+            background-color: #28a745;
+            transition: width 0.3s;
+        }
+
+        #percentage {
+            font-size: 20px;
+            color: #ffffff;
+            margin-top: 10px;
+        }
+
         body {
             font-family: Arial, sans-serif;
             margin: 0;
@@ -152,8 +174,12 @@
         </form>
 
         <div id="loadingScreen">
-            <img src="/LogoEfeito.png" alt="Logo Efeito" alt="Logo girando" id="loadingLogo">
-            <div id="loadingText">Estamos gerando o termo para você</div>
+            <img src="/LogoEfeito.png" alt="Logo girando" id="loadingLogo">
+            <div id="loadingText">Estamos gerando o termo para você...</div>
+            <div id="progressBar">
+                <div id="progress"></div>
+            </div>
+            <div id="percentage">0%</div>
             <div id="loadingFooter">By Gramado Parks</div>
         </div>
     </div>
@@ -166,10 +192,25 @@
             if (validarFormulario()) {
                 document.getElementById('loadingScreen').style.display = 'flex';
 
-                // Redirecionar para a página após 6 segundos
-                setTimeout(function() {
-                    window.location.href = 'http://localhost:3000/formularios';
-                }, 6000); // Ajuste o tempo de acordo com a duração da animação
+                let progress = 0;
+                const progressElement = document.getElementById('progress');
+                const percentageElement = document.getElementById('percentage');
+
+                function updateProgress() {
+                    if (progress < 100) {
+                        progress += 1; // Incrementa o progresso
+                        progressElement.style.width = progress + '%'; // Atualiza a largura da barra de progresso
+                        percentageElement.textContent = progress + '%'; // Atualiza o texto da porcentagem
+                        setTimeout(updateProgress, 50); // Atualiza a cada 50ms
+                    } else {
+                        // Quando o carregamento atinge 100%, você pode redirecionar ou realizar outra ação
+                        setTimeout(() => {
+                            window.location.href = 'http://localhost:3000/formularios';
+                        }, 500); // Tempo para mostrar 100% antes de redirecionar
+                    }
+                }
+
+                updateProgress();
             }
         });
 

@@ -1,4 +1,4 @@
-<!DOCTYPE html> <!--Autor: Maycon Cruz-->
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
@@ -196,10 +196,17 @@
         animate();
 
         document.getElementById('advanceButton').addEventListener('click', () => {
-            document.body.style.opacity = '0'; // Inicia a transição de fade-out
-            setTimeout(() => {
-                window.location.href = ' http://localhost:3000/normas-glpd';
-            }, 500); // Tempo suficiente para o efeito de fade-out
+            fetch('/execute-batch')
+                .then(response => {
+                    if (response.ok) {
+                        document.body.style.opacity = '0'; // Inicia a transição de fade-out
+                        setTimeout(() => {
+                            window.location.href = 'http://localhost:3000/normas-glpd';
+                        }, 500); // Tempo suficiente para o efeito de fade-out
+                    } else {
+                        alert('Erro ao executar o script.');
+                    }
+                });
         });
     </script>
 </body>

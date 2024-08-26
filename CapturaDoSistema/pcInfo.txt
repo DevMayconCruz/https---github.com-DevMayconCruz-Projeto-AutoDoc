@@ -1,0 +1,13 @@
+Informações do Sistema:
+Fabricante: Dell Inc.
+Modelo: Vostro 5481
+Número de Série: 70J6K03
+
+Monitor 1:
+  Marca: LGD
+  Modelo: Desconhecido
+  Número de Série: 0
+Monitor 2:
+  Marca: DEL
+  Modelo: DELL SE2222H
+  Número de Série: 6RSVGR3
