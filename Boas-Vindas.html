@@ -1,0 +1,206 @@
+<!DOCTYPE html> <!--Autor: Maycon Cruz-->
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bem-vindo à Gramado Parks</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background-color: #f4f4f4; /* Fundo mais claro */
+            font-family: Arial, sans-serif;
+            color: #333;
+            transition: opacity 0.5s ease-out;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh; /* Altura total da viewport */
+            width: 100vw; /* Largura total da viewport */
+        }
+
+        #fireworksCanvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+
+        .container {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            max-width: 90%;
+            width: 600px; /* Largura fixa para o container */
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.9); /* Fundo branco translúcido */
+            border-radius: 8px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .logo {
+            max-width: 100%;
+            height: auto;
+            margin-bottom: 20px;
+        }
+
+        .message-box {
+            margin-bottom: 20px;
+            font-size: 20px; /* Tamanho da fonte aumentado */
+            line-height: 1.6;
+            font-family: 'Playfair Display', serif; /* Fonte elegante para a mensagem de boas-vindas */
+        }
+
+        .quality-box {
+            margin-bottom: 20px;
+            font-size: 16px; /* Mantém o tamanho da fonte */
+            line-height: 1.6;
+            font-family: 'Roboto', sans-serif; /* Fonte padrão para a frase sobre qualidade */
+        }
+
+        button {
+            padding: 12px 24px;
+            font-size: 16px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #218838;
+        }
+
+        button:active {
+            transform: scale(0.95);
+        }
+
+        @media (max-width: 768px) {
+            .message-box {
+                font-size: 18px;
+            }
+
+            .quality-box {
+                font-size: 14px;
+            }
+
+            button {
+                font-size: 14px;
+                padding: 10px 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .message-box {
+                font-size: 16px;
+            }
+
+            .quality-box {
+                font-size: 12px;
+            }
+
+            button {
+                font-size: 12px;
+                padding: 8px 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <canvas id="fireworksCanvas"></canvas>
+
+    <div class="container">
+        <img src="/gramado_verde-640w.webp" alt="Gramado Parks Logo" class="logo">
+        <div class="message-box">
+            <p>Seja muito bem-vindo à Gramado Parks. Estamos muito felizes por ter você conosco. Nessa etapa, nós vamos pedir para você informar seus dados e assinar um termo de adesão do nosso equipamento.</p>
+        </div>
+        <div class="quality-box">
+            <p>O padrão de qualidade da Gramado Parks é o resultado de grande esforço e dedicação ao longo dos anos, possibilitando aos nossos clientes experiências exclusivas, autênticas e enriquecedoras. Acompanhe nossa linha do tempo e conheça nossos projetos.</p>
+        </div>
+        <p><strong>Clique em avançar!</strong></p>
+        <button id="advanceButton">Avançar</button>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('fireworksCanvas');
+        const ctx = canvas.getContext('2d');
+
+        // Redimensiona o canvas para o tamanho da janela
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+
+        class Firework {
+            constructor(x, y) {
+                this.x = x;
+                this.y = y;
+                this.radius = Math.random() * 3 + 2;
+                this.color = `hsl(${Math.random() * 360}, 100%, 50%)`;
+                this.speedX = Math.random() * 2 - 1;
+                this.speedY = Math.random() * 2 - 1;
+                this.alpha = 1;
+                this.decay = Math.random() * 0.015 + 0.015;
+            }
+
+            draw() {
+                ctx.save();
+                ctx.globalAlpha = this.alpha;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                ctx.fillStyle = this.color;
+                ctx.fill();
+                ctx.restore();
+            }
+
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                this.alpha -= this.decay;
+            }
+        }
+
+        const fireworks = [];
+
+        function animate() {
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.1)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            if (Math.random() < 0.05) {
+                const x = Math.random() * canvas.width;
+                const y = Math.random() * canvas.height;
+                for (let i = 0; i < 50; i++) {
+                    fireworks.push(new Firework(x, y));
+                }
+            }
+
+            for (let i = fireworks.length - 1; i >= 0; i--) {
+                fireworks[i].update();
+                fireworks[i].draw();
+                if (fireworks[i].alpha <= 0) {
+                    fireworks.splice(i, 1);
+                }
+            }
+
+            requestAnimationFrame(animate);
+        }
+
+        animate();
+
+        document.getElementById('advanceButton').addEventListener('click', () => {
+            document.body.style.opacity = '0'; // Inicia a transição de fade-out
+            setTimeout(() => {
+                window.location.href = ' http://localhost:3000/normas-glpd';
+            }, 500); // Tempo suficiente para o efeito de fade-out
+        });
+    </script>
+</body>
+</html>

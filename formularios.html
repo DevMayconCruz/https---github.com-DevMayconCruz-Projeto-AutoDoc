@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Termo de Cessão de Equipamentos</title>
+    <style>
+        @media print {
+            @page {
+                size: A4 landscape; /* Define a orientação da página como paisagem */
+                margin: 10mm; /* Ajusta as margens */
+            }
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            box-sizing: border-box;
+            font-size: 10px; /* Ajusta o tamanho da fonte */
+        }
+
+        .container {
+            width: 100%;
+            max-width: 297mm; /* Ajusta a largura máxima para A4 paisagem */
+            margin: auto;
+            background: white;
+            padding: 8mm; /* Ajusta o padding */
+            border-radius: 4px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+            box-sizing: border-box;
+            position: relative;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 14px; /* Ajusta o tamanho da fonte */
+            margin-bottom: 8px;
+            text-transform: uppercase;
+        }
+
+        .logo img {
+            display: block;
+            margin: 0 auto 8px;
+            max-width: 100px; /* Ajusta o tamanho do logo */
+        }
+
+        h2 {
+            font-size: 12px; /* Ajusta o tamanho da fonte */
+            margin-bottom: 6px;
+            text-align: center;
+            text-transform: uppercase;
+        }
+
+        hr {
+            border: 1px solid #ccc;
+            margin: 8px 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 8px;
+            font-size: 9px; /* Ajusta o tamanho da fonte das tabelas */
+        }
+
+        table, th, td {
+            border: 1px solid #ccc;
+        }
+
+        th, td {
+            padding: 4px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f0f0f0;
+            font-weight: bold;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .text-right {
+            text-align: right;
+        }
+
+        .footer-table {
+            width: 100%;
+            margin-top: 8px;
+            border-collapse: collapse;
+        }
+
+        .footer-table td {
+            border: none;
+            padding: 4px;
+            font-size: 9px; /* Ajusta o tamanho da fonte */
+        }
+
+        .footer-table .bold {
+            font-weight: bold;
+        }
+
+        .auto-doc {
+            text-align: center;
+            margin-top: 8px;
+            font-size: 7px; /* Ajusta o tamanho da fonte */
+            color: #888;
+        }
+
+        .button-container {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+        }
+
+        .button-container button {
+            padding: 8px 16px;
+            font-size: 12px;
+            color: #fff;
+            background-color: #007bff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .button-container button:hover {
+            background-color: #0056b3;
+        }
+
+        /* Estilo específico para a tabela de identificação do prestador de serviços */
+        .info-table {
+            width: 100%;
+            border: none;
+            margin-bottom: 8px;
+            font-size: 10px;
+        }
+
+        .info-table td {
+            padding: 4px;
+            vertical-align: top;
+            text-align: left;
+        }
+
+        .info-table .label {
+            width: 250px; /* Largura fixa para as labels */
+            font-weight: bold;
+        }
+
+        .info-table .value {
+            width: 100px; /* Largura fixa para os valores */
+        }
+    </style>
+</head>
+<body>
+    <div class="container" id="content">
+        <div class="logo">
+            <!-- Imagem convertida para base64 -->
+            <img src="/gramado_verde-640w.webp" alt="Logo Gramado Parks">
+        </div>
+
+        <h1>Termo de Cessão, Guarda, Uso e Devolução de Equipamentos de Trabalho</h1>
+
+        <!-- Tabela de Identificação do Prestador de Serviços -->
+        <h2>Identificação do Prestador de Serviços</h2>
+        <table class="info-table">
+            <tbody>
+                <tr>
+                    <td class="label">Nome:</td>
+                    <td class="value"></td>
+                    <td class="label">Unidade de Negócio:</td>
+                    <td class="value"></td>
+                </tr>
+                <tr>
+                    <td class="label">Setor:</td>
+                    <td class="value"></td>
+                    <td class="label">Cargo/Função:</td>
+                    <td class="value"></td>
+                </tr>
+                <tr>
+                    <td class="label">Telefone:</td>
+                    <td class="value"></td>
+                    <td class="label">E-mail:</td>
+                    <td class="value"></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Identificação do(s) Equipamento(s)</h2>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Item</th>
+                    <th>Descritivo</th>
+                    <th>Marca</th>
+                    <th>Modelo</th>
+                    <th>Serial</th>
+                    <th>Observação</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1</td>
+                    <td>Computador</td>
+                    <td>Fabricante</td>
+                    <td>Modelo</td>
+                    <td>123456789</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>Monitor</td>
+                    <td>Fabricante</td>
+                    <td>Modelo</td>
+                    <td>123456789</td>
+                    <td></td>
+                </tr>
+            </tbody>
+        </table>
+  <h2>Termo de Cessão</h2>
+        <div class="numbered-list">
+            <p>1. Declaro para fins de <strong>RESPONSABILIDADE</strong> que recebi nesta data o(s) equipamento(s) acima citado(s) em perfeitas condições de uso para fins de:</p>
+            <p>2. Utilização exclusiva para exercício das atividades profissionais, devendo zelar pela sua guarda, conservação e devolução no prazo devido e nas condições de liberação, comprometendo-me a substituí-lo em caso de perda ou estrago irreparável por idêntico ou similar (indicado pela empresa).</p>
+            <p>3. Caso o equipamento necessite de reparo, segue o processo de chamados e acionamentos relacionados ao time de TI, atendendo ao tempo de atendimento vigente no momento da solicitação. Substituição por outro equipamento temporário ou efetivo, sujeito a estoque; o time de TI local realizará o backup de todo material profissional existente, havendo condições técnicas para tal ação, sendo desobrigada a realizar backup de itens pessoais que porventura estiverem no equipamento.</p>
+            <p>4. Em caso de desligamento do funcionário portador e responsável pelo equipamento, o referido acima deverá ser entregue imediatamente ao Time de Gente & Gestão da empresa e o mesmo deverá entregar no ato o termo de devolução do equipamento. O não cumprimento desta etapa por parte do funcionário facultará à Empresa realizar os descontos relacionados à subtração do ativo, tendo sua cobrança estipulada por valor de mercado atualizado no momento da rescisão do contrato entre as partes, tendo por base de cálculos a tabela de precificação estipulada pelo time financeiro ao momento da solicitação para orçamento.</p>
+            <p>5. Este termo de posse poderá ser exigido nos empreendimentos pelo time de segurança visando controle de entrada e saída de equipamentos. Portanto, tenha sempre o termo junto com o equipamento ou em local de fácil acesso para fins de validação.</p>
+            <p>6. Atendendo ao princípio de Finalidade descrito na LGPD, esta ação independe de aceite por parte do usuário, pois fica previsto nas seguintes hipóteses de tratamento de dados: “Execução de contrato” e “Obrigação geral Regulatória.” ARTº7 - II e V.</p>
+            <p>7. Prazos de armazenamento deste termo e seus efeitos:</p>
+            <p>8. Página 1/1</p>
+            <p>9. As informações contidas neste documento são destinadas ao uso interno.</p>
+        </div>
+
+        <div class="button-container">
+            
+        </div>
+    </div>
+
+    <!-- Include jsPDF and html2pdf from CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
+
+    <script>
+        function saveAsPDF() {
+            const element = document.getElementById('content');
+
+            const opt = {
+                margin: 0.5,
+                filename: 'Termo_Cessao_Equipamentos.pdf',
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2 },
+                jsPDF: { unit: 'in', format: 'letter', orientation: 'landscape' }
+            };
+
+            html2pdf().from(element).set(opt).save().catch(error => {
+                alert('Erro ao gerar o PDF: ' + error.message);
+            });
+        }
+    </script>
+</body>
+</html>
+
+  <p><p/>
+  
+  
+    <!-------------------------------------Segundo formulário------------------------------------------>
+  
+  
+  
+  
+  
+  
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Termo de Cessão de Equipamentos</title>
+    <style>
+        @media print {
+            @page {
+                size: A4 landscape; /* Define a orientação da página como paisagem */
+                margin: 20mm;
+            }
+
+            .email-button {
+                display: none; /* Oculta o botão durante a impressão */
+            }
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            box-sizing: border-box;
+            position: relative;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 297mm; /* Ajusta a largura máxima para A4 paisagem */
+            margin: auto;
+            background: white;
+            padding: 10mm;
+            padding-bottom: 60px; /* Adiciona espaço na parte inferior para o botão */
+            border-radius: 4px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+            box-sizing: border-box;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 16px;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+
+        .logo img {
+            display: block;
+            margin: 0 auto 10px;
+            max-width: 120px; /* Ajusta o tamanho do logo */
+        }
+
+        h2 {
+            font-size: 14px;
+            margin-bottom: 8px;
+            text-align: center;
+            text-transform: uppercase;
+        }
+
+        hr {
+            border: 1px solid #ccc;
+            margin: 10px 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 10px;
+        }
+
+        table, th, td {
+            border: 1px solid #ccc;
+        }
+
+        th, td {
+            padding: 4px;
+            text-align: left;
+            font-size: 12px;
+        }
+
+        th {
+            background-color: #f0f0f0;
+            font-weight: bold;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .text-right {
+            text-align: right;
+        }
+
+        .footer-table {
+            width: 100%;
+            margin-top: 10px;
+            border-collapse: collapse;
+        }
+
+        .footer-table td {
+            border: none;
+            padding: 4px;
+            font-size: 10px;
+        }
+
+        .footer-table .bold {
+            font-weight: bold;
+        }
+
+        .auto-doc {
+            text-align: center;
+            margin-top: 10px;
+            font-size: 8px;
+            color: #888;
+        }
+
+        .email-button {
+            background-color: #007bff; /* Cor de fundo */
+            color: white; /* Cor do texto */
+            text-align: center;
+            padding: 15px 30px; /* Tamanho do padding */
+            font-size: 18px; /* Tamanho da fonte */
+            border: none;
+            border-radius: 8px; /* Bordas arredondadas */
+            cursor: pointer;
+            position: fixed; /* Fixa o botão na tela */
+            bottom: 20px; /* Distância da parte inferior da tela */
+            left: 50%; /* Centraliza horizontalmente */
+            transform: translateX(-50%); /* Ajusta o botão para centralizar exatamente */
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2); /* Sombra para o botão */
+            transition: background-color 0.3s, box-shadow 0.3s; /* Transições suaves */
+        }
+
+        .email-button a {
+            color: white;
+            text-decoration: none;
+        }
+
+        .email-button:hover {
+            background-color: #0056b3; /* Cor ao passar o mouse */
+            box-shadow: 0 6px 12px rgba(0,0,0,0.3); /* Sombra mais intensa ao passar o mouse */
+        }
+    </style>
+</head>
+<body>
+    <div class="container" id="content">
+        <div class="logo">
+            <img src="/gramado_verde-640w.webp" alt="Logo Gramado Parks">
+        </div>
+
+        <h1>Termo de Cessão, Guarda, Uso e Devolução de Equipamentos de Trabalho</h1>
+
+        <h2>Identificação do(s) Equipamento(s)</h2>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Item</th>
+                    <th>Descritivo</th>
+                    <th>Marca</th>
+                    <th>Modelo</th>
+                    <th>Serial</th>
+                    <th>Observação</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1</td>
+                    <td>Computador</td>
+                    <td>Fabricante</td>
+                    <td>Modelo</td>
+                    <td>123456789</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>Monitor</td>
+                    <td>Fabricante</td>
+                    <td>Modelo</td>
+                    <td>123456789</td>
+                    <td></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Detalhamento</h2>
+        <hr>
+
+        <h2>Declaração de Devolução</h2>
+        <p class="text-center">Declaramos para devidos fins que o(s) equipamento(s) foi(foram) devolvido(s) à ______________________________________________________, nas seguintes condições:</p>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Item</th>
+                    <th>Situação</th>
+                    <th>Observação</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1</td>
+                    <td>☐ Em perfeito estado ☐ Apresentando defeito ☐ Faltando peças ou acessórios</td>
+                    <td>Haverá cobrança por esse item? ☐ Sim ☐ Não</td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>☐ Em perfeito estado ☐ Apresentando defeito ☐ Faltando peças ou acessórios</td>
+                    <td>Haverá cobrança por esse item? ☐ Sim ☐ Não</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <table class="footer-table">
+            <tr>
+                <td class="bold">Local e data do Recebimento:</td>
+                <td class="bold">Local e Data da Devolução:</td>
+            </tr>
+            <tr>
+                <td class="bold">Colaborador: Nome</td>
+                <td class="bold">Colaborador: Nome</td>
+            </tr>
+            <tr>
+                <td class="bold">Responsável pela entrega:</td>
+                <td class="bold">Responsável pela devolução:</td>
+            </tr>
+        </table>
+
+        <p class="auto-doc">AutoDoc termo gerado por sistema automatizado by Gramado Parks.</p>
+    </div>
+
+    <button class="email-button">
+        <a href="mailto:exemplo@dominio.com">Chegamos ao final, é hora de enviar os documentos por e-mail clicando aqui</a>
+    </button>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
