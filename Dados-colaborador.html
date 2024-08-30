@@ -150,6 +150,16 @@
             <label for="cpfOuCnpj">Digite seu CPF ou CNPJ:</label>
             <input type="text" id="cpfOuCnpj" name="cpfOuCnpj" required oninput="formatarCpfOuCnpj()">
 
+            <label for="rg">Digite seu RG:</label>
+            <input type="text" id="rg" name="rg" required oninput="formatarRg()">
+
+            <label for="tipoUsuario">Tipo de Usuário:</label>
+            <select id="tipoUsuario" name="tipoUsuario" required>
+                <option value="" disabled selected>Selecione o tipo de usuário</option>
+                <option value="Colaborador">Colaborador</option>
+                <option value="Prestador de Serviços">Prestador de Serviços</option>
+            </select>
+
             <label for="setor">Informe Seu Setor:</label>
             <input type="text" id="setor" name="setor" required>
 
@@ -206,6 +216,25 @@
             // Formatação de CNPJ
             valor = valor.replace(/(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/, (match, p1, p2, p3, p4, p5) => {
                 return `${p1}.${p2}.${p3}/${p4}-${p5}`;
+            });
+        }
+
+        input.value = valor;
+    }
+
+    function formatarRg() {
+        const input = document.getElementById('rg');
+        let valor = input.value.replace(/\D/g, ''); // Remove todos os caracteres não numéricos
+
+        if (valor.length === 9) {
+            // Formatação de RG
+            valor = valor.replace(/(\d{2})(\d{3})(\d{3})(\d{1})/, (match, p1, p2, p3, p4) => {
+                return `${p1}.${p2}.${p3}-${p4}`;
+            });
+        } else if (valor.length === 10) {
+            // Formatação de RG com dígito verificador de 10 dígitos
+            valor = valor.replace(/(\d{2})(\d{3})(\d{3})(\d{2})/, (match, p1, p2, p3, p4) => {
+                return `${p1}.${p2}.${p3}-${p4}`;
             });
         }
 
@@ -272,9 +301,38 @@
         }
     }
 
+    function validarRg(rg) {
+        const rgLimpo = rg.replace(/[^\d]/g, ''); // Remove caracteres não numéricos
+
+        if (rgLimpo.length === 9 || rgLimpo.length === 10) {
+            // Validação de RG
+            const multiplicador = [2, 3, 4, 5, 6, 7, 8, 9];
+
+            let total = 0;
+            for (let i = 0; i < 8; i++) {
+                total += parseInt(rgLimpo[i], 10) * multiplicador[i];
+            }
+
+            let dv = 11 - (total % 11);
+            if (dv === 10) dv = 0;
+            if (dv === 11) dv = 1;
+            if (rgLimpo.length === 9) {
+                if (dv !== parseInt(rgLimpo[8], 10)) return false;
+            } else {
+                if (dv !== parseInt(rgLimpo[9], 10)) return false;
+            }
+
+            return true;
+        } else {
+            return false; // Comprimento inválido
+        }
+    }
+
     function validarFormulario() {
         const nome = document.getElementById('nome').value;
         const cpfOuCnpj = document.getElementById('cpfOuCnpj').value;
+        const rg = document.getElementById('rg').value;
+        const tipoUsuario = document.getElementById('tipoUsuario').value;
         const setor = document.getElementById('setor').value;
         const telefone = document.getElementById('telefone').value;
         const unidade = document.getElementById('unidade').value;
@@ -296,6 +354,21 @@
             return false;
         }
 
+        if (rg.trim() === '') {
+            alert('Por favor, preencha o campo RG.');
+            return false;
+        }
+
+        if (!validarRg(rg)) {
+            alert('Por favor, insira um RG válido.');
+            return false;
+        }
+
+        if (tipoUsuario === '') {
+            alert('Por favor, selecione o tipo de usuário.');
+            return false;
+        }
+
         if (setor.trim() === '') {
             alert('Por favor, preencha o campo Setor.');
             return false;
@@ -307,7 +380,7 @@
         }
 
         if (unidade === '') {
-            alert('Por favor, selecione uma Unidade de Negócio.');
+            alert('Por favor, selecione uma Unidade de Neg��cio.');
             return false;
         }
 
