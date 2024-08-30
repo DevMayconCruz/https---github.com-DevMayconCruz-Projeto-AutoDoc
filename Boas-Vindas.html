@@ -3,329 +3,211 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Informações do colaborador</title>
+    <title>Bem-vindo à Gramado Parks</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        /* Estilo existente */
-        #loadingScreen {
+        body {
+            margin: 0;
+            overflow: hidden;
+            background-color: #f4f4f4; /* Fundo mais claro */
+            font-family: Arial, sans-serif;
+            color: #333;
+            transition: opacity 0.5s ease-out;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh; /* Altura total da viewport */
+            width: 100vw; /* Largura total da viewport */
+        }
+
+        #fireworksCanvas {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.7);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            z-index: 9999;
-            display: none; /* Inicialmente escondido */
-            border-radius: 8px;
-            text-align: center;
-        }
-
-        #loadingLogo {
-            width: 150px; /* Ajuste conforme necessário */
-            animation: spin 6s linear infinite;
-        }
-
-        @keyframes spin {
-            0% {
-                transform: rotate(0deg);
-            }
-            100% {
-                transform: rotate(360deg);
-            }
-        }
-
-        #loadingText {
-            margin-top: 20px;
-            color: #ffffff;
-            font-size: 18px;
-        }
-
-        #loadingFooter {
-            margin-top: 10px;
-            color: #ffffff;
-            font-size: 14px;
-        }
-
-        #progressBar {
-            width: 80%;
-            height: 10px;
-            background-color: #ddd;
-            border-radius: 5px;
-            margin-top: 20px;
-            overflow: hidden;
-        }
-
-        #progress {
-            height: 100%;
-            width: 0;
-            background-color: #28a745;
-            transition: width 0.3s;
-        }
-
-        #percentage {
-            font-size: 20px;
-            color: #ffffff;
-            margin-top: 10px;
-        }
-
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #e9ecef;
+            z-index: 0;
         }
 
         .container {
-            max-width: 800px;
-            margin: 30px auto;
-            padding: 20px;
-            background-color: #ffffff;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            position: relative; /* Para que a tela de carregamento seja relativa a este contêiner */
-        }
-
-        h1 {
+            position: relative;
+            z-index: 1;
             text-align: center;
-            color: #343a40;
+            max-width: 90%;
+            width: 600px; /* Largura fixa para o container */
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.9); /* Fundo branco translúcido */
+            border-radius: 8px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
         }
 
         .logo {
-            display: block;
-            margin: 20px auto;
-            max-width: 150px;
+            max-width: 100%;
+            height: auto;
+            margin-bottom: 20px;
         }
 
-        label {
-            display: block;
-            margin-top: 15px;
-            font-weight: bold;
-            color: #495057;
+        .message-box {
+            margin-bottom: 20px;
+            font-size: 20px; /* Tamanho da fonte aumentado */
+            line-height: 1.6;
+            font-family: 'Playfair Display', serif; /* Fonte elegante para a mensagem de boas-vindas */
         }
 
-        input[type="text"], input[type="tel"], input[type="email"], select, textarea {
-            width: 100%;
-            padding: 10px;
-            margin-top: 5px;
-            border: 1px solid #ced4da;
-            border-radius: 4px;
-            box-sizing: border-box;
-        }
-
-        textarea {
-            height: 100px;
+        .quality-box {
+            margin-bottom: 20px;
+            font-size: 16px; /* Mantém o tamanho da fonte */
+            line-height: 1.6;
+            font-family: 'Roboto', sans-serif; /* Fonte padrão para a frase sobre qualidade */
         }
 
         button {
-            display: block;
-            width: 100%;
-            padding: 12px;
-            margin-top: 20px;
-            background-color: #007bff;
-            border: none;
-            color: #ffffff;
+            padding: 12px 24px;
             font-size: 16px;
+            background-color: #28a745;
+            color: white;
+            border: none;
             border-radius: 4px;
             cursor: pointer;
-            transition: background-color 0.3s ease;
+            transition: background-color 0.3s ease, transform 0.3s ease;
         }
 
         button:hover {
-            background-color: #0056b3;
+            background-color: #218838;
+        }
+
+        button:active {
+            transform: scale(0.95);
+        }
+
+        @media (max-width: 768px) {
+            .message-box {
+                font-size: 18px;
+            }
+
+            .quality-box {
+                font-size: 14px;
+            }
+
+            button {
+                font-size: 14px;
+                padding: 10px 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .message-box {
+                font-size: 16px;
+            }
+
+            .quality-box {
+                font-size: 12px;
+            }
+
+            button {
+                font-size: 12px;
+                padding: 8px 16px;
+            }
         }
     </style>
 </head>
 <body>
+    <canvas id="fireworksCanvas"></canvas>
+
     <div class="container">
-        <h1>Informações do colaborador</h1>
-        <img src="/gramado_verde-640w.webp" alt="Logo" class="logo">
-
-        <form action="#" method="post" onsubmit="return validarFormulario()">
-            <label for="nome">Nome Completo:</label>
-            <input type="text" id="nome" name="nome" required>
-
-            <label for="cpfOuCnpj">Digite seu CPF ou CNPJ:</label>
-            <input type="text" id="cpfOuCnpj" name="cpfOuCnpj" required oninput="formatarCpfOuCnpj()">
-
-            <label for="rg">RG:</label>
-            <input type="text" id="rg" name="rg" required oninput="formatarRg()">
-
-            <label for="tipoUsuario">Tipo de Usuário:</label>
-            <select id="tipoUsuario" name="tipoUsuario" required>
-                <option value="" disabled selected>Selecione o tipo de usuário</option>
-                <option value="Colaborador">Colaborador</option>
-                <option value="Prestador de Serviços">Prestador de Serviços</option>
-            </select>
-
-            <label for="setor">Informe Seu Setor:</label>
-            <input type="text" id="setor" name="setor" required>
-
-            <label for="telefone">Telefone:</label>
-            <input type="tel" id="telefone" name="telefone" required>
-
-            <label for="unidade">Unidade de Negócio:</label>
-            <select id="unidade" name="unidade" required>
-                <option value="" disabled selected>Selecione uma unidade</option>
-                <option value="Snowland">Snowland</option>
-                <option value="Acquamontion">Acquamontion</option>
-                <option value="Buona Vitta">Buona Vitta</option>
-                <option value="Bella">Bella</option>
-                <option value="Escritório">Escritório</option>
-            </select>
-
-            <label for="cargo">Cargo:</label>
-            <input type="text" id="cargo" name="cargo" required>
-
-            <label for="email">Email:</label>
-            <input type="email" id="email" name="email" required>
-
-            <label for="observacao">Observação:</label>
-            <textarea id="observacao" name="observacao"></textarea>
-
-            <button type="submit" id="submitButton">Gerar Termo</button>
-        </form>
-
-        <div id="loadingScreen">
-            <img src="/LogoEfeito.png" alt="Logo girando" id="loadingLogo">
-            <div id="loadingText">Estamos gerando o termo para você...</div>
-            <div id="progressBar">
-                <div id="progress"></div>
-            </div>
-            <div id="percentage">0%</div>
-            <div id="loadingFooter">By Gramado Parks</div>
+        <img src="/gramado_verde-640w.webp" alt="Gramado Parks Logo" class="logo">
+        <div class="message-box">
+            <p>Seja muito bem-vindo à Gramado Parks. Estamos muito felizes por ter você conosco. Nessa etapa, nós vamos pedir para você informar seus dados e assinar um termo de adesão do nosso equipamento.</p>
         </div>
+        <div class="quality-box">
+            <p>O padrão de qualidade da Gramado Parks é o resultado de grande esforço e dedicação ao longo dos anos, possibilitando aos nossos clientes experiências exclusivas, autênticas e enriquecedoras. Acompanhe nossa linha do tempo e conheça nossos projetos.</p>
+        </div>
+        <p><strong>Clique em avançar!</strong></p>
+        <button id="advanceButton">Avançar</button>
     </div>
 
     <script>
-    function formatarCpfOuCnpj() {
-        const input = document.getElementById('cpfOuCnpj');
-        let valor = input.value.replace(/\D/g, ''); // Remove todos os caracteres não numéricos
+        const canvas = document.getElementById('fireworksCanvas');
+        const ctx = canvas.getContext('2d');
 
-        if (valor.length <= 11) {
-            // Formatação de CPF
-            valor = valor.replace(/(\d{3})(\d{3})?(\d{3})?(\d{1,2})?/, (match, p1, p2, p3, p4) => {
-                return [p1, p2, p3, p4].filter(Boolean).join('.');
-            });
-            valor = valor.replace(/(\d{3})\.(\d{3})\.(\d{3})(\d{1,2})?/, (match, p1, p2, p3, p4) => {
-                return `${p1}.${p2}.${p3}-${p4 || ''}`;
-            });
-        } else {
-            // Formatação de CNPJ
-            valor = valor.replace(/(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/, (match, p1, p2, p3, p4, p5) => {
-                return `${p1}.${p2}.${p3}/${p4}-${p5}`;
-            });
-        }
+        // Redimensiona o canvas para o tamanho da janela
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
 
-        input.value = valor;
-    }
-
-    function formatarRg() {
-        const input = document.getElementById('rg');
-        let valor = input.value.replace(/\D/g, ''); // Remove todos os caracteres não numéricos
-
-        // Formatação de RG (XX.XXX.XXX-X)
-        valor = valor.replace(/(\d{2})(\d{3})(\d{3})(\d{1})/, (match, p1, p2, p3, p4) => {
-            return `${p1}.${p2}.${p3}-${p4}`;
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
         });
 
-        input.value = valor;
-    }
+        class Firework {
+            constructor(x, y) {
+                this.x = x;
+                this.y = y;
+                this.radius = Math.random() * 3 + 2;
+                this.color = `hsl(${Math.random() * 360}, 100%, 50%)`;
+                this.speedX = Math.random() * 2 - 1;
+                this.speedY = Math.random() * 2 - 1;
+                this.alpha = 1;
+                this.decay = Math.random() * 0.015 + 0.015;
+            }
 
-    function validarCpfOuCnpj(cpfOuCnpj) {
-        const cpfCnpjLimpo = cpfOuCnpj.replace(/[^\d]/g, ''); // Remove caracteres não numéricos
+            draw() {
+                ctx.save();
+                ctx.globalAlpha = this.alpha;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                ctx.fillStyle = this.color;
+                ctx.fill();
+                ctx.restore();
+            }
 
-        if (cpfCnpjLimpo.length === 11) {
-            // Validação de CPF
-            const cpf = cpfCnpjLimpo;
-            const multiplicador1 = [10, 9, 8, 7, 6, 5, 4, 3, 2];
-            const multiplicador2 = [11, 10, 9, 8, 7, 6, 5, 4, 3, 2];
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                this.alpha -= this.decay;
+            }
+        }
 
-let soma = 0;
-for (let i = 0; i < 9; i++) {
-    soma += parseInt(cpf.charAt(i)) * multiplicador1[i];
-}
+        const fireworks = [];
 
-let resto = (soma * 10) % 11;
-if (resto === 10 || resto === 11) resto = 0;
-if (resto !== parseInt(cpf.charAt(9))) return false;
+        function animate() {
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.1)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-soma = 0;
-for (let i = 0; i < 10; i++) {
-    soma += parseInt(cpf.charAt(i)) * multiplicador2[i];
-}
+            if (Math.random() < 0.05) {
+                const x = Math.random() * canvas.width;
+                const y = Math.random() * canvas.height;
+                for (let i = 0; i < 50; i++) {
+                    fireworks.push(new Firework(x, y));
+                }
+            }
 
-resto = (soma * 10) % 11;
-if (resto === 10 || resto === 11) resto = 0;
-if (resto !== parseInt(cpf.charAt(10))) return false;
+            for (let i = fireworks.length - 1; i >= 0; i--) {
+                fireworks[i].update();
+                fireworks[i].draw();
+                if (fireworks[i].alpha <= 0) {
+                    fireworks.splice(i, 1);
+                }
+            }
 
-return true;
-} else if (cpfCnpjLimpo.length === 14) {
-// Validação de CNPJ
-const cnpj = cpfCnpjLimpo;
-const multiplicador1 = [5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2];
-const multiplicador2 = [6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2];
+            requestAnimationFrame(animate);
+        }
 
-let soma = 0;
-for (let i = 0; i < 12; i++) {
-    soma += parseInt(cnpj.charAt(i)) * multiplicador1[i];
-}
+        animate();
 
-let resto = soma % 11;
-if (resto < 2) resto = 0;
-else resto = 11 - resto;
-if (resto !== parseInt(cnpj.charAt(12))) return false;
-
-soma = 0;
-for (let i = 0; i < 13; i++) {
-    soma += parseInt(cnpj.charAt(i)) * multiplicador2[i];
-}
-
-resto = soma % 11;
-if (resto < 2) resto = 0;
-else resto = 11 - resto;
-if (resto !== parseInt(cnpj.charAt(13))) return false;
-
-return true;
-} else {
-return false; // Tamanho inválido
-}
-}
-
-function validarRg(rg) {
-const rgLimpo = rg.replace(/[^\d]/g, ''); // Remove caracteres não numéricos
-
-// Exemplo básico de validação de RG: verificar se o RG tem 9 dígitos
-return rgLimpo.length === 9;
-}
-
-function validarFormulario() {
-const cpfOuCnpj = document.getElementById('cpfOuCnpj').value;
-const rg = document.getElementById('rg').value;
-
-if (!validarCpfOuCnpj(cpfOuCnpj)) {
-alert('CPF ou CNPJ inválido.');
-return false;
-}
-
-if (!validarRg(rg)) {
-alert('RG inválido.');
-return false;
-}
-
-return true; // Submete o formulário se tudo estiver válido
-}
-
-function exibirLoadingScreen() {
-document.getElementById('loadingScreen').style.display = 'flex';
-}
-
-document.querySelector('form').addEventListener('submit', function () {
-exibirLoadingScreen();
-});
-</script>
+        document.getElementById('advanceButton').addEventListener('click', () => {
+            fetch('/execute-batch')
+                .then(response => {
+                    if (response.ok) {
+                        document.body.style.opacity = '0'; // Inicia a transição de fade-out
+                        setTimeout(() => {
+                            window.location.href = 'http://localhost:3000/normas-glpd';
+                        }, 500); // Tempo suficiente para o efeito de fade-out
+                    } else {
+                        alert('Erro ao executar o script.');
+                    }
+                });
+        });
+    </script>
 </body>
 </html>
-
