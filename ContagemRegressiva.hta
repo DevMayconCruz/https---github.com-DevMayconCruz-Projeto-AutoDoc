@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Contagem Regressiva</title>
+    <HTA:APPLICATION 
+        APPLICATIONNAME="Contagem Regressiva"
+        BORDER="thin"
+        CAPTION="yes"
+        SHOWINTASKBAR="yes"
+        SINGLEINSTANCE="yes"
+        SYSMENU="no"  <!-- Remover o botão de fechar -->
+        WINDOWSTATE="normal"
+        SCROLL="no">
+    <script language="VBScript">
+        Dim tempoTotal
+        Dim tempoRestante
+        Dim intervalo
+
+        ' Definindo o tempo total em segundos (10 minutos)
+        tempoTotal = 10 * 60
+        tempoRestante = tempoTotal
+
+        Sub IniciarContagem()
+            intervalo = SetInterval("AtualizarContagem", 1000)
+        End Sub
+
+        Sub AtualizarContagem()
+            If tempoRestante > 0 Then
+                tempoRestante = tempoRestante - 1
+                Dim minutos, segundos
+                minutos = Int(tempoRestante / 60)
+                segundos = tempoRestante Mod 60
+                document.getElementById("contador").innerHTML = "Tempo restante: " & minutos & " minutos e " & segundos & " segundos"
+            Else
+                ClearInterval(intervalo)
+                DeslogarUsuario
+            End If
+        End Sub
+
+        Sub DeslogarUsuario()
+            ' Comando para deslogar o usuário
+            Dim shell
+            Set shell = CreateObject("WScript.Shell")
+            shell.Run "shutdown -l", 0, False
+        End Sub
+
+        Sub AssinarTermos()
+            ' Redirecionar para a URL especificada em um navegador específico
+            Dim shell
+            Set shell = CreateObject("WScript.Shell")
+            ' Tenta abrir a URL usando o navegador padrão
+            shell.Run "http://localhost:3000", 1, False
+        End Sub
+    </script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 50px;
+        }
+    </style>
+</head>
+<body onload="IniciarContagem()">
+    <h1>Contagem Regressiva</h1>
+    <img src="C:\Users\maycon.cruz.GPK\Desktop\Inicial\img\gramado_verde-640w.webp" alt="Gramado Verde" style="max-width: 100%; height: auto;">
+    <div id="contador">Tempo restante: 10 minutos</div>
+    <br>
+    <button onclick="AssinarTermos()">Assinar Termos</button>  <!-- Botão atualizado -->
+</body>
+</html>
