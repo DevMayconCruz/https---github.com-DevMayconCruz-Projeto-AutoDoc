@@ -5,14 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Termo de Cessão de Equipamentos</title>
     <style>
+        /* Estilos existentes */
         @media print {
             @page {
-                size: A4 portrait; /* Define a orientação da página como retrato */
+                size: A4 portrait;
                 margin: 20mm;
             }
-
             .email-button {
-                display: none; /* Oculta o botão durante a impressão */
+                display: none;
             }
         }
 
@@ -27,11 +27,11 @@
 
         .container {
             width: 100%;
-            max-width: 210mm; /* Ajusta a largura máxima para A4 retrato */
+            max-width: 210mm;
             margin: auto;
             background: white;
             padding: 10mm;
-            padding-bottom: 120px; /* Aumenta o espaço na parte inferior para o botão e o texto */
+            padding-bottom: 120px;
             border-radius: 4px;
             box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
             box-sizing: border-box;
@@ -47,7 +47,7 @@
         .logo img {
             display: block;
             margin: 0 auto 10px;
-            max-width: 230px; /* Ajusta o tamanho do logo */
+            max-width: 230px;
         }
 
         h2 {
@@ -115,20 +115,20 @@
         }
 
         .email-button {
-            background-color: #007bff; /* Cor de fundo */
-            color: white; /* Cor do texto */
+            background-color: #007bff;
+            color: white;
             text-align: center;
-            padding: 15px 30px; /* Tamanho do padding */
-            font-size: 18px; /* Tamanho da fonte */
+            padding: 15px 30px;
+            font-size: 18px;
             border: none;
-            border-radius: 8px; /* Bordas arredondadas */
+            border-radius: 8px;
             cursor: pointer;
-            position: fixed; /* Fixa o botão na tela */
-            bottom: 20px; /* Distância da parte inferior da tela */
-            left: 50%; /* Centraliza horizontalmente */
-            transform: translateX(-50%); /* Ajusta o botão para centralizar exatamente */
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2); /* Sombra para o botão */
-            transition: background-color 0.3s, box-shadow 0.3s; /* Transições suaves */
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            transition: background-color 0.3s, box-shadow 0.3s;
         }
 
         .email-button a {
@@ -137,8 +137,8 @@
         }
 
         .email-button:hover {
-            background-color: #0056b3; /* Cor ao passar o mouse */
-            box-shadow: 0 6px 12px rgba(0,0,0,0.3); /* Sombra mais intensa ao passar o mouse */
+            background-color: #0056b3;
+            box-shadow: 0 6px 12px rgba(0,0,0,0.3);
         }
 
         .signature-section {
@@ -162,6 +162,87 @@
             margin-top: 5px;
             font-weight: normal;
         }
+
+        /* Estilo da tela de carregamento */
+        #loadingScreen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            display: none; /* Inicialmente escondido */
+            text-align: center;
+        }
+
+        #loadingLogo {
+            width: 150px; /* Ajuste conforme necessário */
+            animation: spin 6s linear infinite;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        #loadingText {
+            margin-top: 20px;
+            color: #ffffff;
+            font-size: 18px;
+        }
+
+        #progressBar {
+            width: 80%;
+            height: 10px;
+            background-color: #ddd;
+            border-radius: 5px;
+            margin-top: 20px;
+            overflow: hidden;
+        }
+
+        #progress {
+            height: 100%;
+            width: 0;
+            background-color: #28a745;
+            transition: width 0.3s;
+        }
+
+        #percentage {
+            font-size: 20px;
+            color: #ffffff;
+            margin-top: 10px;
+        }
+
+        /* Estilo da mensagem de sucesso */
+        #successMessage {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #007bff; /* Cor que combina com a identidade visual */
+            font-size: 20px;
+            text-align: center;
+            z-index: 10000; /* Acima de tudo */
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+
+        #successLogo {
+            max-width: 100px; /* Ajuste conforme necessário */
+            margin-bottom: 10px;
+        }
     </style>
 </head>
 <body>
@@ -170,7 +251,7 @@
             <img src="/gramado_verde-640w.webp" alt="Logo Gramado Parks">
         </div>
 
-        <h1>Termo de Cessão, Guarda, Uso e Devolução de Equipamentos de Trabalho</h1>
+        <h1>Termo de Devolução De Equipamentos De TI</h1>
 
         <h2>Identificação do(s) Equipamento(s)</h2>
 
@@ -190,21 +271,17 @@
             </tbody>
         </table>
 
-        
-
         <h2>Declaração de Devolução</h2>
       
         <div id="returnDeclarationContainer">
             <!-- Tabela de devolução será inserida dinamicamente aqui -->
         </div>
 
-      
-
         <div class="signature-section">
-      <p>Por este instrumento particular eu, <strong>Clique ou toque aqui para inserir o texto.</strong>, portador do RG nº. <strong>Clique ou toque aqui para inserir o texto.</strong>, inscrito no CPF/CNPJ nº. <strong>Clique ou toque aqui para inserir o texto.</strong>, ☐ Colaborador ☐ Prestador de Serviços Administrativos da área <strong>Clique ou toque aqui para inserir o texto.</strong>, devolvo à <strong>Clique ou toque aqui para inserir o texto.</strong> nesta data, os equipamentos e periféricos listados abaixo, cedidos a mim no dia <strong>Clique ou toque aqui para inserir uma data.</strong>, na seguinte situação de conservação: Declaro, ter ciência e estar de acordo com os procedimentos descritos na Política PL.GC.035 Entrega, Uso e Devolução de Equipamentos de TI e Periféricos, emitida e divulgada pela Gramado Parks, comprometendo-me a respeitá-la, cumprindo e aceitando-a plenamente, bem como o disposto abaixo:</p>
-            <p>O presente termo terá validade a partir de sua assinatura e permanecerá válido e eficaz pelo prazo de 03 (três) meses contados da devolução do equipamento.</p>
-            <p>Se os equipamentos forem danificados ou inutilizados por emprego inadequado, mau uso, negligência ou extravio, a Companhia cobrará o valor dos equipamentos da mesma marca ou equivalentes.</p>
-            <p>Estou ciente que, atendendo ao princípio de Finalidade, descrito na LGPD, o armazenamento físico e digital deste termo atenderá aos prazos legais e posteriormente serão excluídos.</p>
+            Por este instrumento particular eu, <strong>Clique ou toque aqui para inserir o texto.</strong>, portador do RG nº. <strong>Clique ou toque aqui para inserir o texto.</strong>, inscrito no CPF/CNPJ nº. <strong>Clique ou toque aqui para inserir o texto.</strong>, ☐ Colaborador ☐ Prestador de Serviços Administrativos da área <strong>Clique ou toque aqui para inserir o texto.</strong>, devolvo à <strong>Clique ou toque aqui para inserir o texto.</strong> nesta data, os equipamentos e periféricos listados abaixo, cedidos a mim no dia <strong>Clique ou toque aqui para inserir uma data.</strong>, na seguinte situação de conservação: Declaro, ter ciência e estar de acordo com os procedimentos descritos na Política PL.GC.035 Entrega, Uso e Devolução de Equipamentos de TI e Periféricos, emitida e divulgada pela Gramado Parks, comprometendo-me a respeitá-la, cumprindo e aceitando-a plenamente, bem como o disposto abaixo:
+            O presente termo terá validade a partir de sua assinatura e permanecerá válido e eficaz pelo prazo de 03 (três) meses contados da devolução do equipamento.
+            Se os equipamentos forem danificados ou inutilizados por emprego inadequado, mau uso, negligência ou extravio, a Companhia cobrará o valor dos equipamentos da mesma marca ou equivalentes.
+            Estou ciente que, atendendo ao princípio de Finalidade, descrito na LGPD, o armazenamento físico e digital deste termo atenderá aos prazos legais e posteriormente serão excluídos.
             <p><strong>Assinatura</strong>: <strong> ___________________________________________________________________</strong>.</p> 
         </div>
 
@@ -216,11 +293,51 @@
         <p class="auto-doc">AutoDoc termo gerado por sistema automatizado by Gramado Parks.</p>
     </div>
 
-    <button class="email-button">
-        <a href="mailto:exemplo@dominio.com">Chegamos ao final, é hora de enviar os documentos por e-mail clicando aqui</a>
+    <button class="email-button" onclick="sendEmail()">
+        Chegamos ao final, é hora de enviar os documentos por e-mail clicando aqui
     </button>
 
+    <div id="loadingScreen">
+        <img src="/LogoEfeito.png" alt="Logo girando" id="loadingLogo">
+        <div id="loadingText">Estamos enviando os documentos...</div>
+        <div id="progressBar">
+            <div id="progress"></div>
+        </div>
+        <div id="percentage">0%</div>
+    </div>
+
+    <div id="successMessage">
+     <!--  <img src="/gramado_verde-640w.webp" alt="Logo Gramado Parks" id="successLogo"> --> 
+        Muito bem, termos enviados com sucesso para a empresa e uma cópia para seu e-mail corporativo.<br>By Gramado Parks
+    </div>
+
     <script>
+        function sendEmail() {
+            document.getElementById('loadingScreen').style.display = 'flex';
+
+            let progress = 0;
+            const progressElement = document.getElementById('progress');
+            const percentageElement = document.getElementById('percentage');
+
+            function updateProgress() {
+                if (progress < 100) {
+                    progress += 1; // Incrementa o progresso
+                    progressElement.style.width = progress + '%'; // Atualiza a largura da barra de progresso
+                    percentageElement.textContent = progress + '%'; // Atualiza o texto da porcentagem
+                    setTimeout(updateProgress, 50); // Atualiza a cada 50ms
+                } else {
+                    // Quando o carregamento atinge 100%, exibe a mensagem de sucesso
+                    setTimeout(() => {
+                        document.getElementById('loadingScreen').style.display = 'none';
+                        document.getElementById('successMessage').style.display = 'block';
+                    }, 500); // Tempo para mostrar 100% antes de exibir a mensagem
+                }
+            }
+
+            updateProgress();
+            window.location.href = "mailto:exemplo@dominio.com";
+        }
+
         window.addEventListener('load', function () {
             loadDataFromTxt();
         });
@@ -265,7 +382,7 @@
                 serialCell.textContent = item.serial || 'Desconhecido';
 
                 const observationCell = document.createElement('td');
-                observationCell.textContent = ''; // Preencher conforme necessário
+                observationCell.textContent = item.observation || 'Nenhuma';
 
                 row.appendChild(itemCell);
                 row.appendChild(descriptiveCell);
@@ -278,65 +395,58 @@
             });
         }
 
-        function generateReturnDeclarationTable(items) {
+        function generateReturnDeclarationTable(data) {
             const container = document.getElementById('returnDeclarationContainer');
-            container.innerHTML = ''; // Limpa o contêiner
+            container.innerHTML = '';
 
-            // Cria a tabela
             const table = document.createElement('table');
-            table.style.width = '100%';
-            table.style.borderCollapse = 'collapse';
+            table.classList.add('footer-table');
 
-            // Cria o cabeçalho da tabela
-            const thead = document.createElement('thead');
             const headerRow = document.createElement('tr');
-            const headers = ['Item', 'Situação', 'Observação'];
-            headers.forEach(headerText => {
-                const th = document.createElement('th');
-                th.textContent = headerText;
-                th.style.border = '1px solid #ccc';
-                th.style.padding = '4px';
-                th.style.fontSize = '12px';
-                th.style.backgroundColor = '#f0f0f0';
-                th.style.fontWeight = 'bold';
-                headerRow.appendChild(th);
-            });
-            thead.appendChild(headerRow);
-            table.appendChild(thead);
+            headerRow.innerHTML = 
+                '<th>Item</th>' +
+                '<th>Descrição</th>' +
+                '<th>Marca</th>' +
+                '<th>Modelo</th>' +
+                '<th>Serial</th>';
+            table.appendChild(headerRow);
 
-            // Cria o corpo da tabela
-            const tbody = document.createElement('tbody');
-            items.forEach((item, index) => {
+            data.forEach((item, index) => {
                 const row = document.createElement('tr');
-                
+
                 const itemCell = document.createElement('td');
                 itemCell.textContent = index + 1;
-                itemCell.style.border = '1px solid #ccc';
-                itemCell.style.padding = '4px';
-                itemCell.style.fontSize = '12px';
 
-                const statusCell = document.createElement('td');
-                statusCell.innerHTML = '☐ Em perfeito estado ☐ Apresentando defeito ☐ Faltando peças ou acessórios';
-                statusCell.style.border = '1px solid #ccc';
-                statusCell.style.padding = '4px';
-                statusCell.style.fontSize = '12px';
+                const descriptionCell = document.createElement('td');
+                descriptionCell.textContent = item.descriptive || 'Desconhecido';
 
-                const observationCell = document.createElement('td');
-                observationCell.innerHTML = 'Haverá cobrança por esse item? ☐ Sim ☐ Não';
-                observationCell.style.border = '1px solid #ccc';
-                observationCell.style.padding = '4px';
-                observationCell.style.fontSize = '12px';
+                const brandCell = document.createElement('td');
+                brandCell.textContent = item.brand || 'Desconhecido';
+
+                const modelCell = document.createElement('td');
+                modelCell.textContent = item.model || 'Desconhecido';
+
+                const serialCell = document.createElement('td');
+                serialCell.textContent = item.serial || 'Desconhecido';
 
                 row.appendChild(itemCell);
-                row.appendChild(statusCell);
-                row.appendChild(observationCell);
-                tbody.appendChild(row);
+                row.appendChild(descriptionCell);
+                row.appendChild(brandCell);
+                row.appendChild(modelCell);
+                row.appendChild(serialCell);
+
+                table.appendChild(row);
             });
-            table.appendChild(tbody);
-            
-            // Adiciona a tabela ao contêiner
+
             container.appendChild(table);
         }
+
+        window.onbeforeunload = function (e) {
+            var confirmationMessage = 'Tem certeza de que deseja sair? Todos os dados não salvos serão perdidos.';
+
+            e.returnValue = confirmationMessage; // Para navegadores antigos
+            return confirmationMessage; // Para navegadores modernos
+        };
     </script>
 </body>
 </html>
