@@ -9,6 +9,8 @@ const port = 3000;
 // Configurar o diretório público para servir arquivos estáticos
 app.use(express.static(path.join(__dirname, 'img')));
 
+app.use('/img', express.static('C:/Projeto-AutoDocServidor/img'));
+
 
 // Use o middleware bodyParser para analisar o corpo da solicitação
 app.use(bodyParser.json());
