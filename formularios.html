@@ -44,11 +44,19 @@
             text-transform: uppercase;
         }
 
-        .logo img {
-            display: block;
-            margin: 0 auto 10px;
-            max-width: 230px;
-        }
+        .logo {
+    width: 100%; /* Garante que a logo ocupe toda a largura disponível do cabeçalho */
+    text-align: center; /* Centraliza a imagem */
+    margin-bottom: 10px; /* Mantém o espaçamento inferior */
+}
+
+.logo img {
+    max-width: 100%; /* Garante que a imagem não exceda a largura do cabeçalho */
+    height: auto; /* Mantém a proporção da imagem ao dimensioná-la */
+    display: block; /* Remove qualquer espaço extra ao redor da imagem */
+    margin: 0 auto; /* Centraliza a imagem */
+}
+
 
         h2 {
             font-size: 14px;
@@ -92,27 +100,27 @@
         }
 
         .footer-table {
-            width: 100%;
-            margin-top: 10px;
-            border-collapse: collapse;
-        }
+    width: 100%;
+    margin-top: 10px;
+    border-collapse: collapse;
+}
 
-        .footer-table td {
-            border: none;
-            padding: 4px;
-            font-size: 10px;
-        }
+.footer-table th, .footer-table td {
+    border: 1px solid #ccc;
+    padding: 4px;
+    font-size: 12px;
+    text-align: left;
+}
 
-        .footer-table .bold {
-            font-weight: bold;
-        }
+.footer-table th {
+    background-color: #f0f0f0;
+    font-weight: bold;
+}
 
-        .auto-doc {
-            text-align: center;
-            margin-top: 10px;
-            font-size: 8px;
-            color: #888;
-        }
+.footer-table td {
+    vertical-align: top;
+}
+
 
         .email-button {
             background-color: #007bff;
@@ -246,24 +254,32 @@
     </style>
 </head>
 <body>
-    <div class="container" id="content">
+   
+    <div class="container" id="content"                                               >
+         
         <div class="logo">
-            <img src="/gramado_verde-640w.webp" alt="Logo Gramado Parks">
+            <img src="/img/Cabeçalho.png" alt="Cabeçalho">
         </div>
 
-        <h1>Termo de Devolução De Equipamentos De TI</h1>
+        <!--<h1>Termo de Devolução De Equipamentos De TI</h1>
 
-        <h2>Identificação do(s) Equipamento(s)</h2>
+        <h2>Identificação do(s) Equipamento(s)</h2> -->
+        <div class="signature-section">
+            Por este instrumento particular eu, Clique ou toque aqui para inserir o texto., portador do RG nº. Clique ou toque aqui para inserir o texto., inscrito no CPF/CNPJ nº. Clique ou toque aqui para inserir o texto., ☐ Colaborador ☐ Prestador de Serviços Administrativos da área Clique ou toque aqui para inserir o texto., recebo da Clique ou toque aqui para inserir o texto. nesta data, os equipamentos e periféricos listados abaixo, cuja posse passo a ter em caráter temporário.
+
+           </strong>.</p> 
+        </div>
 
         <table>
             <thead>
                 <tr>
                     <th>Item</th>
-                    <th>Descritivo</th>
+                    <th>Descrição</th>
                     <th>Marca</th>
                     <th>Modelo</th>
-                    <th>Serial</th>
-                    <th>Observação</th>
+                    <th>Série</th>
+                    <th>NF de referência</th>
+                    <th>Valor</th>
                 </tr>
             </thead>
             <tbody id="equipmentTableBody">
@@ -271,18 +287,29 @@
             </tbody>
         </table>
 
-        <h2>Declaração de Devolução</h2>
+        
+       
       
         <div id="returnDeclarationContainer">
             <!-- Tabela de devolução será inserida dinamicamente aqui -->
         </div>
-
+        
         <div class="signature-section">
-            Por este instrumento particular eu, <strong>Clique ou toque aqui para inserir o texto.</strong>, portador do RG nº. <strong>Clique ou toque aqui para inserir o texto.</strong>, inscrito no CPF/CNPJ nº. <strong>Clique ou toque aqui para inserir o texto.</strong>, ☐ Colaborador ☐ Prestador de Serviços Administrativos da área <strong>Clique ou toque aqui para inserir o texto.</strong>, devolvo à <strong>Clique ou toque aqui para inserir o texto.</strong> nesta data, os equipamentos e periféricos listados abaixo, cedidos a mim no dia <strong>Clique ou toque aqui para inserir uma data.</strong>, na seguinte situação de conservação: Declaro, ter ciência e estar de acordo com os procedimentos descritos na Política PL.GC.035 Entrega, Uso e Devolução de Equipamentos de TI e Periféricos, emitida e divulgada pela Gramado Parks, comprometendo-me a respeitá-la, cumprindo e aceitando-a plenamente, bem como o disposto abaixo:
-            O presente termo terá validade a partir de sua assinatura e permanecerá válido e eficaz pelo prazo de 03 (três) meses contados da devolução do equipamento.
-            Se os equipamentos forem danificados ou inutilizados por emprego inadequado, mau uso, negligência ou extravio, a Companhia cobrará o valor dos equipamentos da mesma marca ou equivalentes.
-            Estou ciente que, atendendo ao princípio de Finalidade, descrito na LGPD, o armazenamento físico e digital deste termo atenderá aos prazos legais e posteriormente serão excluídos.
-            <p><strong>Assinatura</strong>: <strong> ___________________________________________________________________</strong>.</p> 
+            Declaro ter ciência e estar de acordo com os procedimentos descritos na Política PL.GC.035 Entrega, Uso e Devolução de Equipamentos de TI e Periféricos, emitida e divulgada pela Gramado Parks, comprometendo-me a respeitá-las, cumprindo e aceitando-as plenamente, bem como o disposto abaixo:
+            Estou ciente de que o equipamento fornecido é de propriedade da empresa que o forneceu; portanto, será utilizado por mim única e exclusivamente a título de empréstimo para o melhor desempenho e execução das atividades para as quais fui contratado, não tendo em hipótese alguma conotação de uso pessoal. 
+            Devo utilizá-lo com cuidado, guardá-lo em local seguro, além de garantir a utilização adequada das ferramentas de criptografia, antivírus e proteção, visando assegurar que as informações nele contidas não sejam divulgadas, nem tenham destinação diversa dos objetivos da Companhia, responsabilizando-me civilmente pela eventual divulgação indevida destas informações, nos termos da lei.
+            Se os equipamentos forem danificados ou inutilizados por emprego inadequado, mau uso, negligência ou extravio, deverei comunicar imediatamente a área competente. A Companhia me fornecerá novos equipamentos e cobrará o valor dos equipamentos da mesma marca ou equivalentes.
+            Devo utilizar somente os softwares instalados e homologados pela área de Tecnologia da Informação (TI) da Gramado Parks, não removendo, alterando ou acrescentando, sem autorização expressa desta, qualquer tipo de dispositivo periférico ou software neste equipamento. Todos os softwares contidos neste são devidamente licenciados e é proibida a sua distribuição ou cópia sem prévia autorização. Qualquer outro software que venha a ser necessário para o exercício de minhas atividades deve ser aprovado e instalado pela área de TI.
+            São expressamente proibidos a: criação, download, guarda ou veiculação de material de cunho pornográfico e/ou imoral, discriminatório, ofensivo, contra a ética e os bons costumes, no equipamento fornecido.
+            Diante do exposto acima, reconheço que a Companhia, dentro de suas atribuições independentemente de aviso, está autorizada a:
+            monitorar, registrar e analisar todas as aplicações e dados localizados no equipamento que foram acessados através de minha senha;
+            modificar e/ou bloquear os acessos sempre que houver necessidade e a critério desta;
+            verificar todos os arquivos contidos no equipamento a qualquer momento.
+            Estou ciente que este termo terá validade a partir de sua assinatura e permanecerá válido enquanto meu contrato com a Gramado Parks estiver vigente.
+            O descumprimento das obrigações assumidas neste compromisso caracterizará grave infração, resultando em ações disciplinares aplicáveis, como medidas administrativas e/ou disciplinares no âmbito da Companhia, sujeitando-me à reparação pelos danos causados, sendo facultado à Companha a adoção de medidas pertinentes, incluindo as de natureza indenizatória, em valor equivalente ou substituição (idêntico ou similar). 
+            Reconheço que em caso de desligamento ou rescisão de contrato devo devolver o equipamento para o líder da área em que atuo/ presto serviço no prazo em até 1 (um) dia. Saliento que fui informado que caso o equipamento não seja entregue neste prazo, o valor do equipamento na data de desligamento/ rescisão será descontado das minhas verbas rescisórias ou da NF em caso de Prestador de Serviços.
+
+          <!---  <p><strong>Assinatura</strong>: <strong> ___________________________________________________________________</strong>.</p> -->
         </div>
 
         <div class="internal-info">
@@ -381,72 +408,35 @@
                 const serialCell = document.createElement('td');
                 serialCell.textContent = item.serial || 'Desconhecido';
 
-                const observationCell = document.createElement('td');
-                observationCell.textContent = item.observation || 'Nenhuma';
+                const NotaFiscalCell = document.createElement('td');
+                NotaFiscalCell.textContent = item.observation || 'X';
+
+                const ValorCell = document.createElement('td');
+                ValorCell.textContent = item.observation || 'X';
 
                 row.appendChild(itemCell);
                 row.appendChild(descriptiveCell);
                 row.appendChild(brandCell);
                 row.appendChild(modelCell);
                 row.appendChild(serialCell);
-                row.appendChild(observationCell);
+                row.appendChild(NotaFiscalCell);
+                row.appendChild(ValorCell);
 
                 tableBody.appendChild(row);
             });
         }
 
-        function generateReturnDeclarationTable(data) {
-            const container = document.getElementById('returnDeclarationContainer');
-            container.innerHTML = '';
+       
 
-            const table = document.createElement('table');
-            table.classList.add('footer-table');
+     
 
-            const headerRow = document.createElement('tr');
-            headerRow.innerHTML = 
-                '<th>Item</th>' +
-                '<th>Descrição</th>' +
-                '<th>Marca</th>' +
-                '<th>Modelo</th>' +
-                '<th>Serial</th>';
-            table.appendChild(headerRow);
 
-            data.forEach((item, index) => {
-                const row = document.createElement('tr');
+     //   window.onbeforeunload = function (e) {
+         //   var confirmationMessage = 'Tem certeza de que deseja sair? Todos os dados não salvos serão perdidos.';
 
-                const itemCell = document.createElement('td');
-                itemCell.textContent = index + 1;
-
-                const descriptionCell = document.createElement('td');
-                descriptionCell.textContent = item.descriptive || 'Desconhecido';
-
-                const brandCell = document.createElement('td');
-                brandCell.textContent = item.brand || 'Desconhecido';
-
-                const modelCell = document.createElement('td');
-                modelCell.textContent = item.model || 'Desconhecido';
-
-                const serialCell = document.createElement('td');
-                serialCell.textContent = item.serial || 'Desconhecido';
-
-                row.appendChild(itemCell);
-                row.appendChild(descriptionCell);
-                row.appendChild(brandCell);
-                row.appendChild(modelCell);
-                row.appendChild(serialCell);
-
-                table.appendChild(row);
-            });
-
-            container.appendChild(table);
-        }
-
-        window.onbeforeunload = function (e) {
-            var confirmationMessage = 'Tem certeza de que deseja sair? Todos os dados não salvos serão perdidos.';
-
-            e.returnValue = confirmationMessage; // Para navegadores antigos
-            return confirmationMessage; // Para navegadores modernos
-        };
+           // e.returnValue = confirmationMessage; 
+        //    return confirmationMessage; 
+   //     };
     </script>
 </body>
 </html>
