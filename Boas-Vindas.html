@@ -204,6 +204,8 @@
         animate();
 
         document.getElementById('advanceButton').addEventListener('click', () => {
+            // Comentado para não executar o arquivo batch, apenas faz a transição e redirecionamento
+            /*
             fetch('/execute-batch')
                 .then(response => {
                     if (response.ok) {
@@ -215,6 +217,13 @@
                         alert('Erro ao executar o script.');
                     }
                 });
+            */
+            
+            // Realiza a transição de fade-out e redirecionamento para outra página
+            document.body.style.opacity = '0'; // Inicia a transição de fade-out
+            setTimeout(() => {
+                window.location.href = "http://172.16.8.44:3000/normas-glpd";
+            }, 500); // Tempo suficiente para o efeito de fade-out
         });
     </script>
 </body>
