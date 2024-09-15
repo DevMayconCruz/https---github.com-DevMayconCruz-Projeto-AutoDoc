@@ -1,3 +1,23 @@
+
+/**
+ * Autor Maycon Cruz
+ * Este código pertence à Gramado Parks e não pode ser modificado ou distribuído.
+ * Eu resolvi criar as variáveis, métodos, funções e endpoints entre outros em inglês.
+ * Peço que continuem programando assim nas atualizações para manter a consistência do
+ * código e não ferir o conceito de código limpo.
+ * Resumo do Código:
+
+   Rota /getUserData: Lê um arquivo de texto e retorna informações do usuário e data.
+   Função parseUserData: Analisa os dados do usuário a partir das linhas do arquivo.
+   Serviço de Arquivos Estáticos: Configura diretórios públicos para servir arquivos estáticos.
+   Middleware bodyParser: Analisa o corpo das solicitações.
+   Rota Raiz /: Serve um arquivo HTML de boas-vindas.
+   Outras Rotas: Servem páginas HTML específicas.
+   Rota /getPCInfo: Lê um arquivo de texto e retorna informações do PC e monitores.
+   Função parseData: Analisa os dados do arquivo TXT.
+   Rota /execute-batch: Executa um arquivo batch e retorna o resultado.
+   Servidor: Inicia o servidor na porta 3000 e escuta em todas as interfaces de rede.
+ */
 const express = require('express');
 const path = require('path');
 const { exec } = require('child_process');
@@ -6,17 +26,45 @@ const bodyParser = require('body-parser');
 
 const app = express();
 const port = 3000;
+
+// Rota para retornar informações do usuário e data
+app.get('/getUserData', (req, res) => {
+    const filePath = path.join('\\\\Gpk-fs02\\Publico\\TI\\Projeto-AutoDocServidor\\CapturaDoSistema\\pcInfo.txt');
+    
+    // Garantir que o arquivo seja lido como UTF-8
+    fs.readFile(filePath, 'utf8', (err, data) => {
+        if (err) {
+            return res.status(500).send('Erro ao ler o arquivo');
+        }
+
+        const lines = data.split('\n');
+        const userData = parseUserData(lines);
+        res.json(userData);
+    });
+});
+
+// Função para analisar os dados do usuário e data
+function parseUserData(lines) {
+    let userData = {
+        usuario: 'Desconhecido',
+        data: new Date().toLocaleDateString('pt-BR') // Data no formato dd/mm/aaaa
+    };
+
+    lines.forEach(line => {
+        if (line.startsWith('UsuarioLogado:')) {
+            userData.usuario = line.split(':')[1]?.trim() || 'Desconhecido';
+        }
+    });
+
+    return userData;
+}
+
 // Configurar o diretório público para servir arquivos estáticos
 app.use(express.static(path.join(__dirname, 'img')));
-
-app.use('/img', express.static('C:/Projeto-AutoDocServidor/img'));
-
+app.use('/img', express.static('\\\\Gpk-fs02\\Publico\\TI\\Projeto-AutoDocServidor\\img'));
 
 // Use o middleware bodyParser para analisar o corpo da solicitação
 app.use(bodyParser.json());
-
-// Serve arquivos estáticos do diretório especificado
-app.use(express.static('C:\\Users\\maycon.cruz.GPK\\Desktop\\TesteJS'));
 
 // Serve o arquivo HTML de Boas-Vindas na rota raiz
 app.get('/', (req, res) => {
@@ -40,14 +88,13 @@ app.get('/formularios', (req, res) => {
 
 // Rota para retornar informações do PC e monitores
 app.get('/getPCInfo', (req, res) => {
-    const filePath = path.join('C:\\', 'Projeto-AutoDocServidor', 'CapturaDoSistema', 'pcInfo.txt');
-    
-    // Garantir que o arquivo seja lido como UTF-8
+    const filePath = path.join('\\\\Gpk-fs02\\Publico\\TI\\Projeto-AutoDocServidor\\CapturaDoSistema\\pcInfo.txt');
+
     fs.readFile(filePath, 'utf8', (err, data) => {
         if (err) {
             return res.status(500).send('Erro ao ler o arquivo');
         }
-        
+
         const lines = data.split('\n');
         const equipmentData = parseData(lines);
         res.json(equipmentData);
@@ -55,17 +102,15 @@ app.get('/getPCInfo', (req, res) => {
 });
 
 // Função para analisar os dados do arquivo TXT
-// ... [código existente]
-
 function parseData(lines) {
     const data = [];
     let currentItem = {};
 
     lines.forEach(line => {
-        line = line.trim(); 
-        
+        line = line.trim();
+
         console.log(`Analisando linha: ${line}`);
-        
+
         if (line.startsWith('Descritivo:')) {
             if (Object.keys(currentItem).length > 0) {
                 data.push(currentItem);
@@ -84,30 +129,28 @@ function parseData(lines) {
     if (Object.keys(currentItem).length > 0) {
         data.push(currentItem);
     }
-    
+
     console.log('Dados analisados:', data);
     return data;
 }
 
-
-
 // Endpoint para executar o arquivo batch
 app.get('/execute-batch', (req, res) => {
-    const batchPath = path.join('C:', 'Projeto-AutoDocServidor', 'CapturaDoSistema', 'executarVBS.bat');
-    
+    const batchPath = path.join('\\\\Gpk-fs02\\Publico\\TI\\Projeto-AutoDocServidor\\CapturaDoSistema\\executarVBS.bat');
+
     exec(`"${batchPath}"`, (error, stdout, stderr) => {
         if (error) {
             console.error(`Erro: ${error}`);
             return res.status(500).send('Erro ao executar o script.');
         }
-        
+
         console.log(`Saída: ${stdout}`);
         console.error(`Erro padrão: ${stderr}`);
         res.send('Script executado com sucesso.');
     });
 });
 
-// Iniciar o servidor
-app.listen(port, () => {
-    console.log(`Servidor rodando em http://localhost:${port}`);
+// Iniciar o servidor escutando em todas as interfaces de rede (0.0.0.0)
+app.listen(port, '0.0.0.0', () => {
+    console.log(`Servidor rodando em http://172.16.8.44:${port}`);
 });
