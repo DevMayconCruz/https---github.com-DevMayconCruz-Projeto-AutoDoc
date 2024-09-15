@@ -1,120 +1,141 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Assinatura do Termo</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f4;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            overflow: hidden; /* Prevent scrollbars during transition */
-            transition: opacity 0.5s ease-out; /* Smooth fade-out transition */
-        }
-        .container {
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-            text-align: center;
-            width: 90%;
-            max-width: 600px;
-            position: relative; /* Added for positioning the button inside the container */
-        }
-        .logo {
-            width: 200px;
-            margin-bottom: 20px;
-        }
-        .message {
-            margin-bottom: 20px; /* Adjusted margin to make space for checkboxes */
-            text-align: left;
-        }
-        .highlight-text {
-            font-size: 20px; /* Increase the font size */
-            font-weight: bold; /* Make the text bold */
-            color: #333; /* Dark text color for better readability */
-            font-family: 'Georgia', serif; /* Use a serif font for emphasis */
-            margin-bottom: 20px; /* Space below the highlighted text */
-            line-height: 1.6;
-        }
-        .highlight-text span {
-            display: block;
-            margin-bottom: 10px; /* Space between lines of text */
-        }
-        .checkbox-group {
-            margin-bottom: 20px;
-            text-align: left;
-        }
-        .checkbox-group label {
-            display: block;
-            margin-bottom: 10px;
-        }
-        .btn-advance {
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            text-align: center;
-            text-decoration: none;
-            display: inline-block;
-            font-size: 16px;
-            border-radius: 5px;
-            cursor: pointer;
-            position: absolute;
-            bottom: 20px;
-            right: 20px;
-            display: none; /* Hide button initially */
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <img src="/gramado_verde-640w.webp" alt="Logo" class="logo" class="logo">
-        <div id="message" class="message">
-            <p class="highlight-text">
-                <span>Ao marcar as caixas de seleção abaixo, você, TITULAR, está ciente de que os dados coletados serão tratados conforme a hipótese de tratamento de dados previstos no Art. 7º  - V "quando necessário para a execução de contrato ou de procedimentos preliminares relacionados a contrato do qual seja parte o titular, a pedido do titular dos dados;"</span>
-                <span>Tendo seu término de acordo com Art.15 - I e II Lei Geral de Proteção de Dados Pessoais (LGPD). (Redação dada pela Lei nº 13.853, de 2019)</span>
-            </p>
-            <div class="checkbox-group">
-                <p>As informações relatadas neste termo serão prescritas quando:</p>
-                <label><input type="checkbox" id="checkbox1"> 1.1- Um novo termo for assinado por você.</label>
-                <label><input type="checkbox" id="checkbox2"> 1.2- O equipamento citado for devolvido por você ao RH.</label>
-            </div>
-        </div>
-        <button class="btn-advance" onclick="checkConditions()">Avançar</button>
-    </div>
+<!--Resumo do Código HTML:
 
-    <script>
-        const checkbox1 = document.getElementById('checkbox1');
-        const checkbox2 = document.getElementById('checkbox2');
-        const btnAdvance = document.querySelector('.btn-advance');
+- Autor Maycon Cruz
+ * Este código pertence à Gramado Parks e não pode ser modificado ou distribuído.
+ * Eu resolvi criar as variáveis, métodos, funções e endpoints entre outros em inglês.
+ * Peço que continuem programando assim nas atualizações para manter a consistência do
+ * código e não ferir o conceito de código limpo.
+ * Resumo do Código: 
+**Estrutura HTML**: Define a estrutura básica da página com título "Assinatura do Termo".
+- **Estilos CSS**: 
+  - Define estilos para o corpo, container, logo, mensagens, textos destacados, grupo de checkboxes e botão de avanço.
+  - Inclui transições suaves e ocultação de barras de rolagem durante a transição.
+- **Conteúdo da Página**:
+  - Exibe um logo e uma mensagem destacada sobre o tratamento de dados conforme a LGPD.
+  - Inclui um grupo de checkboxes para o usuário confirmar a leitura e aceitação dos termos.
+  - Um botão "Avançar" que só aparece quando ambos os checkboxes estão marcados.
+- **Script JavaScript**:
+  - Controla a visibilidade do botão "Avançar" com base na seleção dos checkboxes.
+  - Aplica uma transição de fade-out ao corpo da página e redireciona para uma nova URL após a transição.-->
 
-        function updateButtonVisibility() {
-            if (checkbox1.checked && checkbox2.checked) {
-                btnAdvance.style.display = 'inline-block';
-            } else {
-                btnAdvance.style.display = 'none';
-            }
-        }
-
-        checkbox1.addEventListener('change', updateButtonVisibility);
-        checkbox2.addEventListener('change', updateButtonVisibility);
-
-        function checkConditions() {
-            // Apply fade-out transition
-            document.body.style.opacity = '0';
-
-            // Redirect after the transition ends
-            setTimeout(function() {
-                window.location.href = "http://localhost:3000/dados-colaborador";
-            }, 500); // Delay should match the transition duration
-        }
-    </script>
-</body>
-</html>
+  <!DOCTYPE html>
+  <html lang="pt-BR">
+  <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Assinatura do Termo</title>
+      <style>
+          body {
+              font-family: Arial, sans-serif;
+              margin: 0;
+              padding: 0;
+              background-color: #f4f4f4;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              height: 100vh;
+              overflow: hidden; /* Evitar barras de rolagem durante a transição */
+              transition: opacity 0.5s ease-out; /* Transição suave de desvanecimento */
+          }
+          .container {
+              background-color: #fff;
+              padding: 20px;
+              border-radius: 8px;
+              box-shadow: 0 0 10px rgba(0,0,0,0.1);
+              text-align: center;
+              width: 90%;
+              max-width: 600px;
+              position: relative; /* Adicionado para posicionar o botão dentro do container */
+          }
+          .logo {
+              width: 200px;
+              margin-bottom: 20px;
+          }
+          .message {
+              margin-bottom: 20px; /* Margem ajustada para dar espaço para as caixas de seleção */
+              text-align: left;
+          }
+          .highlight-text {
+              font-size: 20px; /* Aumentar o tamanho da fonte */
+              font-weight: bold; /* Tornar o texto em negrito */
+              color: #333; /* Cor do texto escura para melhor legibilidade */
+              font-family: 'Georgia', serif; /* Usar uma fonte serifada para ênfase */
+              margin-bottom: 20px; /* Espaço abaixo do texto destacado */
+              line-height: 1.6;
+          }
+          .highlight-text span {
+              display: block;
+              margin-bottom: 10px; /* Espaço entre as linhas de texto */
+          }
+          .checkbox-group {
+              margin-bottom: 20px;
+              text-align: left;
+          }
+          .checkbox-group label {
+              display: block;
+              margin-bottom: 10px;
+          }
+          .btn-advance {
+              background-color: #4CAF50;
+              color: white;
+              border: none;
+              padding: 10px 20px;
+              text-align: center;
+              text-decoration: none;
+              display: inline-block;
+              font-size: 16px;
+              border-radius: 5px;
+              cursor: pointer;
+              position: absolute;
+              bottom: 20px;
+              right: 20px;
+              display: none; /* Ocultar botão inicialmente */
+          }
+      </style>
+  </head>
+  <body>
+      <div class="container">
+          <img src="/gramado_verde-640w.webp" alt="Logo" class="logo" class="logo">
+          <div id="message" class="message">
+              <p class="highlight-text">
+                  <span>Ao marcar as caixas de seleção abaixo, você, TITULAR, está ciente de que os dados coletados serão tratados conforme a hipótese de tratamento de dados previstos no Art. 7º  - V "quando necessário para a execução de contrato ou de procedimentos preliminares relacionados a contrato do qual seja parte o titular, a pedido do titular dos dados;"</span>
+                  <span>Tendo seu término de acordo com Art.15 - I e II Lei Geral de Proteção de Dados Pessoais (LGPD). (Redação dada pela Lei nº 13.853, de 2019)</span>
+              </p>
+              <div class="checkbox-group">
+                  <p>As informações relatadas neste termo serão prescritas quando:</p>
+                  <label><input type="checkbox" id="checkbox1"> 1.1- Um novo termo for assinado por você.</label>
+                  <label><input type="checkbox" id="checkbox2"> 1.2- O equipamento citado for devolvido por você ao RH.</label>
+              </div>
+          </div>
+          <button class="btn-advance" onclick="checkConditions()">Avançar</button>
+      </div>
+  
+      <script>
+          const checkbox1 = document.getElementById('checkbox1');
+          const checkbox2 = document.getElementById('checkbox2');
+          const btnAdvance = document.querySelector('.btn-advance');
+  
+          function updateButtonVisibility() {
+              if (checkbox1.checked && checkbox2.checked) {
+                  btnAdvance.style.display = 'inline-block';
+              } else {
+                  btnAdvance.style.display = 'none';
+              }
+          }
+  
+          checkbox1.addEventListener('change', updateButtonVisibility);
+          checkbox2.addEventListener('change', updateButtonVisibility);
+  
+          function checkConditions() {
+              // Aplicar transição de desvanecimento
+              document.body.style.opacity = '0';
+  
+              // Redirecionar após o término da transição
+              setTimeout(function() {
+                window.location.href = "http://172.16.8.44:3000/dados-colaborador";
+              }, 500); // O atraso deve corresponder à duração da transição
+          }
+      </script>
+  </body>
+  </html>
+ 

@@ -8,7 +8,7 @@
         CAPTION="yes"
         SHOWINTASKBAR="yes"
         SINGLEINSTANCE="yes"
-        SYSMENU="no"  <!-- Remover o botão de fechar -->
+        SYSMENU="no"  <!-- Remover o botï¿½o de fechar -->
         WINDOWSTATE="normal"
         SCROLL="no">
     <script language="VBScript">
@@ -38,18 +38,18 @@
         End Sub
 
         Sub DeslogarUsuario()
-            ' Comando para deslogar o usuário
+            ' Comando para deslogar o usuï¿½rio
             Dim shell
             Set shell = CreateObject("WScript.Shell")
             shell.Run "shutdown -l", 0, False
         End Sub
 
         Sub AssinarTermos()
-            ' Redirecionar para a URL especificada em um navegador específico
+            ' Redirecionar para a URL especificada em um navegador especï¿½fico
             Dim shell
             Set shell = CreateObject("WScript.Shell")
-            ' Tenta abrir a URL usando o navegador padrão
-            shell.Run "http://localhost:3000", 1, False
+            ' Tenta abrir a URL usando o navegador padrï¿½o
+            shell.Run "http://172.16.8.44:3000", 1, False
         End Sub
     </script>
     <style>
@@ -65,6 +65,6 @@
     <img src="C:\Projeto-AutoDocServidor\img\gramado_verde-640w.webp" alt="Gramado Verde" style="max-width: 100%; height: auto;">
     <div id="contador">Tempo restante: 10 minutos</div>
     <br>
-    <button onclick="AssinarTermos()">Assinar Termos</button>  <!-- Botão atualizado -->
+    <button onclick="AssinarTermos()">Assinar Termos</button>  <!-- Botï¿½o atualizado -->
 </body>
 </html>

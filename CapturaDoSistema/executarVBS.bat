@@ -1,6 +1,6 @@
 @echo off
 :: Define o caminho para o arquivo VBScript
-set vbsFilePath="C:\Projeto-AutoDocServidor\CapturaDoSistema\getPCInfo.vbs"
+set vbsFilePath="\\Gpk-fs02\Publico\TI\Projeto-AutoDocServidor\CapturaDoSistema\getPCInfo.vbs"
 
 :: Executa o arquivo VBScript
 cscript //nologo %vbsFilePath%
