@@ -1,4 +1,12 @@
-<!DOCTYPE html>
+
+ <!-- Autor Maycon Cruz
+ * Este código pertence à Gramado Parks e não pode ser modificado ou distribuído.
+ * Eu resolvi criar as variáveis, métodos, funções e endpoints entre outros em inglês.
+ * Peço que continuem programando assim nas atualizações para manter a consistência do
+ * código e não ferir o conceito de código limpo.
+ * Resumo do Código:-->
+
+ <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
@@ -201,7 +209,7 @@
                     if (response.ok) {
                         document.body.style.opacity = '0'; // Inicia a transição de fade-out
                         setTimeout(() => {
-                            window.location.href = 'http://localhost:3000/normas-glpd';
+                            window.location.href = "http://172.16.8.44:3000/normas-glpd";
                         }, 500); // Tempo suficiente para o efeito de fade-out
                     } else {
                         alert('Erro ao executar o script.');
