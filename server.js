@@ -18,30 +18,30 @@
  * Servidor: Inicia o servidor na porta 3000 e escuta em todas as interfaces de rede.
  *
  * URLs Principais
- *
- * Página de Boas-Vindas:
- * http://172.16.8.44:3000/
- *
- * Página de Normas GLPD:
- * http://172.16.8.44:3000/normas-glpd
- *
- * Página de Dados do Colaborador:
- * http://172.16.8.44:3000/dados-colaborador
- *
- * Página de Formulários:
- * http://172.16.8.44:3000/formularios
- *
- * Informações do Usuário:
- * http://172.16.8.44:3000/informacoes-usuario
- *
- * Data Atual:
- * http://172.16.8.44:3000/data-atual
- *
- * Informações do PC e Monitores:
- * http://172.16.8.44:3000/informacoes-pc
- *
- * Executar o Arquivo Batch:
- * http://172.16.8.44:3000/executar-batch
+Página de Boas-Vindas
+URL: http://172.16.8.44:3000/
+
+Página de Normas GLPD
+URL: http://172.16.8.44:3000/normas-glpd
+
+Página de Dados do Colaborador
+URL: http://172.16.8.44:3000/dados-colaborador
+
+Página de Formulários
+URL: http://172.16.8.44:3000/formularios
+
+Informações do Usuário
+URL: http://172.16.8.44:3000/getUser
+
+Data Atual
+URL: http://172.16.8.44:3000/getDate
+
+Informações do PC e Monitores
+URL: http://172.16.8.44:3000/getPCInfo
+
+Executar Arquivo Batch
+URL: http://172.16.8.44:3000/execute-batch
+
  */
 
 const express = require('express');
