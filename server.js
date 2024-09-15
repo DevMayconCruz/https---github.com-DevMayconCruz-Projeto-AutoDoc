@@ -1,4 +1,3 @@
-
 /**
  * Autor Maycon Cruz
  * Este código pertence à Gramado Parks e não pode ser modificado ou distribuído.
@@ -6,18 +5,45 @@
  * Peço que continuem programando assim nas atualizações para manter a consistência do
  * código e não ferir o conceito de código limpo.
  * Resumo do Código:
-
-   Rota /getUserData: Lê um arquivo de texto e retorna informações do usuário e data.
-   Função parseUserData: Analisa os dados do usuário a partir das linhas do arquivo.
-   Serviço de Arquivos Estáticos: Configura diretórios públicos para servir arquivos estáticos.
-   Middleware bodyParser: Analisa o corpo das solicitações.
-   Rota Raiz /: Serve um arquivo HTML de boas-vindas.
-   Outras Rotas: Servem páginas HTML específicas.
-   Rota /getPCInfo: Lê um arquivo de texto e retorna informações do PC e monitores.
-   Função parseData: Analisa os dados do arquivo TXT.
-   Rota /execute-batch: Executa um arquivo batch e retorna o resultado.
-   Servidor: Inicia o servidor na porta 3000 e escuta em todas as interfaces de rede.
+ *
+ * Rota /informacoes-usuario: Lê um arquivo de texto e retorna informações do usuário.
+ * Função parseUserData: Analisa os dados do usuário a partir das linhas do arquivo.
+ * Serviço de Arquivos Estáticos: Configura diretórios públicos para servir arquivos estáticos.
+ * Middleware bodyParser: Analisa o corpo das solicitações.
+ * Rota Raiz /: Serve um arquivo HTML de boas-vindas.
+ * Outras Rotas: Servem páginas HTML específicas.
+ * Rota /informacoes-pc: Lê um arquivo de texto e retorna informações do PC e monitores.
+ * Função parseData: Analisa os dados do arquivo TXT.
+ * Rota /executar-batch: Executa um arquivo batch e retorna o resultado.
+ * Servidor: Inicia o servidor na porta 3000 e escuta em todas as interfaces de rede.
+ *
+ * URLs Principais
+ *
+ * Página de Boas-Vindas:
+ * http://172.16.8.44:3000/
+ *
+ * Página de Normas GLPD:
+ * http://172.16.8.44:3000/normas-glpd
+ *
+ * Página de Dados do Colaborador:
+ * http://172.16.8.44:3000/dados-colaborador
+ *
+ * Página de Formulários:
+ * http://172.16.8.44:3000/formularios
+ *
+ * Informações do Usuário:
+ * http://172.16.8.44:3000/informacoes-usuario
+ *
+ * Data Atual:
+ * http://172.16.8.44:3000/data-atual
+ *
+ * Informações do PC e Monitores:
+ * http://172.16.8.44:3000/informacoes-pc
+ *
+ * Executar o Arquivo Batch:
+ * http://172.16.8.44:3000/executar-batch
  */
+
 const express = require('express');
 const path = require('path');
 const { exec } = require('child_process');
@@ -27,11 +53,10 @@ const bodyParser = require('body-parser');
 const app = express();
 const port = 3000;
 
-// Rota para retornar informações do usuário e data
-app.get('/getUserData', (req, res) => {
+// Rota para retornar informações do usuário
+app.get('/getUser', (req, res) => {
     const filePath = path.join('\\\\Gpk-fs02\\Publico\\TI\\Projeto-AutoDocServidor\\CapturaDoSistema\\pcInfo.txt');
     
-    // Garantir que o arquivo seja lido como UTF-8
     fs.readFile(filePath, 'utf8', (err, data) => {
         if (err) {
             return res.status(500).send('Erro ao ler o arquivo');
@@ -43,11 +68,10 @@ app.get('/getUserData', (req, res) => {
     });
 });
 
-// Função para analisar os dados do usuário e data
+// Função para analisar os dados do usuário
 function parseUserData(lines) {
     let userData = {
-        usuario: 'Desconhecido',
-        data: new Date().toLocaleDateString('pt-BR') // Data no formato dd/mm/aaaa
+        usuario: 'Desconhecido'
     };
 
     lines.forEach(line => {
@@ -58,6 +82,12 @@ function parseUserData(lines) {
 
     return userData;
 }
+
+// Rota para retornar a data atual
+app.get('/getDate', (req, res) => {
+    const date = new Date().toLocaleDateString('pt-BR');
+    res.json({ data: date });
+});
 
 // Configurar o diretório público para servir arquivos estáticos
 app.use(express.static(path.join(__dirname, 'img')));
