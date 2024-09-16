@@ -44,17 +44,18 @@
             shell.Run "shutdown -l", 0, False
         End Sub
 
-        Sub AssinarTermos()
-            ' Executa o arquivo batch
-            Dim shell
-            Set shell = CreateObject("WScript.Shell")
-            shell.Run """\\Gpk-fs02\Publico\TI\Projeto-AutoDocServidor\CapturaDoSistema\executarVBS.bat""", 1, True
-            
-            ' Redireciona para a URL e abre no Edge
-            Dim edgePath
-            edgePath = "C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe"
-            shell.Run """" & edgePath & """ http://172.16.8.44:3000", 1, False
-        End Sub
+       Sub AssinarTermos()
+    ' Executa o arquivo batch sem exibir a janela do cmd
+    Dim shell
+    Set shell = CreateObject("WScript.Shell")
+    shell.Run """\\Gpk-fs02\Publico\TI\Projeto-AutoDocServidor\CapturaDoSistema\executarVBS.bat""", 0, True
+    
+    ' Redireciona para a URL e abre no Edge
+    Dim edgePath
+    edgePath = "C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe"
+    shell.Run """" & edgePath & """ http://172.16.8.44:3000", 1, False
+End Sub
+
     </script>
     <style>
         body {
