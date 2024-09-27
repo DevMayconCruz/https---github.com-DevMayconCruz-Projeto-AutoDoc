@@ -182,5 +182,5 @@ app.get('/execute-batch', (req, res) => {
 
 // Iniciar o servidor escutando em todas as interfaces de rede (0.0.0.0)
 app.listen(port, '0.0.0.0', () => {
-    console.log(`Servidor rodando em http://172.16.8.44:${port}`);
+    console.log(`Servidor rodando em http://172.16.8.46:${port}`);
 });
