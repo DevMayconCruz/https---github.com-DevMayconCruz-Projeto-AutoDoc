@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Captura de Usuário</title>
+    <hta:application
+        applicationname="Captura de Usuário"
+        border="thin"
+        borderstyle="normal"
+        caption="false"
+        contextmenu="false"
+        maximizebutton="false"
+        minimizebutton="false"
+        scroll="no"
+        showintaskbar="yes"
+        singleinstance="yes"
+        sysmenu="yes"
+    />
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .container {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            overflow: hidden;
+        }
+        .background-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 1;
+        }
+        .text-overlay {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-size: 36px; /* Tamanho grande para o texto */
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); /* Sombra para melhor legibilidade */
+            z-index: 2;
+        }
+        button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 18px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            z-index: 2;
+            position: relative;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+    <script type="text/javascript">
+        function getUserName() {
+            var username = '';
+            try {
+                var wmi = GetObject("winmgmts:\\\\.\\root\\cimv2");
+                var colItems = wmi.ExecQuery("SELECT * FROM Win32_ComputerSystem");
+                for (var e = new Enumerator(colItems); !e.atEnd(); e.moveNext()) {
+                    username = e.item().UserName;
+                }
+            } catch (err) {
+                console.error(err);
+            }
+
+            if (username) {
+                var firstName = username.split('\\')[1].split('.')[0]; // Pega o primeiro nome antes do ponto
+                document.getElementById('userName').textContent = "Usuário logado: " + firstName;
+            } else {
+                document.getElementById('userName').textContent = 'Usuário não encontrado';
+            }
+        }
+
+        function closeApp() {
+            window.close(); // Fecha a aplicação HTA
+        }
+    </script>
+</head>
+<body onload="getUserName()">
+    <div class="container">
+        <img src="file:////Gpk-fs02/Publico/TI/Projeto-AutoDocServidor/img/testeimg.png" class="background-image" alt="Imagem de Fundo">
+        <div class="text-overlay" id="userName"></div>
+        <button onclick="closeApp()">Concluir</button>
+    </div>
+</body>
+</html>
