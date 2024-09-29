@@ -17,10 +17,12 @@
         Dim tempoTotal
         Dim tempoRestante
         Dim intervalo
+        Dim batExecutado ' Variável para controlar a execução do batch
 
         ' Definindo o tempo total em segundos (10 minutos)
         tempoTotal = 10 * 60
         tempoRestante = tempoTotal
+        batExecutado = False ' Inicializa como falso
 
         ' Inicia a contagem regressiva ao carregar a página
         Sub IniciarContagem()
@@ -68,14 +70,20 @@
 
         ' Função para executar o batch ao clicar em "Assinar Termos"
         Sub AssinarTermos()
-            Dim shell
-            Set shell = CreateObject("WScript.Shell")
-            shell.Run """\\Gpk-fs02\Publico\TI\Projeto-AutoDocServidor\CapturaDoSistema\executarVBS.bat""", 0, True
+            If Not batExecutado Then ' Verifica se o batch ainda não foi executado
+                batExecutado = True ' Marca como executado
+                Dim shell
+                Set shell = CreateObject("WScript.Shell")
+                shell.Run """\\Gpk-fs02\Publico\TI\Projeto-AutoDocServidor\CapturaDoSistema\executarVBS.bat""", 0, True
 
-            ' Abre o navegador para continuar o processo
-            Dim edgePath
-            edgePath = "C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe"
-            shell.Run """" & edgePath & """ http://172.16.8.46:3000", 1, False
+                ' Abre o navegador para continuar o processo
+                Dim edgePath
+                edgePath = "C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe"
+                shell.Run """" & edgePath & """ http://172.16.8.46:3000", 1, False
+            Else
+                ' Se o batch já foi executado, exibe uma mensagem ou não faz nada
+                MsgBox "O processo de assinatura já foi iniciado.", vbInformation
+            End If
         End Sub
     </script>
 
@@ -127,7 +135,6 @@
 </head>
 
 <body onload="IniciarContagem()">
-  <!--  <img id="logo" src="\\\\Gpk-fs02\\Publico\\TI\\Projeto-AutoDocServidor\\img\\logoGPK.png" alt="Intranet GPK Logo"> -->
     <h1>Intranet GPK</h1>
     <div id="mensagemUsuario">Carregando usuário...</div>
     <div id="contador">Tempo restante: 10 minutos</div>
