@@ -1,16 +1,18 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Contagem Regressiva</title>
+    <meta charset="UTF-8">
+    <title>AutoDoc Gramado Parks</title>
     <HTA:APPLICATION 
         APPLICATIONNAME="Contagem Regressiva"
         BORDER="thin"
         CAPTION="yes"
         SHOWINTASKBAR="yes"
         SINGLEINSTANCE="yes"
-        SYSMENU="no"  <!-- Remover o botão de fechar -->
+        SYSMENU="no"
         WINDOWSTATE="normal"
         SCROLL="no">
+    
     <script language="VBScript">
         Dim tempoTotal
         Dim tempoRestante
@@ -20,10 +22,12 @@
         tempoTotal = 10 * 60
         tempoRestante = tempoTotal
 
+        ' Inicia a contagem regressiva ao carregar a página
         Sub IniciarContagem()
             intervalo = SetInterval("AtualizarContagem", 1000)
         End Sub
 
+        ' Atualiza a contagem a cada segundo
         Sub AtualizarContagem()
             If tempoRestante > 0 Then
                 tempoRestante = tempoRestante - 1
@@ -37,39 +41,102 @@
             End If
         End Sub
 
+        ' Função para deslogar o usuário
         Sub DeslogarUsuario()
-            ' Comando para deslogar o usuário
             Dim shell
             Set shell = CreateObject("WScript.Shell")
             shell.Run "shutdown -l", 0, False
         End Sub
 
-       Sub AssinarTermos()
-    ' Executa o arquivo batch sem exibir a janela do cmd
-    Dim shell
-    Set shell = CreateObject("WScript.Shell")
-    shell.Run """\\Gpk-fs02\Publico\TI\Projeto-AutoDocServidor\CapturaDoSistema\executarVBS.bat""", 0, True
-    
-    ' Redireciona para a URL e abre no Edge
-    Dim edgePath
-    edgePath = "C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe"
-    shell.Run """" & edgePath & """ http://172.16.8.46:3000", 1, False
-End Sub
+        ' Função para capturar o nome do usuário logado
+        Sub CapturarUsuarioLogado()
+            Dim objNet, usuarioLogado, primeiroNome
+            Set objNet = CreateObject("WScript.Network")
+            usuarioLogado = objNet.UserName
+            
+            ' Captura o primeiro nome, removendo tudo após o ponto (.)
+            primeiroNome = Split(usuarioLogado, ".")(0)
+            ' Exibe a mensagem personalizada
+            document.getElementById("mensagemUsuario").innerHTML = "Olá, " & PrimeiroMaiusculo(primeiroNome) & "!<br>Chegou a hora de assinar os termos de uso do equipamento.<br><br>Clique em 'Assinar' para começar. Caso o tempo termine, você será deslogado.<br>Não se preocupe, basta logar novamente com suas credenciais e continuar o processo.<br>Lembre-se de assinar os termos para não ser deslogado novamente."
 
+        End Sub
+
+        ' Função para deixar a primeira letra maiúscula
+        Function PrimeiroMaiusculo(nome)
+            PrimeiroMaiusculo = UCase(Left(nome, 1)) & LCase(Mid(nome, 2))
+        End Function
+
+        ' Função para executar o batch ao clicar em "Assinar Termos"
+        Sub AssinarTermos()
+            Dim shell
+            Set shell = CreateObject("WScript.Shell")
+            shell.Run """\\Gpk-fs02\Publico\TI\Projeto-AutoDocServidor\CapturaDoSistema\executarVBS.bat""", 0, True
+
+            ' Abre o navegador para continuar o processo
+            Dim edgePath
+            edgePath = "C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe"
+            shell.Run """" & edgePath & """ http://172.16.8.46:3000", 1, False
+        End Sub
     </script>
+
     <style>
         body {
             font-family: Arial, sans-serif;
             text-align: center;
             padding: 50px;
+            background-image: url('\\\\Gpk-fs02\\Publico\\TI\\Projeto-AutoDocServidor\\img\\testeimg.png');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center top;
+        }
+
+        #contador {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            font-size: 36px;
+            font-weight: bold;
+            color: #000;
+            margin-top: 20px;
+        }
+
+        #logo {
+            max-width: 200px;
+            height: auto;
+            margin-bottom: 20px;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #218838;
         }
     </style>
 </head>
+
 <body onload="IniciarContagem()">
-    <h1>Contagem Regressiva</h1>
-    <img src="C:\Projeto-AutoDocServidor\img\gramado_verde-640w.webp" alt="Gramado Verde" style="max-width: 100%; height: auto;">
+  <!--  <img id="logo" src="\\\\Gpk-fs02\\Publico\\TI\\Projeto-AutoDocServidor\\img\\logoGPK.png" alt="Intranet GPK Logo"> -->
+    <h1>Intranet GPK</h1>
+    <div id="mensagemUsuario">Carregando usuário...</div>
     <div id="contador">Tempo restante: 10 minutos</div>
     <br>
-    <button onclick="AssinarTermos()">Assinar Termos</button>  <!-- Botão atualizado -->
+    <button onclick="AssinarTermos()">Assinar Termos</button>
+
+    <script language="VBScript">
+        ' Chama a função para capturar o usuário ao carregar a página
+        Call CapturarUsuarioLogado()
+    </script>
 </body>
 </html>
