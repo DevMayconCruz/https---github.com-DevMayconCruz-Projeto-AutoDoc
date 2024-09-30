@@ -165,8 +165,47 @@ function parseData(lines) {
 }
 
 // Endpoint para executar o arquivo batch
+//app.get('/execute-batch', (req, res) => {
+  //  const batchPath = path.join('\\\\Gpk-fs02\\Publico\\TI\\Projeto-AutoDocServidor\\Conclusao\\final.bat');
+
+    //exec(`"${batchPath}"`, (error, stdout, stderr) => {
+      //  if (error) {
+        //    console.error(`Erro: ${error}`);
+          //  return res.status(500).send('Erro ao executar o script.');
+        //}
+
+        //console.log(`Saída: ${stdout}`);
+        //console.error(`Erro padrão: ${stderr}`);
+        //res.send('Script executado com sucesso.');
+    //});
+//});
+
+
+
+app.post('/execute-batch', (req, res) => {
+    const batchFilePath = '\\\\Gpk-fs02\\Publico\\TI\\Projeto-AutoDocServidor\\Conclusao\\final.bat';
+
+    exec(`"${batchFilePath}"`, (error, stdout, stderr) => {
+        if (error) {
+            console.error(`Erro ao executar o batch: ${error.message}`);
+            return res.status(500).send('Erro ao executar o script batch.');
+        }
+
+        if (stderr) {
+            console.error(`Stderr: ${stderr}`);
+            return res.status(500).send('Erro no script batch.');
+        }
+
+        console.log(`Stdout: ${stdout}`);
+        res.send('Batch file executed successfully.');
+    });
+});
+
+
+
+// Endpoint para executar o arquivo batch
 app.get('/execute-batch', (req, res) => {
-    const batchPath = path.join('\\\\Gpk-fs02\\Publico\\TI\\Projeto-AutoDocServidor\\CapturaDoSistema\\executarVBS.bat');
+    const batchPath = path.join('\\\\Gpk-fs02\\Publico\\TI\\Projeto-AutoDocServidor\\Conclusao\\final.bat');
 
     exec(`"${batchPath}"`, (error, stdout, stderr) => {
         if (error) {
@@ -179,6 +218,19 @@ app.get('/execute-batch', (req, res) => {
         res.send('Script executado com sucesso.');
     });
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // Iniciar o servidor escutando em todas as interfaces de rede (0.0.0.0)
 app.listen(port, '0.0.0.0', () => {
