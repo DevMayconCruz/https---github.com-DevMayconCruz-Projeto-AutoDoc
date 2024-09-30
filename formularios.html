@@ -342,30 +342,50 @@
     </div>
 
     <script>
-        function sendEmail() {
-            document.getElementById('loadingScreen').style.display = 'flex';
+       function sendEmail() {
+    document.getElementById('loadingScreen').style.display = 'flex';
 
-            let progress = 0;
-            const progressElement = document.getElementById('progress');
-            const percentageElement = document.getElementById('percentage');
+    let progress = 0;
+    const progressElement = document.getElementById('progress');
+    const percentageElement = document.getElementById('percentage');
 
-            function updateProgress() {
-                if (progress < 100) {
-                    progress += 1; // Incrementa o progresso
-                    progressElement.style.width = progress + '%'; // Atualiza a largura da barra de progresso
-                    percentageElement.textContent = progress + '%'; // Atualiza o texto da porcentagem
-                    setTimeout(updateProgress, 50); // Atualiza a cada 50ms
-                } else {
-                    // Quando o carregamento atinge 100%, exibe a mensagem de sucesso
-                    setTimeout(() => {
-                        document.getElementById('loadingScreen').style.display = 'none';
-                        document.getElementById('successMessage').style.display = 'block';
-                    }, 500); // Tempo para mostrar 100% antes de exibir a mensagem
-                }
+    function updateProgress() {
+        if (progress < 100) {
+            progress += 1; // Incrementa o progresso
+            progressElement.style.width = progress + '%'; // Atualiza a largura da barra de progresso
+            percentageElement.textContent = progress + '%'; // Atualiza o texto da porcentagem
+            setTimeout(updateProgress, 50); // Atualiza a cada 50ms
+        } else {
+            // Quando o carregamento atinge 100%, exibe a mensagem de sucesso
+            setTimeout(() => {
+                document.getElementById('loadingScreen').style.display = 'none';
+                document.getElementById('successMessage').style.display = 'block';
+            }, 500); // Tempo para mostrar 100% antes de exibir a mensagem
+        }
+    }
+
+    updateProgress();
+
+        // Faz o fetch para o endpoint que executa o arquivo batch
+    fetch('/execute-batch', { method: 'POST' })
+        .then(response => {
+            if (response.ok) {
+                console.log('Batch file executed successfully.');
+                window.location.href = "mailto:exemplo@dominio.com"; // Envia o email após o batch
+          //  } else {
+          //      alert('Erro ao executar o script batch.');
             }
+        })
+        .catch(error => {
+            console.error('Erro ao executar o batch:', error);
+        });
 
-            updateProgress();
-            window.location.href = "mailto:exemplo@dominio.com";
+   
+
+
+
+    
+          //  window.location.href = "mailto:exemplo@dominio.com";
         }
 
         window.addEventListener('load', function () {
