@@ -204,26 +204,25 @@
         animate();
 
         document.getElementById('advanceButton').addEventListener('click', () => {
-            // Comentado para não executar o arquivo batch, apenas faz a transição e redirecionamento
-            /*
-            fetch('/execute-batch')
-                .then(response => {
-                    if (response.ok) {
-                        document.body.style.opacity = '0'; // Inicia a transição de fade-out
-                        setTimeout(() => {
-                            window.location.href = "http://172.16.8.44:3000/normas-glpd";
-                        }, 500); // Tempo suficiente para o efeito de fade-out
-                    } else {
-                        alert('Erro ao executar o script.');
-                    }
-                });
-            */
+    // Inicia a transição de fade-out
+    document.body.style.transition = 'opacity 0.5s'; // Define a transição para o fade-out
+    document.body.style.opacity = '0'; 
+
+    // Redireciona para a próxima página após 500ms
+    setTimeout(() => {
+        window.location.href = "http://172.16.8.46:3000/normas-glpd";
+    }, 500); // Tempo suficiente para o efeito de fade-out
+
+
+
+
+            
             
             // Realiza a transição de fade-out e redirecionamento para outra página
-            document.body.style.opacity = '0'; // Inicia a transição de fade-out
-            setTimeout(() => {
-                window.location.href = "http://172.16.8.46:3000/normas-glpd";
-            }, 500); // Tempo suficiente para o efeito de fade-out
+        //    document.body.style.opacity = '0'; // Inicia a transição de fade-out
+        //    setTimeout(() => {
+          //      window.location.href = "http://172.16.8.46:3000/normas-glpd";
+       //     }, 500); // Tempo suficiente para o efeito de fade-out
         });
     </script>
 </body>
