@@ -308,5 +308,5 @@ function extractRecentData(data) {
 
 // Iniciar o servidor escutando em todas as interfaces de rede (0.0.0.0)
 app.listen(port, '0.0.0.0', () => {
-    console.log(`Servidor rodando em  http://172.16.8.46${port}`);
+    console.log(`Servidor rodando em  http://172.16.8.14${port}`);
 });
