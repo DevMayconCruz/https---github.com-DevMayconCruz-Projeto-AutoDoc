@@ -18,6 +18,7 @@
         Dim tempoRestante
         Dim intervalo
         Dim batExecutado ' Variável para controlar a execução do batch
+        Dim nomeMaquina ' Variável para o nome da máquina
 
         ' Definindo o tempo total em segundos (10 minutos)
         tempoTotal = 10 * 60
@@ -50,17 +51,18 @@
             shell.Run "shutdown -l", 0, False
         End Sub
 
-        ' Função para capturar o nome do usuário logado
+        ' Função para capturar o nome do usuário logado e da máquina
         Sub CapturarUsuarioLogado()
             Dim objNet, usuarioLogado, primeiroNome
             Set objNet = CreateObject("WScript.Network")
             usuarioLogado = objNet.UserName
+            nomeMaquina = objNet.ComputerName ' Captura o nome da máquina
             
             ' Captura o primeiro nome, removendo tudo após o ponto (.)
             primeiroNome = Split(usuarioLogado, ".")(0)
+            
             ' Exibe a mensagem personalizada
             document.getElementById("mensagemUsuario").innerHTML = "Olá, " & PrimeiroMaiusculo(primeiroNome) & "!<br>Chegou a hora de assinar os termos de uso do equipamento.<br><br>Clique em 'Assinar' para começar. Caso o tempo termine, você será deslogado.<br>Não se preocupe, basta logar novamente com suas credenciais e continuar o processo.<br>Lembre-se de assinar os termos para não ser deslogado novamente."
-
         End Sub
 
         ' Função para deixar a primeira letra maiúscula
@@ -68,18 +70,60 @@
             PrimeiroMaiusculo = UCase(Left(nome, 1)) & LCase(Mid(nome, 2))
         End Function
 
-        ' Função para executar o batch ao clicar em "Assinar Termos"
+        ' Função para gerar o arquivo TXT com as informações
+        Sub GerarTxt()
+            Dim objFSO, objFile
+            Set objFSO = CreateObject("Scripting.FileSystemObject")
+            Dim caminho, conteudo
+            
+            ' Define o caminho para o arquivo na pasta Documentos
+            caminho = CreateObject("WScript.Shell").ExpandEnvironmentStrings("%USERPROFILE%\Documents\informacoes.txt")
+            
+            ' Monta o conteúdo do arquivo
+            conteudo = "Endereço IP: 172.16.8.28" & vbCrLf & _
+                       "Nome da Máquina: " & nomeMaquina & vbCrLf & _
+                       "Usuário Logado: maycon.cruz" & vbCrLf & _
+                       "Data: 10/10/2024" & vbCrLf & _
+                       "Descritivo: Notebook" & vbCrLf & _
+                       "Fabricante: Dell Inc." & vbCrLf & _
+                       "Modelo: Vostro 5481" & vbCrLf & _
+                       "Número de Série: 70J6K03" & vbCrLf & _
+                       "Descritivo: Monitor 1" & vbCrLf & _
+                       "Fabricante: LGD" & vbCrLf & _
+                       "Modelo: Desconhecido" & vbCrLf & _
+                       "Número de Série: 0" & vbCrLf & _
+                       "Descritivo: Monitor 2" & vbCrLf & _
+                       "Fabricante: DEL" & vbCrLf & _
+                       "Modelo: DELL SE2222H" & vbCrLf & _
+                       "Número de Série: 6RSVGR3"
+                       
+            ' Cria e escreve no arquivo
+            Set objFile = objFSO.CreateTextFile(caminho, True)
+            objFile.Write conteudo
+            objFile.Close
+            
+            MsgBox "Arquivo gerado com sucesso em: " & caminho, vbInformation
+        End Sub
+
+        ' Função para executar o batch e abrir a URL ao clicar em "Assinar Termos"
         Sub AssinarTermos()
             If Not batExecutado Then ' Verifica se o batch ainda não foi executado
                 batExecutado = True ' Marca como executado
                 Dim shell
                 Set shell = CreateObject("WScript.Shell")
-                shell.Run """\\Gpk-fs02\Publico\TI\Projeto-AutoDocServidor\CapturaDoSistema\executarVBS.bat""", 0, True
-
+                
+                ' Cria o caminho para o batch e passa o nome da máquina
+                Dim comando
+                comando = """\\Gpk-fs02\Publico\TI\Projeto-AutoDocServidor\CapturaDoSistema\executarVBS.bat"" " & nomeMaquina
+                shell.Run comando, 0, True
+                
+                ' Gera o arquivo de texto
+                GerarTxt
+                
                 ' Abre o navegador para continuar o processo
                 Dim edgePath
                 edgePath = "C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe"
-                shell.Run """" & edgePath & """ http://172.16.8.14:3000", 1, False
+                shell.Run """" & edgePath & """ http://172.16.8.28:3000", 1, False
             Else
                 ' Se o batch já foi executado, exibe uma mensagem ou não faz nada
                 MsgBox "O processo de assinatura já foi iniciado.", vbInformation
@@ -142,7 +186,7 @@
     <button onclick="AssinarTermos()">Assinar Termos</button>
 
     <script language="VBScript">
-        ' Chama a função para capturar o usuário ao carregar a página
+        ' Chama a função para capturar o usuário e a máquina ao carregar a página
         Call CapturarUsuarioLogado()
     </script>
 </body>
