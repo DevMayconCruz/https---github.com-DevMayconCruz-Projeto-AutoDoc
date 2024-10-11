@@ -1,8 +1,38 @@
-
-______________________________
-Endereço IP: 172.16.8.46
+Endereço IP: 172.16.8.28
 UsuarioLogado: maycon.cruz
-Data: 27/09/2024
+Data: 11/10/2024
+Descritivo: Notebook
+Fabricante: Dell Inc.
+Modelo: Vostro 5481
+Número de Série: 70J6K03
+Descritivo: Monitor 1
+Fabricante: LGD
+Modelo: Desconhecido
+Número de Série: 0
+Descritivo: Monitor 2
+Fabricante: DEL
+Modelo: DELL SE2222H
+Número de Série: 6RSVGR3
+______________________________
+Endereço IP: 172.16.8.28
+UsuarioLogado: maycon.cruz
+Data: 11/10/2024
+Descritivo: Notebook
+Fabricante: Dell Inc.
+Modelo: Vostro 5481
+Número de Série: 70J6K03
+Descritivo: Monitor 1
+Fabricante: LGD
+Modelo: Desconhecido
+Número de Série: 0
+Descritivo: Monitor 2
+Fabricante: DEL
+Modelo: DELL SE2222H
+Número de Série: 6RSVGR3
+______________________________
+Endereço IP: 172.16.8.28
+UsuarioLogado: maycon.cruz
+Data: 11/10/2024
 Descritivo: Notebook
 Fabricante: Dell Inc.
 Modelo: Vostro 5481
