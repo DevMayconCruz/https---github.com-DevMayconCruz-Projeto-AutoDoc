@@ -43,20 +43,26 @@ Executar Arquivo Batch
 URL: http://172.16.8.44:3000/execute-batch
 
  */
-
 const express = require('express');
 const path = require('path');
 const { exec } = require('child_process');
 const fs = require('fs');
 const bodyParser = require('body-parser');
+const os = require('os');
 
 const app = express();
 const port = 3000;
 
+// Função para obter o caminho do arquivo informacoes.txt do diretório do usuário
+function getUserInfoFilePath() {
+    const userProfile = process.env.USERPROFILE; // Obtém o perfil do usuário atual
+    return path.join(userProfile, 'Documents', 'informacoes.txt'); // Constrói o caminho completo
+}
+
 // Rota para retornar informações do usuário
 app.get('/getUser', (req, res) => {
-    const filePath = path.join('\\\\Gpk-fs02\\Publico\\TI\\Projeto-AutoDocServidor\\CapturaDoSistema\\pcInfo.txt');
-    
+    const filePath = getUserInfoFilePath(); // Usa a função para obter o caminho do arquivo
+
     fs.readFile(filePath, 'utf8', (err, data) => {
         if (err) {
             return res.status(500).send('Erro ao ler o arquivo');
@@ -118,7 +124,7 @@ app.get('/formularios', (req, res) => {
 
 // Rota para retornar informações do PC e monitores
 app.get('/getPCInfo', (req, res) => {
-    const filePath = path.join('\\\\Gpk-fs02\\Publico\\TI\\Projeto-AutoDocServidor\\CapturaDoSistema\\pcInfo.txt');
+    const filePath = getUserInfoFilePath(); // Usa a função para obter o caminho do arquivo
 
     fs.readFile(filePath, 'utf8', (err, data) => {
         if (err) {
@@ -165,23 +171,6 @@ function parseData(lines) {
 }
 
 // Endpoint para executar o arquivo batch
-//app.get('/execute-batch', (req, res) => {
-  //  const batchPath = path.join('\\\\Gpk-fs02\\Publico\\TI\\Projeto-AutoDocServidor\\Conclusao\\final.bat');
-
-    //exec(`"${batchPath}"`, (error, stdout, stderr) => {
-      //  if (error) {
-        //    console.error(`Erro: ${error}`);
-          //  return res.status(500).send('Erro ao executar o script.');
-        //}
-
-        //console.log(`Saída: ${stdout}`);
-        //console.error(`Erro padrão: ${stderr}`);
-        //res.send('Script executado com sucesso.');
-    //});
-//});
-
-
-
 app.post('/execute-batch', (req, res) => {
     const batchFilePath = '\\\\Gpk-fs02\\Publico\\TI\\Projeto-AutoDocServidor\\Conclusao\\final.bat';
 
@@ -201,34 +190,13 @@ app.post('/execute-batch', (req, res) => {
     });
 });
 
-
-
-// Endpoint para executar o arquivo batch
-app.get('/execute-batch', (req, res) => {
-    const batchPath = path.join('\\\\Gpk-fs02\\Publico\\TI\\Projeto-AutoDocServidor\\Conclusao\\final.bat');
-
-    exec(`"${batchPath}"`, (error, stdout, stderr) => {
-        if (error) {
-            console.error(`Erro: ${error}`);
-            return res.status(500).send('Erro ao executar o script.');
-        }
-
-        console.log(`Saída: ${stdout}`);
-        console.error(`Erro padrão: ${stderr}`);
-        res.send('Script executado com sucesso.');
-    });
-});
-
-
-
-
 // Serve arquivos estáticos
 app.use(express.static('public'));
 
 // Rota para obter o nome do usuário logado do arquivo txt
 app.get('/getLoggedUser', (req, res) => {
-    const filePath = '\\\\Gpk-fs02\\Publico\\TI\\Projeto-AutoDocServidor\\CapturaDoSistema\\pcInfo.txt';
-    
+    const filePath = getUserInfoFilePath(); // Usa a função para obter o caminho do arquivo
+
     fs.readFile(filePath, 'utf8', (err, data) => {
         if (err) {
             console.error('Erro ao ler o arquivo:', err);
@@ -243,70 +211,7 @@ app.get('/getLoggedUser', (req, res) => {
     });
 });
 
-// Função para extrair as informações mais recentes do arquivo
-function extractRecentData(data) {
-    const entries = data.split('______________________________');
-    const latestEntry = entries[entries.length - 1].trim(); // Pega a última entrada
-
-    const lines = latestEntry.split('\n');
-    const result = [];
-    let pcInfo = null;
-    
-    // Variável de controle para ver se já pegamos informações do PC
-    let foundPC = false;
-
-    for (let i = 0; i < lines.length; i++) {
-        const line = lines[i].trim();
-        
-        if (line.startsWith('Descritivo:')) {
-            const description = line.split(':')[1].trim();
-
-            // Verifica se é um PC ou Monitor
-            if (description.toLowerCase().includes('notebook') || description.toLowerCase().includes('pc')) {
-                if (!foundPC) { // Se ainda não encontramos o PC
-                    pcInfo = {
-                        descriptive: description,
-                        brand: lines[++i].split(':')[1].trim(),
-                        model: lines[++i].split(':')[1].trim(),
-                        serial: lines[++i].split(':')[1].trim(),
-                    };
-                    foundPC = true; // Marcar que encontramos o PC
-                }
-            } else {
-                const monitorInfo = {
-                    descriptive: description,
-                    brand: lines[++i].split(':')[1].trim(),
-                    model: lines[++i].split(':')[1].trim(),
-                    serial: lines[++i].split(':')[1].trim(),
-                };
-                result.push(monitorInfo);
-            }
-        }
-    }
-
-    // Adiciona as informações do PC à frente dos monitores
-    if (pcInfo) {
-        result.unshift(pcInfo); // Adiciona o PC na primeira posição
-    }
-
-    return result; // Retorna a lista de dispositivos
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // Iniciar o servidor escutando em todas as interfaces de rede (0.0.0.0)
 app.listen(port, '0.0.0.0', () => {
-    console.log(`Servidor rodando em  http://172.16.8.14${port}`);
+    console.log(`Servidor rodando em  http://172.16.8.44:${port}`);
 });
