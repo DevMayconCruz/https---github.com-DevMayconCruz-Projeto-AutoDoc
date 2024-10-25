@@ -1,0 +1,11 @@
+Nome completo 
+tipo de ususario colaborador ou prestador de serviços
+numero de RG
+Telefone
+Unidade de negocio 
+Setor
+cargo
+email
+obs:
+Dependencias:
+npm install express ejs
