@@ -8,7 +8,7 @@
         BORDER="thin"
         CAPTION="yes"
         SHOWINTASKBAR="yes"
-        SINGLEINSTANCE="yes"
+        SINGLEINSTANCE="no"  <!-- Permite múltiplas instâncias -->
         SYSMENU="no"
         WINDOWSTATE="normal"
         SCROLL="no">
@@ -62,7 +62,7 @@
             primeiroNome = Split(usuarioLogado, ".")(0)
             
             ' Exibe a mensagem personalizada
-            document.getElementById("mensagemUsuario").innerHTML = "Olá, " & PrimeiroMaiusculo(primeiroNome) & "!<br>Chegou a hora de assinar os termos de uso do equipamento.<br><br>Clique em 'Assinar' para começar. Caso o tempo termine, você será deslogado.<br>Não se preocupe, basta logar novamente com suas credenciais e continuar o processo.<br>Lembre-se de assinar os termos para não ser deslogado novamente."
+            document.getElementById("mensagemUsuario").innerHTML = "Olá, " & PrimeiroMaiusculo(primeiroNome) & "!<br>Chegou a hora de assinar os termos de uso do equipamento.<br><br>Clique em 'Concluir' para terminar. Caso o tempo termine, você será deslogado.<br>Não se preocupe, basta logar novamente com suas credenciais e continuar o processo.<br>Lembre-se de assinar os termos para não ser deslogado novamente."
         End Sub
 
         ' Função para deixar a primeira letra maiúscula
@@ -70,65 +70,16 @@
             PrimeiroMaiusculo = UCase(Left(nome, 1)) & LCase(Mid(nome, 2))
         End Function
 
-        ' Função para gerar o arquivo TXT com as informações
-        Sub GerarTxt()
-            Dim objFSO, objFile
-            Set objFSO = CreateObject("Scripting.FileSystemObject")
-            Dim caminho, conteudo
-            
-            ' Define o caminho para o arquivo na pasta Documentos
-            caminho = CreateObject("WScript.Shell").ExpandEnvironmentStrings("%USERPROFILE%\Documents\informacoes.txt")
-            
-            ' Monta o conteúdo do arquivo
-            conteudo = "Endereço IP: 172.16.8.28" & vbCrLf & _
-                       "Nome da Máquina: " & nomeMaquina & vbCrLf & _
-                       "Usuário Logado: maycon.cruz" & vbCrLf & _
-                       "Data: 10/10/2024" & vbCrLf & _
-                       "Descritivo: Notebook" & vbCrLf & _
-                       "Fabricante: Dell Inc." & vbCrLf & _
-                       "Modelo: Vostro 5481" & vbCrLf & _
-                       "Número de Série: 70J6K03" & vbCrLf & _
-                       "Descritivo: Monitor 1" & vbCrLf & _
-                       "Fabricante: LGD" & vbCrLf & _
-                       "Modelo: Desconhecido" & vbCrLf & _
-                       "Número de Série: 0" & vbCrLf & _
-                       "Descritivo: Monitor 2" & vbCrLf & _
-                       "Fabricante: DEL" & vbCrLf & _
-                       "Modelo: DELL SE2222H" & vbCrLf & _
-                       "Número de Série: 6RSVGR3"
-                       
-            ' Cria e escreve no arquivo
-            Set objFile = objFSO.CreateTextFile(caminho, True)
-            objFile.Write conteudo
-            objFile.Close
-            
-           ' MsgBox "Arquivo gerado com sucesso em: " & caminho, vbInformation'
-        End Sub
+        ' Função para fechar o HTA "ContagemRegressiva.hta"
+       Sub Concluir()
+    Dim shell
+    Set shell = CreateObject("WScript.Shell")
+    ' Comando para fechar o HTA especificado pelo caminho completo
+    shell.Run "taskkill /F /IM mshta.exe", 0, False
+    ' Fecha a janela atual
+    Window.Close
+End Sub
 
-        ' Função para executar o batch e abrir a URL ao clicar em "Assinar Termos"
-        Sub AssinarTermos()
-            If Not batExecutado Then ' Verifica se o batch ainda não foi executado
-                batExecutado = True ' Marca como executado
-                Dim shell
-                Set shell = CreateObject("WScript.Shell")
-                
-                ' Cria o caminho para o batch e passa o nome da máquina
-                Dim comando
-                comando = """\\Gpk-fs02\Publico\TI\Projeto-AutoDocServidor\CapturaDoSistema\executarVBS.bat"" " & nomeMaquina
-                shell.Run comando, 0, True
-                
-                ' Gera o arquivo de texto
-                GerarTxt
-                
-                ' Abre o navegador para continuar o processo
-                Dim edgePath
-                edgePath = "C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe"
-                shell.Run """" & edgePath & """ http://172.16.8.34:3000", 1, False
-            Else
-                ' Se o batch já foi executado, exibe uma mensagem ou não faz nada
-                MsgBox "O processo de assinatura já foi iniciado.", vbInformation
-            End If
-        End Sub
     </script>
 
     <style>
@@ -162,10 +113,10 @@
         }
 
         button {
-            padding: 10px 20px;
-            font-size: 16px;
+            padding: 15px 30px; /* Aumenta o tamanho do botão */
+            font-size: 18px; /* Aumenta o tamanho da fonte do botão */
             cursor: pointer;
-            background-color: #28a745;
+            background-color: #007bff; /* Cor azul */
             color: white;
             border: none;
             border-radius: 5px;
@@ -173,7 +124,7 @@
         }
 
         button:hover {
-            background-color: #218838;
+            background-color: #0056b3; /* Cor azul mais escura ao passar o mouse */
         }
     </style>
 </head>
@@ -183,7 +134,7 @@
     <div id="mensagemUsuario">Carregando usuário...</div>
     <div id="contador">Tempo restante: 10 minutos</div>
     <br>
-    <button onclick="AssinarTermos()">Assinar Termos</button>
+    <button onclick="Concluir()">Concluir</button>
 
     <script language="VBScript">
         ' Chama a função para capturar o usuário e a máquina ao carregar a página
