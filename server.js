@@ -53,6 +53,32 @@ const os = require('os');
 const app = express();
 const port = 3000;
 
+
+
+
+// Configuração do body-parser 
+app.use(bodyParser.urlencoded({ extended: false }));
+
+// Rota para a página Dados-colaborador.html
+app.get('/dados-colaborador', (req, res) => {
+    res.sendFile(path.join(__dirname, 'Dados-colaborador.html')); // Serve o arquivo HTML
+});
+
+// Rota para processar o formulário
+app.post('/formularios', (req, res) => {
+    const { nome, cpf, rg, cnpj, tipoUsuario, unidade, telefone, setor, cargo } = req.body; // Obtém os dados do formulário
+    res.render('formularios.ejs', { nome, cpf, rg, cnpj, tipoUsuario, unidade, telefone, setor, cargo }); // Renderiza o template EJS com os dados
+});
+
+
+
+
+
+
+
+
+
+
 // Função para obter o caminho do arquivo informacoes.txt do diretório do usuário
 function getUserInfoFilePath() {
     const userProfile = process.env.USERPROFILE; // Obtém o perfil do usuário atual
@@ -117,11 +143,14 @@ app.get('/dados-colaborador', (req, res) => {
     res.sendFile(path.join(__dirname, 'Dados-colaborador.html'));
 });
 
-// Rota para a página de formulários
-app.get('/formularios', (req, res) => {
-    res.sendFile(path.join(__dirname, 'formularios.html'));
-});
+// Configurar o EJS como view engine
+app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'views')); // Certifique-se de que o diretório está correto
 
+// Rota para a página de formulários 
+app.get('/formularios', (req, res) => {
+    res.render('formularios'); // Renderiza o arquivo formularios.ejs
+});
 // Rota para retornar informações do PC e monitores
 app.get('/getPCInfo', (req, res) => {
     const filePath = getUserInfoFilePath(); // Usa a função para obter o caminho do arquivo
