@@ -268,7 +268,7 @@
         Usuário logado: <span id="loggedUser">Carregando...</span>
     </div>
     
-    <!-- Seu formulário continua aqui -->
+    <!--  formulário continua aqui -->
     
    
     <div class="container" id="content"                                               >
@@ -281,10 +281,17 @@
 
         <h2>Identificação do(s) Equipamento(s)</h2> -->
         <div class="signature-section">
-            Por este instrumento particular eu, Clique ou toque aqui para inserir o texto., portador do RG nº. Clique ou toque aqui para inserir o texto., inscrito no CPF/CNPJ nº. Clique ou toque aqui para inserir o texto., ☐ Colaborador ☐ Prestador de Serviços Administrativos da área Clique ou toque aqui para inserir o texto., recebo da Clique ou toque aqui para inserir o texto. nesta data, os equipamentos e periféricos listados abaixo, cuja posse passo a ter em caráter temporário.
-
-           </strong>.</p> 
+            Por este instrumento particular eu, <%= nome %>., portador do RG nº <%= rg %>., 
+            inscrito no 
+            <% if (tipoUsuario === "Colaborador") { %>
+                CPF nº <%= cpf %>.
+            <% } else if (tipoUsuario === "Prestador de Serviços") { %>
+                CNPJ nº <%= cnpj %>.
+            <% } %> 
+            <strong><%= tipoUsuario %></strong> Administrativos da área Clique ou toque aqui para inserir o texto., 
+            recebo da Clique ou toque aqui para inserir o texto. nesta data, os equipamentos e periféricos listados abaixo, cuja posse passo a ter em caráter temporário.
         </div>
+        
 
         <table>
             <thead>
