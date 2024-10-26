@@ -281,16 +281,17 @@
 
         <h2>Identificação do(s) Equipamento(s)</h2> -->
         <div class="signature-section">
-            Por este instrumento particular eu, <%= nome %>., portador do RG nº <%= rg %>., 
+            Por este instrumento particular eu, <strong><%= nome %></strong>, portador do RG nº <strong><%= rg %></strong>, 
             inscrito no 
             <% if (tipoUsuario === "Colaborador") { %>
-                CPF nº <%= cpf %>.
+                CPF nº <strong><%= cpf %></strong>.
             <% } else if (tipoUsuario === "Prestador de Serviços") { %>
-                CNPJ nº <%= cnpj %>.
+                CNPJ nº <strong><%= cnpj %></strong>.
             <% } %> 
-            <strong><%= tipoUsuario %></strong> Administrativos da área Clique ou toque aqui para inserir o texto., 
+            <strong><%= tipoUsuario %></strong> Administrativos da área Clique ou toque aqui para inserir o texto, 
             recebo da Clique ou toque aqui para inserir o texto. nesta data, os equipamentos e periféricos listados abaixo, cuja posse passo a ter em caráter temporário.
         </div>
+        
         
 
         <table>
