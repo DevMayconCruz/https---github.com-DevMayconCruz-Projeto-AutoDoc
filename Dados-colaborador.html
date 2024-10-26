@@ -290,24 +290,29 @@
             document.getElementById('cpfField').style.display = tipoUsuario === 'Colaborador' ? 'block' : 'none';
             document.getElementById('cnpjField').style.display = tipoUsuario === 'Prestador de Serviços' ? 'block' : 'none';
         }
-
         function formatarCpf() {
-            const cpfField = document.getElementById('cpf');
-            let cpf = cpfField.value.replace(/\D/g, '');
-            if (cpf.length > 11) {
-                cpf = cpf.slice(0, 11);
-            }
-            cpfField.value = cpf.replace(/(\d{3})(\d)/, '$1.$2').replace(/(\d{3})(\d)/, '$1.$2').replace(/(\d{2})$/, '$1-$2');
-        }
+    const cpfField = document.getElementById('cpf');
+    let cpf = cpfField.value.replace(/\D/g, '');
+    if (cpf.length > 11) {
+        cpf = cpf.slice(0, 11);
+    }
+    cpfField.value = cpf.replace(/(\d{3})(\d)/, '$1.$2')
+                        .replace(/(\d{3})(\d)/, '$1.$2')
+                        .replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+}
 
-        function formatarCnpj() {
-            const cnpjField = document.getElementById('cnpj');
-            let cnpj = cnpjField.value.replace(/\D/g, '');
-            if (cnpj.length > 14) {
-                cnpj = cnpj.slice(0, 14);
-            }
-            cnpjField.value = cnpj.replace(/^(\d{2})(\d)/, '$1.$2').replace(/(\d{3})(\d)/, '$1.$2').replace(/(\d{3})(\d{1,2})$/, '$1/$2').replace(/(\d{2})$/, '$1-$2');
-        }
+function formatarCnpj() {
+    const cnpjField = document.getElementById('cnpj');
+    let cnpj = cnpjField.value.replace(/\D/g, '');
+    if (cnpj.length > 14) {
+        cnpj = cnpj.slice(0, 14);
+    }
+    cnpjField.value = cnpj.replace(/^(\d{2})(\d)/, '$1.$2')
+                          .replace(/^(\d{2})\.(\d{3})(\d)/, '$1.$2.$3')
+                          .replace(/\.(\d{3})(\d)/, '.$1/$2')
+                          .replace(/(\d{4})(\d{1,2})$/, '$1-$2');
+}
+
 
         function formatarRg() {
             const rgField = document.getElementById('rg');
@@ -319,57 +324,62 @@
         }
 
         function validarFormulario() {
-            const cpf = document.getElementById('cpf').value.replace(/\D/g, '');
-            const cnpj = document.getElementById('cnpj').value.replace(/\D/g, '');
-            const tipoUsuario = document.getElementById('tipoUsuario').value;
+    const cpf = document.getElementById('cpf').value.replace(/\D/g, '');
+    const cnpj = document.getElementById('cnpj').value.replace(/\D/g, '');
+    const tipoUsuario = document.getElementById('tipoUsuario').value;
 
-            if (tipoUsuario === 'Colaborador' && !validarCpf(cpf)) {
-                alert('CPF inválido');
-                return false;
-            }
+    if (tipoUsuario === 'Colaborador' && !validarCpf(cpf)) {
+        alert('CPF inválido');
+        return false;
+    }
 
-            if (tipoUsuario === 'Prestador de Serviços' && !validarCnpj(cnpj)) {
-                alert('CNPJ inválido');
-                return false;
-            }
+    if (tipoUsuario === 'Prestador de Serviços' && !validarCnpj(cnpj)) {
+        alert('CNPJ inválido');
+        return false;
+    }
 
-            mostrarTelaDeCarregamento();
-            return true;
+    mostrarTelaDeCarregamento();
+    return true;
+}
+
+function validarCpf(cpf) {
+    // Implemente a lógica de validação do CPF
+    // Exemplo simples de validação (verifique o algoritmo adequado)
+    if (cpf.length !== 11) return false;
+    // Adicione mais regras de validação se necessário
+    return true; // Substitua pelo resultado da validação
+}
+
+function validarCnpj(cnpj) {
+    // Implemente a lógica de validação do CNPJ
+    // Exemplo simples de validação (verifique o algoritmo adequado)
+    if (cnpj.length !== 14) return false;
+    // Adicione mais regras de validação se necessário
+    return true; // Substitua pelo resultado da validação
+}
+
+function mostrarTelaDeCarregamento() {
+    const loadingScreen = document.getElementById('loadingScreen');
+    const progress = document.getElementById('progress');
+    const percentage = document.getElementById('percentage');
+    let width = 0;
+
+    loadingScreen.style.display = 'flex'; // Mostra a tela de carregamento
+
+    const interval = setInterval(() => {
+        if (width >= 100) {
+            clearInterval(interval);
+            setTimeout(() => {
+                window.location.href = '/formularios'; // Redireciona para a página de informações após o carregamento
+            }, 1000);
+        } else {
+            width++;
+            progress.style.width = width + '%';
+            percentage.textContent = width + '%';
         }
+    }, 60); // Aumenta a velocidade de carregamento conforme necessário
+}
 
-        function validarCpf(cpf) {
-            // Lógica de validação do CPF
-            // ... (implementar a lógica de validação)
-            return true; // Substitua pelo resultado da validação
-        }
-
-        function validarCnpj(cnpj) {
-            // Lógica de validação do CNPJ
-            // ... (implementar a lógica de validação)
-            return true; // Substitua pelo resultado da validação
-        }
-
-        function mostrarTelaDeCarregamento() {
-            const loadingScreen = document.getElementById('loadingScreen');
-            const progress = document.getElementById('progress');
-            const percentage = document.getElementById('percentage');
-            let width = 0;
-
-            loadingScreen.style.display = 'flex'; // Mostra a tela de carregamento
-
-            const interval = setInterval(() => {
-                if (width >= 100) {
-                    clearInterval(interval);
-                    setTimeout(() => {
-                        window.location.href = '/formularios'; // Redireciona para a página de informações após o carregamento
-                    }, 1000);
-                } else {
-                    width++;
-                    progress.style.width = width + '%';
-                    percentage.textContent = width + '%';
-                }
-            }, 60); // Aumenta a velocidade de carregamento conforme necessário
-        }
     </script>
 </body>
 </html>
