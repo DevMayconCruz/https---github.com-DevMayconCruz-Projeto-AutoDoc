@@ -143,12 +143,16 @@
 </head>
 <body>
     <div class="container">
-        <h1>Informações do colaborador</h1>
+        <h1>Informações do usuário</h1>
         <img src="/gramado_verde-640w.webp" alt="Logo" class="logo">
 
         <form action="/formularios" method="POST" onsubmit="return validarFormulario();">
             <label for="nome">Nome Completo:</label>
             <input type="text" id="nome" name="nome" required> 
+
+
+            <label for="usuario">Digite seu usuário (ex: maria.jose):</label>
+            <input type="text" id="usuario" name="usuario" required>
 
             <label for="tipoUsuario">Tipo de Usuário:</label>
             <select id="tipoUsuario" name="tipoUsuario" required onchange="mostrarCampoCpfCnpj()">
@@ -314,16 +318,36 @@ function formatarCnpj() {
 }
 
 
-        function formatarRg() {
-            const rgField = document.getElementById('rg');
-            let rg = rgField.value.replace(/\D/g, '');
-            if (rg.length > 9) {
-                rg = rg.slice(0, 9);
-            }
-            rgField.value = rg.replace(/(\d{1})(\d)/, '$1.$2').replace(/(\d{3})(\d)/, '$1.$2').replace(/(\d{3})(\d{1,1})$/, '$1-$2');
-        }
+function formatarRg() {
+    const rgField = document.getElementById('rg');
+    let rg = rgField.value.replace(/\D/g, ''); // Remove todos os caracteres não numéricos
 
-        function validarFormulario() {
+    if (rg.length > 9) {
+        rg = rg.slice(0, 9); // Limita a 9 dígitos
+    }
+
+    // Formatação geral (ex: 12.345.678-9)
+    rgField.value = rg.replace(/(\d{2})(\d)/, '$1.$2')
+                      .replace(/(\d{3})(\d)/, '$1.$2')
+                      .replace(/(\d{3})(\d{1})$/, '$1-$2');
+}
+
+function formatarRgVariante() {
+    const rgField = document.getElementById('rg');
+    let rg = rgField.value.replace(/\D/g, ''); // Remove todos os caracteres não numéricos
+
+    // Exemplo de formatação variante (ex: 12345678-9)
+    if (rg.length > 8 && rg.length <= 9) {
+        rgField.value = rg.replace(/(\d{8})(\d{1})$/, '$1-$2');
+    } else if (rg.length > 9) {
+        rg = rg.slice(0, 9); // Limita a 9 dígitos
+        rgField.value = rg.replace(/(\d{2})(\d)/, '$1.$2')
+                          .replace(/(\d{3})(\d)/, '$1.$2')
+                          .replace(/(\d{3})(\d{1})$/, '$1-$2');
+    }
+}
+
+function validarFormulario() {
     const cpf = document.getElementById('cpf').value.replace(/\D/g, '');
     const cnpj = document.getElementById('cnpj').value.replace(/\D/g, '');
     const tipoUsuario = document.getElementById('tipoUsuario').value;
@@ -344,7 +368,6 @@ function formatarCnpj() {
 
 function validarCpf(cpf) {
     // Implemente a lógica de validação do CPF
-    // Exemplo simples de validação (verifique o algoritmo adequado)
     if (cpf.length !== 11) return false;
     // Adicione mais regras de validação se necessário
     return true; // Substitua pelo resultado da validação
@@ -352,11 +375,11 @@ function validarCpf(cpf) {
 
 function validarCnpj(cnpj) {
     // Implemente a lógica de validação do CNPJ
-    // Exemplo simples de validação (verifique o algoritmo adequado)
     if (cnpj.length !== 14) return false;
     // Adicione mais regras de validação se necessário
     return true; // Substitua pelo resultado da validação
 }
+
 
 function mostrarTelaDeCarregamento() {
     const loadingScreen = document.getElementById('loadingScreen');
