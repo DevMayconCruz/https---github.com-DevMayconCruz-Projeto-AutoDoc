@@ -76,8 +76,9 @@
             Set objFSO = CreateObject("Scripting.FileSystemObject")
             Dim caminho, conteudo
             
-            ' Define o caminho para o arquivo na pasta Documentos
-            caminho = CreateObject("WScript.Shell").ExpandEnvironmentStrings("%USERPROFILE%\Documents\informacoes.txt")
+           ' Define o caminho para o arquivo na pasta de rede compartilhada
+caminho = "\\Gpk-fs02\Publico\TI\Projeto-AutoDocServidor\CapturaDoSistema\informacoes.txt"
+
             
             ' Monta o conteúdo do arquivo
             conteudo = "Endereço IP: 172.16.8.28" & vbCrLf & _
