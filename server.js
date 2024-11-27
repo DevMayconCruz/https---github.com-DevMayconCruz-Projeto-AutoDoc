@@ -55,7 +55,6 @@ const port = 3000;
 
 
 
-
 // Configuração do body-parser 
 app.use(bodyParser.urlencoded({ extended: false }));
 
@@ -67,7 +66,12 @@ app.get('/dados-colaborador', (req, res) => {
 // Rota para processar o formulário
 app.post('/formularios', (req, res) => {
     const { nome, cpf, rg, cnpj, tipoUsuario, unidade, telefone, setor, cargo } = req.body; // Obtém os dados do formulário
-    res.render('formularios.ejs', { nome, cpf, rg, cnpj, tipoUsuario, unidade, telefone, setor, cargo }); // Renderiza o template EJS com os dados
+    
+    // Obter a data atual no formato DD/MM/AAAA
+    const dataAtual = new Date().toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric' });
+
+    // Renderiza o template EJS com os dados e a data
+    res.render('formularios.ejs', { nome, cpf, rg, cnpj, tipoUsuario, unidade, telefone, setor, cargo, dataAtual });
 });
 
 
@@ -78,27 +82,25 @@ app.post('/formularios', (req, res) => {
 
 
 
-
-// Função para obter o caminho do arquivo informacoes.txt do diretório do usuário
+// Função para obter o caminho do arquivo informacoes.txt em um caminho de rede fixo
 function getUserInfoFilePath() {
-    const userProfile = process.env.USERPROFILE; // Obtém o perfil do usuário atual
-    return path.join(userProfile, 'Documents', 'informacoes.txt'); // Constrói o caminho completo
+    return '\\\\gpk-fs02\\Publico\\TI\\Projeto-AutoDocServidor\\CapturaDoSistema\\informacoes.txt'; // Caminho de rede fixo
 }
+
 
 // Rota para retornar informações do usuário
 app.get('/getUser', (req, res) => {
-    const filePath = getUserInfoFilePath(); // Usa a função para obter o caminho do arquivo
-
+    const filePath = getUserInfoFilePath(); // Usar a função para obter o caminho do arquivo
     fs.readFile(filePath, 'utf8', (err, data) => {
         if (err) {
             return res.status(500).send('Erro ao ler o arquivo');
         }
-
         const lines = data.split('\n');
         const userData = parseUserData(lines);
         res.json(userData);
     });
 });
+
 
 // Função para analisar os dados do usuário
 function parseUserData(lines) {
@@ -242,5 +244,5 @@ app.get('/getLoggedUser', (req, res) => {
 
 // Iniciar o servidor escutando em todas as interfaces de rede (0.0.0.0)
 app.listen(port, '0.0.0.0', () => {
-    console.log(`Servidor rodando em  http://172.16.8.34:${port}`);
+    console.log(`Servidor rodando em  http://172.16.8.56:${port}`);
 });
