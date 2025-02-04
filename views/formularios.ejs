@@ -281,8 +281,10 @@
 
         <h2>Identificação do(s) Equipamento(s)</h2> -->
         <div class="signature-section">
-            Por este instrumento particular eu, <strong><%= nome %></strong>, portador do RG nº <strong><%= rg %></strong>, 
+            Usuário:  <strong><%= usuario %></strong> <br>
+            Por este instrumento particular eu, <strong><%= nome %></strong>, portador do RG nº <strong><%= rg %></strong>,
             <% if (tipoUsuario === "Colaborador") { %>
+            
                 inscrito no CPF nº <strong><%= cpf %></strong>, <strong><%= tipoUsuario %></strong> do setor de <strong><%= setor %></strong> da unidade de negócio <strong><%= unidade %></strong>,
             <% } else if (tipoUsuario === "Prestador de Serviços") { %>
                 inscrito no CNPJ nº <strong><%= cnpj %></strong>, <strong>Prestador de Serviços Administrativos da área de <%= setor %></strong>,
