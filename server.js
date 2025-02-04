@@ -43,6 +43,8 @@ Executar Arquivo Batch
 URL: http://172.16.8.44:3000/execute-batch
 
  */
+
+
 const express = require('express');
 const path = require('path');
 const { exec } = require('child_process');
@@ -53,10 +55,9 @@ const os = require('os');
 const app = express();
 const port = 3000;
 
-
-
 // Configuração do body-parser 
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 
 // Rota para a página Dados-colaborador.html
 app.get('/dados-colaborador', (req, res) => {
@@ -65,57 +66,80 @@ app.get('/dados-colaborador', (req, res) => {
 
 // Rota para processar o formulário
 app.post('/formularios', (req, res) => {
-    const { nome, cpf, rg, cnpj, tipoUsuario, unidade, telefone, setor, cargo } = req.body; // Obtém os dados do formulário
+    const { usuario, nome, cpf, rg, cnpj, tipoUsuario, unidade, telefone, setor, cargo } = req.body; // Obtém os dados do formulário
     
     // Obter a data atual no formato DD/MM/AAAA
     const dataAtual = new Date().toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric' });
 
     // Renderiza o template EJS com os dados e a data
-    res.render('formularios.ejs', { nome, cpf, rg, cnpj, tipoUsuario, unidade, telefone, setor, cargo, dataAtual });
+    res.render('formularios.ejs', { usuario, nome, cpf, rg, cnpj, tipoUsuario, unidade, telefone, setor, cargo, dataAtual });
 });
-
-
-
-
-
-
-
-
 
 // Função para obter o caminho do arquivo informacoes.txt em um caminho de rede fixo
 function getUserInfoFilePath() {
     return '\\\\gpk-fs02\\Publico\\TI\\Projeto-AutoDocServidor\\CapturaDoSistema\\informacoes.txt'; // Caminho de rede fixo
 }
 
-
-// Rota para retornar informações do usuário
-app.get('/getUser', (req, res) => {
+// Rota para retornar informações do usuário especificado no formulário
+app.post('/getUserData', (req, res) => {
+    const { usuario } = req.body; // Obtém o nome do usuário do formulário
     const filePath = getUserInfoFilePath(); // Usar a função para obter o caminho do arquivo
+
     fs.readFile(filePath, 'utf8', (err, data) => {
         if (err) {
             return res.status(500).send('Erro ao ler o arquivo');
         }
+
         const lines = data.split('\n');
-        const userData = parseUserData(lines);
+        const userData = collectUserData(usuario, lines);
+
         res.json(userData);
     });
 });
 
+function collectUserData(usuario, lines) {
+    const data = [];
+    let collecting = false;
 
-// Função para analisar os dados do usuário
-function parseUserData(lines) {
-    let userData = {
-        usuario: 'Desconhecido'
-    };
-
+    // Itera sobre cada linha do arquivo para capturar as informações do usuário
     lines.forEach(line => {
-        if (line.startsWith('UsuarioLogado:')) {
-            userData.usuario = line.split(':')[1]?.trim() || 'Desconhecido';
+        line = line.trim();  // Remove espaços extras nas extremidades da linha
+
+        // Inicia a coleta quando encontrar a linha com o nome do usuário
+        if (line.startsWith(`UsuarioLogado: ${usuario}`)) {
+            collecting = true;
+        }
+
+        // Começa a coletar os dados após encontrar a linha com o nome do usuário
+        if (collecting) {
+            // Se encontrar o marcador de "FimDeColetaDeDadosDe", encerra a coleta
+            if (line.startsWith(`FimDeColetaDeDadosDe: ${usuario}`)) {
+                collecting = false;
+            } else if (line.startsWith('Descritivo:')) {
+                // Se a linha começar com "Descritivo:", coleta os dados de equipamentos
+                data.push(parseEquipmentData(line, lines));
+            }
         }
     });
 
-    return userData;
+    console.log('Dados coletados:', JSON.stringify(data, null, 2));
+    return data;
 }
+
+// Função para processar dados de equipamento
+function parseEquipmentData(line, lines) {
+    const equipment = {};
+    equipment.descritivo = line.split(':')[1].trim();  // Extraí a descrição do equipamento
+
+    // Encontrando as próximas linhas para pegar informações de "Fabricante", "Modelo", etc.
+    const equipmentIndex = lines.indexOf(line);
+    equipment.fabricante = lines[equipmentIndex + 1].split(':')[1].trim();
+    equipment.modelo = lines[equipmentIndex + 2].split(':')[1].trim();
+    equipment.numeroSerie = lines[equipmentIndex + 3].split(':')[1].trim();
+
+    return equipment;
+}
+
 
 // Rota para retornar a data atual
 app.get('/getDate', (req, res) => {
@@ -126,9 +150,6 @@ app.get('/getDate', (req, res) => {
 // Configurar o diretório público para servir arquivos estáticos
 app.use(express.static(path.join(__dirname, 'img')));
 app.use('/img', express.static('\\\\Gpk-fs02\\Publico\\TI\\Projeto-AutoDocServidor\\img'));
-
-// Use o middleware bodyParser para analisar o corpo da solicitação
-app.use(bodyParser.json());
 
 // Serve o arquivo HTML de Boas-Vindas na rota raiz
 app.get('/', (req, res) => {
@@ -153,6 +174,7 @@ app.set('views', path.join(__dirname, 'views')); // Certifique-se de que o diret
 app.get('/formularios', (req, res) => {
     res.render('formularios'); // Renderiza o arquivo formularios.ejs
 });
+
 // Rota para retornar informações do PC e monitores
 app.get('/getPCInfo', (req, res) => {
     const filePath = getUserInfoFilePath(); // Usa a função para obter o caminho do arquivo
@@ -197,13 +219,13 @@ function parseData(lines) {
         data.push(currentItem);
     }
 
-    console.log('Dados analisados:', data);
+    console.log('Dados analisados:', JSON.stringify(data, null, 2));
     return data;
 }
 
 // Endpoint para executar o arquivo batch
 app.post('/execute-batch', (req, res) => {
-    const batchFilePath = '\\\\Gpk-fs02\\Publico\\TI\\Projeto-AutoDocServidor\\Conclusao\\final.bat';
+    const batchFilePath = '\\\\gpk-fs02\\Publico\\TI\\Projeto-AutoDocServidor\\Conclusao\\final.bat';
 
     exec(`"${batchFilePath}"`, (error, stdout, stderr) => {
         if (error) {
@@ -244,5 +266,5 @@ app.get('/getLoggedUser', (req, res) => {
 
 // Iniciar o servidor escutando em todas as interfaces de rede (0.0.0.0)
 app.listen(port, '0.0.0.0', () => {
-    console.log(`Servidor rodando em  http://172.16.8.56:${port}`);
+    console.log(`Servidor rodando em http://172.16.8.32:${port}`);
 });
