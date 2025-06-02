@@ -86,7 +86,7 @@
                 ' Abre o navegador para continuar o processo
                 Dim edgePath
                 edgePath = "C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe"
-                shell.Run """" & edgePath & """ http://192.168.56.1:3000", 1, False
+                shell.Run """" & edgePath & """ http://172.16.8.23:3000", 1, False
             Else
                 ' Se o batch já foi executado, exibe uma mensagem ou não faz nada
                 MsgBox "O processo de assinatura já foi iniciado.", vbInformation
