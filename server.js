@@ -331,6 +331,6 @@ app.get('/getLoggedUser', (req, res) => {
 
 // Iniciar o servidor escutando em todas as interfaces de rede (0.0.0.0)
 app.listen(port, '0.0.0.0', () => {
-    console.log(`Servidor rodando em http://localhost:${port} e acessível na rede local (ex: http://172.16.8.36:${port})`);
+    console.log(`Servidor rodando em http://localhost:${port} e acessível na rede local (ex: http://172.16.8.28:${port})`);
 });
 
