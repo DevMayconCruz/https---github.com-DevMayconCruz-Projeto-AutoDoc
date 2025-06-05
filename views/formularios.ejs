@@ -3,16 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Termo de Cessão de Equipamentos</title>
+    <title>Termo de Cessão, Guarda, Uso e Devolução de Equipamento</title>
     <style>
-        /* Estilos existentes */
         @media print {
             @page {
-                size: A4 portrait;
-                margin: 20mm;
+                size: A4 landscape;
+                margin: 10mm;
             }
-            .email-button {
+            body {
+                background-color: #ffffff;
+                transform: rotate(0deg); /* Garante que não haja rotação indesejada */
+            }
+            .email-button, #loadingScreen, #successMessage, .user-info-header {
                 display: none;
+            }
+            .container {
+                box-shadow: none;
+                border: none;
+                padding: 0;
+                margin: 0;
+                width: 100%;
+            }
+            table {
+                page-break-inside: auto;
+            }
+            tr {
+                page-break-inside: avoid;
+                page-break-after: auto;
             }
         }
 
@@ -21,433 +38,347 @@
             margin: 0;
             padding: 0;
             background-color: #f4f4f4;
+            color: #333;
+            font-size: 10pt;
+        }
+
+        .container {
+            width: 297mm; /* Altura A4 em paisagem */
+            height: 210mm; /* Largura A4 em paisagem */
+            margin: 10px auto;
+            background: white;
+            padding: 10mm;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             box-sizing: border-box;
             position: relative;
         }
 
-        .container {
+        .header-image {
             width: 100%;
-            max-width: 210mm;
-            margin: auto;
-            background: white;
-            padding: 10mm;
-            padding-bottom: 120px;
-            border-radius: 4px;
-            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-            box-sizing: border-box;
-        }
-
-        h1 {
             text-align: center;
-            font-size: 16px;
             margin-bottom: 10px;
-            text-transform: uppercase;
         }
 
-        .logo {
-            width: 100%; /* Garante que a logo ocupe toda a largura disponível do cabeçalho */
-            text-align: center; /* Centraliza a imagem */
-            margin-bottom: 10px; /* Mantém o espaçamento inferior */
+        .header-image img {
+            max-width: 100%;
+            height: auto;
+            max-height: 40px;
         }
 
-        .logo img {
-            max-width: 100%; /* Garante que a imagem não exceda a largura do cabeçalho */
-            height: auto; /* Mantém a proporção da imagem ao dimensioná-la */
-            display: block; /* Remove qualquer espaço extra ao redor da imagem */
-            margin: 0 auto; /* Centraliza a imagem */
-        }
-
-        h2 {
-            font-size: 14px;
-            margin-bottom: 8px;
+        .section-title {
+            background-color: #E6E7E8;
+            font-weight: bold;
             text-align: center;
-            text-transform: uppercase;
+            padding: 3px;
+            font-size: 9pt;
+            border: 1px solid #B3B3B3;
+            margin-top: 10px;
+            margin-bottom: 0;
         }
 
-        hr {
-            border: 1px solid #ccc;
-            margin: 10px 0;
-        }
-
-        /* Estilos da tabela */
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-bottom: 10px;
-        }
-
-        table, th, td {
-            border: 1px solid #ccc;
+            margin-bottom: 8px;
+            font-size: 8pt;
+            border: 1px solid #B3B3B3;
         }
 
         th, td {
-            padding: 4px;
+            border: 1px solid #B3B3B3;
+            padding: 3px 5px;
             text-align: left;
-            font-size: 12px;
-        }
-
-        /* Cor de fundo verde escuro e texto branco nos cabeçalhos da tabela */
-        th {
-            background-color: #004d00; /* Verde escuro */
-            color: white; /* Cor da fonte branca */
-            font-weight: bold;
-        }
-
-        .text-center {
-            text-align: center;
-        }
-
-        .text-right {
-            text-align: right;
-        }
-
-        .footer-table {
-            width: 100%;
-            margin-top: 10px;
-            border-collapse: collapse;
-        }
-
-        .footer-table th, .footer-table td {
-            border: 1px solid #ccc;
-            padding: 4px;
-            font-size: 12px;
-            text-align: left;
-        }
-
-        .footer-table th {
-            background-color: #f0f0f0;
-            font-weight: bold;
-        }
-
-        .footer-table td {
             vertical-align: top;
+            height: 18px;
         }
 
-        .email-button {
-            background-color: #007bff;
-            color: white;
+        th {
+            background-color: #E6E7E8;
+            font-weight: bold;
             text-align: center;
-            padding: 15px 30px;
-            font-size: 18px;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            position: fixed;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-            transition: background-color 0.3s, box-shadow 0.3s;
         }
 
-        .email-button a {
-            color: white;
-            text-decoration: none;
+        .identification-table td {
+            height: 20px;
         }
 
-        .email-button:hover {
-            background-color: #0056b3;
-            box-shadow: 0 6px 12px rgba(0,0,0,0.3);
+        .label {
+            font-weight: bold;
+            padding-right: 5px;
         }
 
-        .signature-section {
-            margin-top: 20px;
-            font-size: 12px;
+        .rules-section {
+            font-size: 8pt;
+            margin-top: 5px;
+            padding-left: 15px;
+            text-align: justify;
         }
 
-        .signature-section p {
-            margin: 10px 0;
+        .rules-section ul {
+            list-style-type: none;
+            padding-left: 0;
+            margin-top: 5px;
+        }
+
+        .rules-section li {
+            margin-bottom: 4px;
+            position: relative;
+            padding-left: 15px;
+        }
+
+        .rules-section li::before {
+            content: "–";
+            position: absolute;
+            left: 0;
+            top: 0;
+        }
+
+        .signature-line {
+            border-bottom: 1px solid #333;
+            height: 20px;
+            margin-top: 10px;
+            margin-bottom: 5px;
+            position: relative;
+        }
+
+        .signature-label {
+            font-size: 7pt;
+            text-align: center;
+        }
+
+        .checkbox-label {
+            margin-left: 3px;
+            margin-right: 10px;
+            font-size: 8pt;
+        }
+
+        .checkbox {
+            width: 8px;
+            height: 8px;
+            border: 1px solid #333;
+            display: inline-block;
+            margin-right: 2px;
+            vertical-align: middle;
         }
 
         .internal-info {
             text-align: center;
             font-weight: bold;
-            margin-top: 40px;
-            font-size: 14px;
+            padding-top: 10px;
+            font-size: 8pt;
+            border-top: 1px solid #B3B3B3;
+            margin-top: 10px;
         }
 
         .internal-info span {
             display: block;
-            margin-top: 5px;
+            margin-top: 2px;
             font-weight: normal;
         }
 
-        /* Estilo da tela de carregamento */
-        #loadingScreen {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.7);
+        .footer-info {
             display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            z-index: 9999;
-            display: none; /* Inicialmente escondido */
-            text-align: center;
+            justify-content: space-between;
+            font-size: 7pt;
+            margin-top: 5px;
+            color: #555;
         }
 
-        #loadingLogo {
-            width: 150px; /* Ajuste conforme necessário */
-            animation: spin 6s linear infinite;
-        }
-
-        @keyframes spin {
-            0% {
-                transform: rotate(0deg);
-            }
-            100% {
-                transform: rotate(360deg);
-            }
-        }
-
-        #loadingText {
-            margin-top: 20px;
-            color: #ffffff;
-            font-size: 18px;
-        }
-
-        #progressBar {
-            width: 80%;
-            height: 10px;
-            background-color: #ddd;
-            border-radius: 5px;
-            margin-top: 20px;
-            overflow: hidden;
-        }
-
-        #progress {
-            height: 100%;
-            width: 0;
-            background-color: #28a745;
-            transition: width 0.3s;
-        }
-
-        #percentage {
-            font-size: 20px;
-            color: #ffffff;
+        /* Ajustes para paisagem */
+        .two-columns {
+            display: flex;
+            justify-content: space-between;
             margin-top: 10px;
         }
+        
+        .column {
+            width: 48%;
+        }
 
-        /* Estilo da mensagem de sucesso */
-        #successMessage {
+        /* Elementos não visuais / funcionais */
+        .user-info-header {
             display: none;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            color: #007bff; /* Cor que combina com a identidade visual */
-            font-size: 20px;
-            text-align: center;
-            z-index: 10000; /* Acima de tudo */
-            background-color: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
         }
 
-        #successLogo {
-            max-width: 100px; /* Ajuste conforme necessário */
-            margin-bottom: 10px;
-        }
-        
-        .user-info {
-            text-align: right;
-            font-size: 14px;
-            margin-bottom: 10px;
-            font-weight: bold;
-        }
-        
-        /* Estilo para mensagens de erro */
-        .error-message {
-            background-color: #f8d7da;
-            color: #721c24;
-            padding: 10px;
+        .email-button {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 15px;
             border-radius: 4px;
-            margin-bottom: 15px;
-            border: 1px solid #f5c6cb;
-        }
-        
-        /* Estilo para o bloco de dados brutos (opcional, caso queira exibir) */
-        .raw-data-block {
-            background-color: #f8f9fa;
-            border: 1px solid #dee2e6;
-            border-radius: 4px;
-            padding: 10px;
-            margin-bottom: 15px;
-            font-family: monospace;
-            font-size: 12px;
-            white-space: pre-wrap;
-            max-height: 200px;
-            overflow-y: auto;
-            display: none; /* Oculto por padrão, pode ser mostrado para debug */
+            cursor: pointer;
         }
     </style>
 </head>
 <body>
-    <div class="user-info">
-        Usuário logado: <span id="loggedUser"><%= usuario %></span>
-    </div>
-    
-    <% if (typeof fileReadError !== 'undefined' && fileReadError) { %>
-    <div class="error-message">
-        <%= fileReadError %>
-    </div>
-    <% } %>
-    
+
     <div class="container" id="content">
-        <div class="logo">
-            <img src="/img/Cabeçalho.png" alt="Cabeçalho">
+        <div class="header-image">
+            <img src="/img/gpk.png" alt="GPK Logo">
         </div>
 
-        <div class="signature-section">
-            Usuário:  <strong><%= usuario %></strong> <br>
-            Por este instrumento particular eu, <strong><%= nome %></strong>, portador do RG nº <strong><%= rg %></strong>,
-            <% if (tipoUsuario === "Colaborador") { %>
-                inscrito no CPF nº <strong><%= cpf %></strong>, <strong><%= tipoUsuario %></strong> do setor de <strong><%= setor %></strong> da unidade de negócio <strong><%= unidade %></strong>,
-            <% } else if (tipoUsuario === "Prestador de Serviços") { %>
-                inscrito no CNPJ nº <strong><%= cnpj %></strong>, <strong>Prestador de Serviços Administrativos da área de <%= setor %></strong>,
-            <% } %> 
-            recebo da ?. nesta data <strong><%= dataAtual %></strong>, os equipamentos e periféricos listados abaixo, cuja posse passo a ter em caráter temporário.
-        </div>
-        
-        <!-- Exibição opcional do bloco de dados brutos para debug -->
-        <% if (typeof userDataBlock !== 'undefined' && userDataBlock) { %>
-        <div class="raw-data-block" id="rawDataBlock">
-            <%= userDataBlock %>
-        </div>
-        <% } %>
-        
-        <table>
+        <!-- Dados de Identificação -->
+        <div class="section-title">DADOS DE IDENTIFICAÇÃO</div>
+        <table class="identification-table">
+            <tr>
+                <td style="width: 40%;"><span class="label">Nome:</span> <%= nome %></td>
+                <td style="width: 30%;"><span class="label">Unidade de Negócio:</span> <%= unidade %></td>
+                <td style="width: 30%;"><span class="label">Razão Social (se PJ):</span> <% if (tipoUsuario === 'Prestador de Serviços') { %><%= cnpj %><% } else { %> N/A <% } %></td>
+            </tr>
+            <tr>
+                <td><span class="label">CPF:</span> <% if (tipoUsuario === 'Colaborador') { %><%= cpf %><% } else { %> N/A <% } %></td>
+                <td><span class="label">Área/Diretoria:</span> <%= setor %></td>
+                <td><span class="label">Telefone:</span></td>
+            </tr>
+            <tr>
+                <td colspan="3"><span class="label">E-mail:</span></td>
+            </tr>
+        </table>
+
+        <!-- Identificação do(s) Equipamento(s) -->
+        <div class="section-title">IDENTIFICAÇÃO DO(S) EQUIPAMENTO(S)</div>
+        <table class="equipment-table">
             <thead>
                 <tr>
-                    <th>Item</th>
-                    <th>Descrição</th>
-                    <th>Marca</th>
-                    <th>Modelo</th>
-                    <th>Série</th>
-                    <th>NF de referência</th>
-                    <th>Valor</th>
+                    <th style="width: 5%;">Item</th>
+                    <th style="width: 25%;">Descritivo</th>
+                    <th style="width: 15%;">Marca</th>
+                    <th style="width: 15%;">Modelo</th>
+                    <th style="width: 15%;">Serial</th>
+                    <th style="width: 10%;">Uso<br><span style="font-size: 6pt; font-weight: normal;">(P = Permanente / T = Temporário)</span></th>
+                    <th style="width: 10%;">Visto usuário</th>
                 </tr>
             </thead>
-            <tbody id="equipmentTableBody">
+            <tbody>
                 <% if (typeof parsedUserData !== 'undefined' && parsedUserData.equipamentos && parsedUserData.equipamentos.length > 0) { %>
                     <% parsedUserData.equipamentos.forEach((equip, index) => { %>
                         <tr>
-                            <td><%= index + 1 %></td>
+                            <td style="text-align: center;"><%= index + 1 %></td>
                             <td><%= equip.descritivo || 'N/A' %></td>
                             <td><%= equip.fabricante || 'N/A' %></td>
                             <td><%= equip.modelo || 'N/A' %></td>
                             <td><%= equip.numeroSerie || 'N/A' %></td>
-                            <td>-</td>
-                            <td>-</td>
+                            <td></td>
+                            <td></td>
                         </tr>
                     <% }); %>
+                    <% for(let i = parsedUserData.equipamentos.length; i < 5; i++) { %>
+                        <tr>
+                            <td style="text-align: center;"><%= i + 1 %></td>
+                            <td><% if (i===0) { %> Nenhum equipamento encontrado. <% } %></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    <% } %>
                 <% } else { %>
-                    <tr>
-                        <td colspan="7" style="text-align: center;">Nenhum equipamento encontrado para este usuário.</td>
-                    </tr>
+                    <% for(let i = 0; i < 5; i++) { %>
+                        <tr>
+                            <td style="text-align: center;"><%= i + 1 %></td>
+                            <td><% if (i===0) { %> Nenhum equipamento encontrado. <% } %></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    <% } %>
                 <% } %>
             </tbody>
         </table>
-        
-        <div id="returnDeclarationContainer">
-            <!-- Tabela de devolução será inserida dinamicamente aqui se necessário -->
-        </div>
-        
-        <div class="signature-section">
-            Declaro ter ciência e estar de acordo com os procedimentos descritos na Política PL.GC.035 Entrega, Uso e Devolução de Equipamentos de TI e Periféricos, emitida e divulgada pela Gramado Parks, comprometendo-me a respeitá-las, cumprindo e aceitando-as plenamente, bem como o disposto abaixo:
-            Estou ciente de que o equipamento fornecido é de propriedade da empresa que o forneceu; portanto, será utilizado por mim única e exclusivamente a título de empréstimo para o melhor desempenho e execução das atividades para as quais fui contratado, não tendo em hipótese alguma conotação de uso pessoal. 
-            Devo utilizá-lo com cuidado, guardá-lo em local seguro, além de garantir a utilização adequada das ferramentas de criptografia, antivírus e proteção, visando assegurar que as informações nele contidas não sejam divulgadas, nem tenham destinação diversa dos objetivos da Companhia, responsabilizando-me civilmente pela eventual divulgação indevida destas informações, nos termos da lei.
-            Se os equipamentos forem danificados ou inutilizados por emprego inadequado, mau uso, negligência ou extravio, deverei comunicar imediatamente a área competente. A Companhia me fornecerá novos equipamentos e cobrará o valor dos equipamentos da mesma marca ou equivalentes.
-            Devo utilizar somente os softwares instalados e homologados pela área de Tecnologia da Informação (TI) da Gramado Parks, não removendo, alterando ou acrescentando, sem autorização expressa desta, qualquer tipo de dispositivo periférico ou software neste equipamento. Todos os softwares contidos neste são devidamente licenciados e é proibida a sua distribuição ou cópia sem prévia autorização. Qualquer outro software que venha a ser necessário para o exercício de minhas atividades deve ser aprovado e instalado pela área de TI.
-            São expressamente proibidos a: criação, download, guarda ou veiculação de material de cunho pornográfico e/ou imoral, discriminatório, ofensivo, contra a ética e os bons costumes, no equipamento fornecido.
-            Diante do exposto acima, reconheço que a Companhia, dentro de suas atribuições independentemente de aviso, está autorizada a:
-            monitorar, registrar e analisar todas as aplicações e dados localizados no equipamento que foram acessados através de minha senha;
-            modificar e/ou bloquear os acessos sempre que houver necessidade e a critério desta;
-            verificar todos os arquivos contidos no equipamento a qualquer momento.
-            Estou ciente que este termo terá validade a partir de sua assinatura e permanecerá válido enquanto meu contrato com a Gramado Parks estiver vigente.
-            O descumprimento das obrigações assumidas neste compromisso caracterizará grave infração, resultando em ações disciplinares aplicáveis, como medidas administrativas e/ou disciplinares no âmbito da Companhia, sujeitando-me à reparação pelos danos causados, sendo facultado à Companha a adoção de medidas pertinentes, incluindo as de natureza indenizatória, em valor equivalente ou substituição (idêntico ou similar). 
-            Reconheço que em caso de desligamento ou rescisão de contrato devo devolver o equipamento para o líder da área em que atuo/ presto serviço no prazo em até 1 (um) dia. Saliento que fui informado que caso o equipamento não seja entregue neste prazo, o valor do equipamento na data de desligamento/ rescisão será descontado das minhas verbas rescisórias ou da NF em caso de Prestador de Serviços.
+
+        <!-- Divisão em duas colunas para paisagem -->
+        <div class="two-columns">
+            <!-- Coluna 1: Regras e Responsabilidades -->
+            <div class="column">
+                <div class="section-title">REGRAS, RESPONSABILIDADES E DECLARAÇÃO DE CESSÃO DE USO</div>
+                <div style="border: 1px solid #B3B3B3; border-top: none; padding: 5px; font-size: 8pt; text-align: justify; height: 100%;">
+                    Eu, <strong><%= nome %></strong>, declaro que recebi nesta data o(s) equipamento(s) acima citado(s) em perfeitas condições de uso, estou ciente de minhas responsabilidades e declaro ter conhecimento que:
+                    <div class="rules-section">
+                        <ul>
+                            <li>A utilização do(s) equipamento(s) recebidos é exclusiva para exercício das atividades profissionais e que devo zelar pela guarda e conservação deles;</li>
+                            <li>Caso o equipamento necessite de reparos, devo abrir chamado para o help desk, via ITCS – Portal TI;</li>
+                            <li>Quando for necessária a substituição do equipamento (temporário ou efetivo), a identificação do novo equipamento deve ser registrada neste Termo e novamente coletada as assinaturas;</li>
+                            <li>Em caso de desligamento o equipamento deve ser devolvido à área de TI, que registra a devolução no próprio termo e colhe a assinatura do usuário. Em caso de transferência entre Unidades de Negócio, o usuário deve devolver o equipamento e solicitar novo equipamento para TI a ser registrado no novo local de trabalho;</li>
+                            <li>Em caso de perda ou dano irreparável, é responsabilidade do usuário restituir o valor correspondente ao equipamento, levando em consideração o tempo e a depreciação dele.</li>
+                        </ul>
+                    </div>
+                    <div style="text-align: center; margin-top: 5px; font-size: 7pt;">
+                        Clique ou toque aqui para inserir o texto., Clique ou toque aqui para inserir uma data..
+                    </div>
+                    <div style="display: flex; justify-content: space-between; margin-top: 15px;">
+                        <div style="width: 48%;">
+                            <div class="signature-line"></div>
+                            <div class="signature-label">Responsável pela Entrega (nome/assinatura):</div>
+                        </div>
+                        <div style="width: 48%;">
+                            <div class="signature-line"></div>
+                            <div class="signature-label">Assinatura Usuário/Responsável Equipamento(s)</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Coluna 2: Declaração de Devolução -->
+            <div class="column">
+                <div class="section-title">DECLARAÇÃO DE DEVOLUÇÃO</div>
+                <div style="border: 1px solid #B3B3B3; border-top: none; padding: 5px; font-size: 8pt; height: 100%;">
+                    Eu, __________________________________________________________________________, declaro que o(s) equipamento(s) sob a minha guarda foi(foram) devolvido(s) nas seguintes condições:
+                    <table class="declaration-table" style="margin-top: 5px;">
+                        <thead>
+                            <tr>
+                                <th style="width: 8%;">Item</th>
+                                <th style="width: 50%;">Situação</th>
+                                <th style="width: 22%;">Descrição do Estado/Situação do Equipamento</th>
+                                <th style="width: 10%;">Data</th>
+                                <th style="width: 10%;">Visto usuário</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% for(let i = 0; i < 5; i++) { %>
+                                <tr>
+                                    <td style="text-align: center;"><%= i + 1 %></td>
+                                    <td>
+                                        <span class="checkbox"></span><span class="checkbox-label">Em perfeito estado</span><br>
+                                        <span class="checkbox"></span><span class="checkbox-label">Apresentando defeito</span><br>
+                                        <span class="checkbox"></span><span class="checkbox-label">Faltando peças ou acessórios</span>
+                                    </td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                            <% } %>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
 
+        <!-- Informações Internas e Rodapé -->
         <div class="internal-info">
             INTERNO
-            <span>As informações contidas nesse documento são de uso interno</span>
+            <span>As informações contidas neste documento são destinadas ao uso interno.</span>
         </div>
-
-        <p class="auto-doc">AutoDoc termo gerado por sistema automatizado by Gramado Parks.</p>
+        <div class="footer-info">
+            <span>Página 1/1</span>
+            <span>FR.14.01.001<br>Versão 05 – 11/08/2023</span>
+        </div>
     </div>
 
     <button class="email-button" onclick="sendEmail()">
-        Chegamos ao final, é hora de enviar os documentos por e-mail clicando aqui
+        Enviar Termo por E-mail
     </button>
-
-    <div id="loadingScreen">
-        <img src="/LogoEfeito.png" alt="Logo girando" id="loadingLogo">
-        <div id="loadingText">Estamos enviando os documentos...</div>
-        <div id="progressBar">
-            <div id="progress"></div>
-        </div>
-        <div id="percentage">0%</div>
-    </div>
-
-    <div id="successMessage">
-        Muito bem, termos enviados com sucesso para a empresa e uma cópia para seu e-mail corporativo.<br>By Gramado Parks
-    </div>
 
     <script>
         function sendEmail() {
-            document.getElementById('loadingScreen').style.display = 'flex';
-
-            let progress = 0;
-            const progressElement = document.getElementById('progress');
-            const percentageElement = document.getElementById('percentage');
-
-            function updateProgress() {
-                if (progress < 100) {
-                    progress += 1; // Incrementa o progresso
-                    progressElement.style.width = progress + '%'; // Atualiza a largura da barra de progresso
-                    percentageElement.textContent = progress + '%'; // Atualiza o texto da porcentagem
-                    setTimeout(updateProgress, 50); // Atualiza a cada 50ms
-                } else {
-                    // Quando o carregamento atinge 100%, exibe a mensagem de sucesso
-                    setTimeout(() => {
-                        document.getElementById('loadingScreen').style.display = 'none';
-                        document.getElementById('successMessage').style.display = 'block';
-                    }, 500); // Tempo para mostrar 100% antes de exibir a mensagem
-                }
-            }
-
-            updateProgress();
-
-            // Faz o fetch para o endpoint que executa o arquivo batch
-            fetch('/execute-batch', { method: 'POST' })
-                .then(response => {
-                    if (response.ok) {
-                        console.log('Batch file executed successfully.');
-                        window.location.href = "mailto:exemplo@dominio.com"; // Envia o email após o batch
-                    } else {
-                        console.error('Erro ao executar o script batch.');
-                    }
-                })
-                .catch(error => {
-                    console.error('Erro ao executar o batch:', error);
-                });
+            // Simulação do envio de e-mail
+            alert("Funcionalidade de envio por e-mail seria implementada aqui");
         }
-        
-        // Função para alternar a visibilidade do bloco de dados brutos (para debug)
-        function toggleRawDataBlock() {
-            const rawDataBlock = document.getElementById('rawDataBlock');
-            if (rawDataBlock) {
-                rawDataBlock.style.display = rawDataBlock.style.display === 'none' ? 'block' : 'none';
-            }
-        }
-        
-        // Adicionar um botão de debug no console (opcional)
-        console.log("Para mostrar/ocultar o bloco de dados brutos, execute toggleRawDataBlock() no console");
     </script>
 </body>
 </html>
