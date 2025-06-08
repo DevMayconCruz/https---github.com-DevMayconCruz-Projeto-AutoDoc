@@ -1,8 +1,25 @@
 {
+  "name": "my-express-app",
+  "version": "1.0.0",
+  "description": "A simple Express.js application",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "jest"
+  },
+  "author": "Your Name",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-username/my-express-app.git"
+  },
   "dependencies": {
     "body-parser": "^1.20.2",
     "ejs": "^3.1.10",
     "express": "^4.21.1",
     "express-session": "^1.18.1"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0"
   }
 }
