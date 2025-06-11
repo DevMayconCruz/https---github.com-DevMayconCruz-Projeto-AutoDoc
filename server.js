@@ -181,7 +181,7 @@ app.get('/dados-colaborador', (req, res) => {
 app.post('/formularios', (req, res) => {
     // 1. Obter dados do formulário
     const formData = req.body;
-    const { usuario } = formData; // Pega o usuário informado no form
+    const { usuario, email, telefone, tipoUso } = formData; // Pega o usuário e os novos campos informados no form
 
     if (!usuario) {
         return res.status(400).send('Nome de usuário não fornecido no formulário.');
@@ -227,7 +227,11 @@ app.post('/formularios', (req, res) => {
             userDataBlock: userDataBlock, // Passa o bloco de texto bruto
             parsedUserData: parsedUserData, // Passa os dados já parseados (se o parse foi feito)
             // Informação sobre erros
-            fileReadError: fileReadError
+            fileReadError: fileReadError,
+            // Novos campos específicos
+            email: email || '',
+            telefone: telefone || '',
+            tipoUso: tipoUso || 'P' // Padrão para Permanente se não for especificado
         });
     });
 });
@@ -331,6 +335,5 @@ app.get('/getLoggedUser', (req, res) => {
 
 // Iniciar o servidor escutando em todas as interfaces de rede (0.0.0.0)
 app.listen(port, '0.0.0.0', () => {
-    console.log(`Servidor rodando em http://localhost:${port} e acessível na rede local (ex: http://172.16.8.23:${port})`);
+    console.log(`Servidor rodando em http://localhost:${port} e acessível na rede local (ex: http://192.168.0.34:${port})`);
 });
-
