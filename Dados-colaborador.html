@@ -139,6 +139,22 @@
         .cpfCnpjField {
             display: none;
         }
+        
+        .radio-group {
+            margin-top: 10px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .radio-group input[type="radio"] {
+            margin-right: 5px;
+        }
+        
+        .radio-group label {
+            display: inline-block;
+            margin-right: 20px;
+            margin-top: 0;
+        }
     </style>
 </head>
 <body>
@@ -149,7 +165,6 @@
         <form action="/formularios" method="POST" onsubmit="return validarFormulario();">
             <label for="nome">Nome Completo:</label>
             <input type="text" id="nome" name="nome" required> 
-
 
             <label for="usuario">Digite seu usuário (ex: maria.jose):</label>
             <input type="text" id="usuario" name="usuario" required>
@@ -197,6 +212,15 @@
 
             <label for="email">Email:</label>
             <input type="email" id="email" name="email" required>
+            
+            <label>Tipo de Uso do Equipamento:</label>
+            <div class="radio-group">
+                <input type="radio" id="usoPermanente" name="tipoUso" value="P" checked>
+                <label for="usoPermanente">Permanente (P)</label>
+                
+                <input type="radio" id="usoTemporario" name="tipoUso" value="T">
+                <label for="usoTemporario">Temporário (T)</label>
+            </div>
 
             <label for="observacao">Observação:</label>
             <textarea id="observacao" name="observacao"></textarea>
