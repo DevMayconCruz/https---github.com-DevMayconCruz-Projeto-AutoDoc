@@ -52,6 +52,8 @@ const { exec } = require('child_process');
 const fs = require('fs');
 const bodyParser = require('body-parser');
 const os = require('os');
+const nodemailer = require('nodemailer');
+const puppeteer = require('puppeteer');
 
 const app = express();
 const port = 3000;
@@ -317,6 +319,157 @@ app.post('/execute-batch', (req, res) => {
     });
 });
 
+// Configuração do transporter de e-mail
+const emailTransporter = nodemailer.createTransport({
+    host: 'smtp.gmail.com',
+    port: 465,
+    secure: true, // true para 465, false para outras portas
+    auth: {
+        user: 'termo.equipamentos@gramadoparks.com',
+        pass: 'heerbrxuraixpefx'
+    }
+});
+
+// Função para gerar PDF a partir do HTML renderizado
+async function generatePDFFromHTML(htmlContent, outputPath) {
+    let browser;
+    try {
+        browser = await puppeteer.launch({
+            headless: true,
+            args: ['--no-sandbox', '--disable-setuid-sandbox']
+        });
+        
+        const page = await browser.newPage();
+        await page.setContent(htmlContent, { waitUntil: 'networkidle0' });
+        
+        await page.pdf({
+            path: outputPath,
+            format: 'A4',
+            printBackground: true,
+            margin: {
+                top: '10mm',
+                right: '10mm',
+                bottom: '10mm',
+                left: '10mm'
+            }
+        });
+        
+        console.log(`PDF gerado com sucesso: ${outputPath}`);
+        return true;
+    } catch (error) {
+        console.error('Erro ao gerar PDF:', error);
+        return false;
+    } finally {
+        if (browser) {
+            await browser.close();
+        }
+    }
+}
+
+// Endpoint para envio de e-mail
+app.post('/enviar-email', async (req, res) => {
+    try {
+        const { email, nome, unidade, setor } = req.body;
+
+        if (!email || !nome || !unidade) {
+            return res.status(400).send('Dados obrigatórios não fornecidos (email, nome, unidade)');
+        }
+
+        // Renderizar o formulário EJS com os dados
+        const htmlContent = await new Promise(async (resolve, reject) => {
+            const filePath = getUserInfoFilePath();
+            let userDataBlock = "";
+            let parsedUserData = {};
+            let fileReadError = null;
+
+            try {
+                const fileContent = await fs.promises.readFile(filePath, "latin1");
+                const lines = fileContent.split(/\r?\n/);
+                userDataBlock = collectUserDataBlock(req.body.usuario, lines);
+
+                if (!userDataBlock) {
+                    console.warn(`Bloco de dados para o usuário '${req.body.usuario}' não encontrado em ${filePath}.`);
+                    fileReadError = `Bloco de dados para o usuário '${req.body.usuario}' não encontrado.`;
+                } else {
+                    parsedUserData = parseUserData(userDataBlock);
+                }
+            } catch (err) {
+                console.error(`Erro ao ler o arquivo ${filePath}:`, err);
+                fileReadError = `Erro ao ler o arquivo de informações (${filePath}). Verifique o caminho e as permissões.`;
+            }
+
+            app.render("formularios", {
+                ...req.body,
+                usuario: req.body.usuario, // Garantir que 'usuario' é passado
+                dataAtual: new Date().toLocaleDateString("pt-BR"),
+                userDataBlock: userDataBlock,
+                parsedUserData: parsedUserData,
+                fileReadError: fileReadError
+            }, (err, html) => {
+                if (err) reject(err);
+                else resolve(html);
+            });
+        });
+
+        // Criar diretório para PDFs se não existir
+        const pdfDir = path.join(__dirname, 'generated_pdfs');
+        if (!fs.existsSync(pdfDir)) {
+            fs.mkdirSync(pdfDir, { recursive: true });
+        }
+
+        // Gerar PDFs
+        const timestamp = Date.now();
+        const pdfPath1 = path.join(pdfDir, `termo_empresa_${timestamp}.pdf`);
+        const pdfPath2 = path.join(pdfDir, `termo_${nome.replace(/\s+/g, '_')}_${unidade.replace(/\s+/g, '_')}_${timestamp}.pdf`);
+
+        // Gerar ambos os PDFs (mesmo conteúdo, mas com nomes diferentes para empresa e usuário)
+        const pdfGenerated1 = await generatePDFFromHTML(htmlContent, pdfPath1);
+        const pdfGenerated2 = await generatePDFFromHTML(htmlContent, pdfPath2);
+
+        if (!pdfGenerated1 || !pdfGenerated2) {
+            return res.status(500).send('Erro ao gerar PDFs');
+        }
+
+        // Configurar o e-mail
+        const mailOptions = {
+            from: 'termo.equipamentos@gramadoparks.com',
+            to: `${email};termo.equipamentos@gramadoparks.com`,
+            subject: `Termo assinado por ${nome} da Unidade de trabalho ${unidade}`,
+            text: 'Prezado, segue em anexo o Termo de Cessão.',
+            attachments: [
+                {
+                    filename: 'termo_empresa.pdf',
+                    path: pdfPath1
+                },
+                {
+                    filename: `termo_${nome.replace(/\s+/g, '_')}.pdf`,
+                    path: pdfPath2
+                }
+            ]
+        };
+
+        // Enviar o e-mail
+        const info = await emailTransporter.sendMail(mailOptions);
+        console.log('E-mail enviado:', info.messageId);
+        
+        // Limpar arquivos temporários após envio
+        setTimeout(() => {
+            try {
+                if (fs.existsSync(pdfPath1)) fs.unlinkSync(pdfPath1);
+                if (fs.existsSync(pdfPath2)) fs.unlinkSync(pdfPath2);
+                console.log('Arquivos temporários removidos');
+            } catch (cleanupError) {
+                console.warn('Erro ao limpar arquivos temporários:', cleanupError);
+            }
+        }, 5000);
+        
+        res.status(200).send('E-mail enviado com sucesso!');
+    } catch (error) {
+        console.error('Erro ao enviar e-mail:', error);
+        res.status(500).send(`Erro ao enviar e-mail: ${error.message}`);
+    }
+});
+
 // Rota antiga para obter o nome do usuário logado (REMOVER - lógica agora em /formularios)
 /*
 app.get('/getLoggedUser', (req, res) => {
@@ -335,5 +488,5 @@ app.get('/getLoggedUser', (req, res) => {
 
 // Iniciar o servidor escutando em todas as interfaces de rede (0.0.0.0)
 app.listen(port, '0.0.0.0', () => {
-    console.log(`Servidor rodando em http://localhost:${port} e acessível na rede local (ex: http://192.168.0.34:${port})`);
+    console.log(`Servidor rodando em http://localhost:${port} e acessível na rede local (ex: http://192.168.0.22:${port})`);
 });
