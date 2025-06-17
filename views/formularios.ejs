@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -8,102 +7,148 @@
     <style>
         @media print {
             @page {
-                size: A4 landscape; /* Orientação Paisagem */
-                margin: 8mm; /* Margens ainda menores */
+                size: A4 portrait; /* Orientação Retrato para permitir duas páginas */
+                margin: 10mm; /* Margens adequadas */
             }
             html, body {
-                width: 297mm;
-                height: 210mm;
+                width: 100%;
+                height: 100%;
                 margin: 0;
                 padding: 0;
                 background-color: #ffffff;
-                font-size: 8pt; /* Reduzir fonte base para impressão */
-                line-height: 1.1; /* Reduzir espaçamento entre linhas */
+                font-size: 8pt; /* Fonte adequada para impressão */
+                line-height: 1.2;
             }
-            .email-button, #loadingScreen, #successMessage, .user-info-header {
+            .email-button, #loadingScreen, #successMessage, .user-info-header, .sign-button {
                 display: none;
             }
             .container {
-                width: 281mm; /* Largura A4 Paisagem - margens (297 - 2*8) */
-                height: 194mm; /* Altura A4 Paisagem - margens (210 - 2*8) */
+                width: 100%;
                 box-shadow: none;
                 border: none;
                 padding: 0;
                 margin: 0;
+                box-sizing: border-box;
+            }
+            .page-break {
+                page-break-before: always;
+            }
+            .header-container {
                 display: flex;
-                flex-direction: column;
-                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 5px;
+                padding: 0;
             }
             .header-image {
-                text-align: left; /* Alinhar imagem à esquerda conforme PDF original */
-                padding-left: 5mm; /* Pequeno espaço à esquerda */
+                text-align: left;
+                margin: 0;
+                padding: 0;
+                width: 80px;
             }
             .header-image img {
-                max-height: 40px; /* Reduzir ainda mais */
-                max-width: 150px; /* Definir largura máxima específica */
-                width: auto; /* Manter proporção */
+                height: 30px;
+                width: auto;
+            }
+            .header-title {
+                flex-grow: 1;
+                text-align: center;
+                margin: 0;
+                padding: 0;
+                color: #1B4D3E;
+                font-size: 10pt;
+                font-weight: bold;
+                line-height: 1.1;
             }
             .section-title {
-                padding: 1px 0; /* Mínimo padding */
-                font-size: 7.5pt; /* Reduzir mais */
+                padding: 2px 0;
+                font-size: 8pt;
                 margin-top: 3px;
+                margin-bottom: 0;
             }
             table {
-                margin-bottom: 3px; /* Reduzir espaço entre tabelas */
-                font-size: 7.5pt; /* Reduzir mais */
+                margin-bottom: 3px;
+                font-size: 8pt;
             }
             th, td {
-                padding: 1px 3px; /* Mínimo padding */
+                padding: 2px 3px;
             }
             .identification-table td,
             .equipment-table th,
             .equipment-table td,
             .declaration-table td {
-                height: auto; /* Remover altura fixa, deixar conteúdo definir */
-                line-height: 1.1;
+                height: auto;
+                line-height: 1.2;
             }
             .rules-section {
-                font-size: 7.5pt; /* Reduzir mais */
-                margin-top: 2px;
-                padding-left: 8px;
+                font-size: 8pt;
+                margin-top: 3px;
+                padding-left: 5px;
+            }
+            .rules-section ul {
+                margin-top: 3px;
+                margin-bottom: 3px;
+                padding-left: 0;
             }
             .rules-section li {
                 margin-bottom: 2px;
-                padding-left: 8px;
+                padding-left: 5px;
             }
             .date-time-placeholder {
                 margin-top: 3px;
-                font-size: 7.5pt;
+                font-size: 8pt;
+            }
+            .signature-section {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                flex-direction: column;
+                margin-top: 10px;
+                text-align: center;
             }
             .signature-line {
-                height: 15px; /* Reduzir */
-                margin-top: 5px; /* Reduzir */
-                margin-bottom: 1px;
+                height: 15px;
+                margin-top: 5px;
+                margin-bottom: 2px;
+                border-bottom: 1px solid #333;
+                width: 300px;
+                margin-left: auto;
+                margin-right: auto;
             }
             .signature-label {
-                font-size: 6.5pt; /* Reduzir */
+                font-size: 7pt;
+                text-align: center;
+                margin-bottom: 10px;
             }
             .checkbox {
-                width: 7px; height: 7px; margin-right: 1px;
+                width: 6px; height: 6px; margin-right: 1px;
             }
             .checkbox-label {
-                margin-left: 2px; margin-right: 5px;
+                margin-left: 1px; margin-right: 3px;
             }
             .internal-info {
-                padding-top: 5px; /* Reduzir */
-                font-size: 7.5pt;
+                padding-top: 5px;
+                font-size: 8pt;
                 margin-top: 5px;
             }
             .internal-info span {
-                margin-top: 1px;
+                margin-top: 0;
             }
             .footer-info {
-                font-size: 6.5pt; /* Reduzir */
+                font-size: 7pt;
                 margin-top: 3px;
             }
-            /* Evitar quebras onde não devem */
-            table, tr, td, th, .section-title, .rules-section, .signature-section, .internal-info, .footer-info {
-                page-break-inside: avoid !important;
+            .additional-terms {
+                font-size: 8pt;
+                margin-top: 10px;
+                padding: 5px;
+                text-align: justify;
+                line-height: 1.3;
+            }
+            .additional-terms ol {
+                padding-left: 15px;
+            }
+            .additional-terms li {
+                margin-bottom: 5px;
             }
         }
 
@@ -118,27 +163,38 @@
         }
         .container {
             width: 100%;
-            max-width: 297mm;
-            min-height: 210mm;
+            max-width: 210mm;
             margin: 20px auto;
             background: white;
             padding: 10mm;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             box-sizing: border-box;
             position: relative;
+        }
+        .header-container {
             display: flex;
-            flex-direction: column;
+            align-items: center;
+            margin-bottom: 10px;
         }
         .header-image {
-            width: 100%;
-            text-align: left; /* Alinhar imagem à esquerda */
-            margin-bottom: 10px;
-            padding-left: 5mm;
+            text-align: left;
+            margin: 0;
+            padding: 0;
+            width: 100px;
         }
         .header-image img {
-            max-width: 150px; /* Definir largura máxima */
-            height: auto;
-            max-height: 40px; /* Definir altura máxima */
+            height: 40px;
+            width: auto;
+        }
+        .header-title {
+            flex-grow: 1;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            color: #1B4D3E;
+            font-size: 12pt;
+            font-weight: bold;
+            line-height: 1.2;
         }
         .section-title {
             background-color: #E6E7E8;
@@ -207,16 +263,28 @@
             left: 0;
             top: 0;
         }
+        .signature-section {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            margin-top: 15px;
+            text-align: center;
+        }
         .signature-line {
             border-bottom: 1px solid #333;
             height: 20px;
             margin-top: 10px;
             margin-bottom: 3px;
             position: relative;
+            width: 300px;
+            margin-left: auto;
+            margin-right: auto;
         }
         .signature-label {
             font-size: 7pt;
             text-align: center;
+            margin-bottom: 15px;
         }
         .checkbox-label {
             margin-left: 3px;
@@ -282,6 +350,37 @@
         .email-button:hover {
             background-color: #0056b3;
         }
+        .sign-button {
+            background-color: #28a745;
+            color: white;
+            padding: 5px 10px;
+            font-size: 10px;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            margin-left: 5px;
+        }
+        .sign-button:hover {
+            background-color: #218838;
+        }
+        .additional-terms {
+            font-size: 8pt;
+            margin-top: 15px;
+            padding: 10px;
+            border: 1px solid #B3B3B3;
+            text-align: justify;
+            line-height: 1.4;
+        }
+        .additional-terms ol {
+            padding-left: 20px;
+        }
+        .additional-terms li {
+            margin-bottom: 8px;
+        }
+        .page-break {
+            page-break-before: always;
+            margin-top: 30px;
+        }
         #loadingScreen, #successMessage {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.7); display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 9999; display: none; text-align: center; color: white;
         }
@@ -316,11 +415,21 @@
         }
     </style>
 </head>
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Termo de Cessão de Equipamentos</title>
+    <style>
+        /* ... (seus estilos CSS existentes permanecem aqui) ... */
+    </style>
+</head>
 <body>
 
     <!-- Informação do usuário logado (fora do container principal para não imprimir) -->
     <div class="user-info-header">
-        Usuário logado: <span id="loggedUser"><%= usuario %></span>
+        Usuário logado: <span id="loggedUser"><%= typeof usuario !== 'undefined' ? usuario : 'N/A' %></span>
     </div>
 
     <% if (typeof fileReadError !== 'undefined' && fileReadError) { %>
@@ -332,26 +441,34 @@
     <div class="container" id="content">
         <!-- Conteúdo principal do termo -->
         <div>
-            <!-- Cabeçalho com a imagem gpk.png -->
-            <div class="header-image">
-                <img src="/img/gpk.png" alt="GPK Logo">
+            <!-- Cabeçalho com a imagem gpk.png à esquerda e título ao lado -->
+            <div class="header-container">
+                <div class="header-image">
+                    <img src="/img/gpk.png" alt="GPK Logo">
+                </div>
+                <div class="header-title">
+                    FORMULÁRIO<br>
+                    TERMO DE CESSÃO, GUARDA, USO E DEVOLUÇÃO DE EQUIPAMENTO
+                </div>
+                <!-- Espaço vazio para manter o título centralizado -->
+                <div style="width: 80px;"></div>
             </div>
 
             <!-- Dados de Identificação -->
             <div class="section-title">DADOS DE IDENTIFICAÇÃO</div>
             <table class="identification-table">
                 <tr>
-                    <td style="width: 50%;"><span class="label">Nome:</span> <%= nome %></td>
-                    <td style="width: 25%;"><span class="label">Unidade de Negócio:</span> <%= unidade %></td>
-                    <td style="width: 25%;"><span class="label">Razão Social (se PJ):</span> <% if (tipoUsuario === 'Prestador de Serviços') { %><%= cnpj %><% } else { %> N/A <% } %></td>
+                    <td style="width: 50%;"><span class="label">Nome:</span> <%= typeof nome !== 'undefined' ? nome : 'N/A' %></td>
+                    <td style="width: 25%;"><span class="label">Unidade de Negócio:</span> <%= typeof unidade !== 'undefined' ? unidade : 'N/A' %></td>
+                    <td style="width: 25%;"><span class="label">Razão Social (se PJ):</span> <% if (tipoUsuario === 'Prestador de Serviços') { %><%= typeof cnpj !== 'undefined' ? cnpj : 'N/A' %><% } else { %> N/A <% } %></td>
                 </tr>
                 <tr>
-                    <td><span class="label">CPF:</span> <% if (tipoUsuario === 'Colaborador') { %><%= cpf %><% } else { %> N/A <% } %></td>
-                    <td><span class="label">Área/Diretoria:</span> <%= setor %></td>
-                    <td><span class="label">Telefone:</span> <!-- Campo não mapeado --></td>
+                    <td><span class="label">CPF:</span> <% if (tipoUsuario === 'Colaborador') { %><%= typeof cpf !== 'undefined' ? cpf : 'N/A' %><% } else { %> N/A <% } %></td>
+                    <td><span class="label">Área/Diretoria:</span> <%= typeof setor !== 'undefined' ? setor : 'N/A' %></td>
+                    <td><span class="label">Telefone:</span> <%= typeof telefone !== 'undefined' ? telefone : '' %></td>
                 </tr>
-                 <tr>
-                    <td colspan="3"><span class="label">E-mail:</span> <!-- Campo não mapeado --></td>
+                <tr>
+                    <td colspan="3"><span class="label">E-mail:</span> <%= typeof email !== 'undefined' ? email : '' %></td>
                 </tr>
             </table>
 
@@ -373,7 +490,7 @@
                     <% let itemCounter = 0; %>
                     <% if (typeof parsedUserData !== 'undefined' && parsedUserData.equipamentos && parsedUserData.equipamentos.length > 0) { %>
                         <% parsedUserData.equipamentos.forEach((equip, index) => { %>
-                            <% if (!(equip.descritivo === 'Monitor' && equip.modelo === 'Desconhecido')) { %>
+                            <% if (!(equip.descritivo && equip.descritivo.toLowerCase().includes('monitor') && equip.modelo && equip.modelo.toLowerCase().includes('desconhecido'))) { %>
                                 <% itemCounter++; %>
                                 <tr>
                                     <td style="text-align: center;"><%= itemCounter %></td>
@@ -381,8 +498,8 @@
                                     <td><%= equip.fabricante || 'N/A' %></td>
                                     <td><%= equip.modelo || 'N/A' %></td>
                                     <td><%= equip.numeroSerie || 'N/A' %></td>
-                                    <td></td> <!-- Campo Uso não mapeado -->
-                                    <td style="text-align: center;"><%= nome %></td>
+                                    <td style="text-align: center;"><%= typeof tipoUso !== 'undefined' ? tipoUso : 'P' %></td>
+                                    <td style="text-align: center;"><%= typeof nome !== 'undefined' ? nome : 'N/A' %></td>
                                 </tr>
                             <% } %>
                         <% }); %>
@@ -393,7 +510,7 @@
                         <% } %>
                     <% } else { %>
                         <tr>
-                            <td colspan="7" style="text-align: center;">Nenhum equipamento encontrado para este usuário.</td>
+                            <td colspan="7" style="text-align: center;">Nenhum equipamento listado para este usuário.</td>
                         </tr>
                     <% } %>
                 </tbody>
@@ -401,37 +518,40 @@
 
             <!-- Regras, Responsabilidades e Declaração de Cessão de Uso -->
             <div class="section-title">REGRAS, RESPONSABILIDADES E DECLARAÇÃO DE CESSÃO DE USO</div>
-            <div style="border: 1px solid #B3B3B3; border-top: none; padding: 5px; text-align: justify;">
-                Eu, <strong><%= nome %></strong>, declaro que recebi nesta data o(s) equipamento(s) acima citado(s) em perfeitas condições de uso, estou ciente de minhas responsabilidades e declaro ter conhecimento que:
+            <div style="border: 1px solid #B3B3B3; border-top: none; padding: 3px;">
                 <div class="rules-section">
+                    Eu, <strong><%= typeof nome !== 'undefined' ? nome : 'N/A' %></strong>, declaro que recebi nesta data o(s) equipamento(s) acima citado(s) em perfeitas condições de uso, estou ciente de minhas responsabilidades e declaro ter conhecimento que:
                     <ul>
-                        <li>A utilização do(s) equipamento(s) recebidos é exclusiva para exercício das atividades profissionais e que devo zelar pela guarda e conservação deles;</li>
+                        <li>A utilização do(s) equipamento(s) recebido(s) é exclusiva para exercício das atividades profissionais e que devo zelar pela guarda e conservação deles;</li>
                         <li>Caso o equipamento necessite de reparos, devo abrir chamado para o help desk, via ITCS – Portal TI;</li>
                         <li>Quando for necessária a substituição do equipamento (temporário ou efetivo), a identificação do novo equipamento deve ser registrada neste Termo e novamente coletada as assinaturas;</li>
-                        <li>Em caso de desligamento o equipamento deve ser devolvido à área de TI, que registra a devolução no próprio termo e colhe a assinatura do usuário. Em caso de transferência entre Unidades de Negócio, o usuário deve devolver o equipamento e solicitar novo equipamento para TI a ser registrado no novo local de trabalho;</li>
+                        <li>Em caso de desligamento o equipamento deve ser devolvido à área de TI até a data de desligamento. Quando houver transferência entre Unidades de Negócio, o usuário deve devolver o equipamento e solicitar novo equipamento para TI a ser registrado no novo local de trabalho;</li>
                         <li>Em caso de perda ou dano irreparável, é responsabilidade do usuário restituir o valor correspondente ao equipamento, levando em consideração o tempo e a depreciação dele.</li>
                     </ul>
                 </div>
+
                 <div class="date-time-placeholder">
-                    Gerado em: <%= new Date().toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' }) %>
+                    Gerado em: <%= new Date().toLocaleDateString('pt-BR') %>, <%= new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }) %>
                 </div>
-                <div style="display: flex; justify-content: space-between; margin-top: 10px;">
-                    <div style="width: 48%;">
-                        <div class="signature-line"></div>
-                        <div class="signature-label">Responsável pela Entrega (nome/assinatura):</div>
-                    </div>
-                    <div style="width: 48%;">
-                        <div class="signature-line"></div>
-                        <div class="signature-label">Assinatura Usuário/Responsável Equipamento(s)</div>
+
+                <!-- Assinaturas Centralizadas -->
+                <div class="signature-section">
+                    <div class="signature-line">Gramado Parks-T.I</div>
+                    <div class="signature-label">Responsável pela Entrega (nome/assinatura)</div>
+                    
+                    <div class="signature-line" id="userSignature"></div>
+                    <div class="signature-label">
+                        Assinatura Usuário/Responsável Equipamento(s)
+                        <button class="sign-button" onclick="signDocument()">Assinar Agora</button>
                     </div>
                 </div>
             </div>
 
             <!-- Declaração de Devolução -->
             <div class="section-title">DECLARAÇÃO DE DEVOLUÇÃO</div>
-            <div style="border: 1px solid #B3B3B3; border-top: none; padding: 5px;">
-                Eu, __________________________________________________________________________, declaro que o(s) equipamento(s) sob a minha guarda foi(foram) devolvido(s) nas seguintes condições:
-                <table class="declaration-table" style="margin-top: 5px;">
+            <div style="border: 1px solid #B3B3B3; border-top: none; padding: 3px;">
+                Por gentileza, eu, __________________________________________________________________________, declaro que o(s) equipamento(s) sob a minha guarda foi(foram) devolvido(s) nas seguintes condições:
+                <table class="declaration-table" style="margin-top: 3px;">
                     <thead>
                         <tr>
                             <th style="width: 5%;">Item</th>
@@ -445,7 +565,7 @@
                         <% let returnItemCounter = 0; %>
                         <% if (typeof parsedUserData !== 'undefined' && parsedUserData.equipamentos && parsedUserData.equipamentos.length > 0) { %>
                             <% parsedUserData.equipamentos.forEach((equip, index) => { %>
-                                <% if (!(equip.descritivo === 'Monitor' && equip.modelo === 'Desconhecido')) { %>
+                                <% if (!(equip.descritivo && equip.descritivo.toLowerCase().includes('monitor') && equip.modelo && equip.modelo.toLowerCase().includes('desconhecido'))) { %>
                                     <% returnItemCounter++; %>
                                     <tr>
                                         <td style="text-align: center;"><%= returnItemCounter %></td>
@@ -475,6 +595,65 @@
             </div>
         </div>
 
+        <!-- Quebra de página para os termos adicionais -->
+        <div class="page-break">
+            <!-- Cabeçalho repetido na segunda página -->
+            <div class="header-container">
+                <div class="header-image">
+                    <img src="/img/gpk.png" alt="GPK Logo">
+                </div>
+                <div class="header-title">
+                    FORMULÁRIO<br>
+                    TERMO DE CESSÃO, GUARDA, USO E DEVOLUÇÃO DE EQUIPAMENTO
+                </div>
+                <div style="width: 80px;"></div>
+            </div>
+
+            <!-- Termos Adicionais -->
+            <div class="section-title">TERMOS E CONDIÇÕES ADICIONAIS</div>
+            <div class="additional-terms">
+                <p><strong>Declaro ter ciência e estar de acordo com os procedimentos descritos na Política PL.GC.028 Trabalho Remoto - Home Office e PL.GC.035 Entrega, Uso e Devolução de Equipamentos de TI e Periféricos, emitidas e divulgadas pela Gramado Parks, comprometendo-me a respeitá-las, cumprindo e aceitando-as plenamente, bem como o disposto abaixo:</strong></p>
+                
+                <ol>
+                    <li>Estou ciente de que o equipamento fornecido é de propriedade da empresa que o forneceu; portanto, será utilizado por mim única e exclusivamente a título de empréstimo para o melhor desempenho e execução das atividades para as quais fui contratado, não tendo em hipótese alguma conotação de uso pessoal.</li>
+                    
+                    <li>Devo utilizá-lo com cuidado, mantê-lo e guardá-lo em local seguro, além de garantir a utilização adequada e, no caso de equipamentos de TI, o uso das ferramentas de criptografia, antivírus e proteção, visando assegurar que as informações nele contidas não sejam divulgadas, nem tenham destinação diversa dos objetivos da Companhia, responsabilizando-me civilmente pela eventual divulgação indevida destas informações, nos termos da lei.</li>
+                    
+                    <li>Se os equipamentos forem danificados ou inutilizados por emprego inadequado, mau uso, negligência ou extravio, deverei comunicar imediatamente a área competente. A Companhia me fornecerá novo(s) equipamento(s) e cobrará o valor do(s) equipamento(s) da mesma marca ou equivalentes.</li>
+                    
+                    <li>Devo utilizar somente os softwares instalados e homologados pela área de Tecnologia da Informação (TI) da Gramado Parks, não removendo, alterando ou acrescentando, sem autorização expressa desta, qualquer tipo de dispositivo periférico ou software neste equipamento. Todos os softwares contidos neste são devidamente licenciados e é proibida a sua distribuição ou cópia sem prévia autorização. Qualquer outro software que venha a ser necessário para o exercício de minhas atividades deve ser aprovado e instalado pela área de TI.</li>
+                    
+                    <li>São expressamente proibidos a: criação, download, guarda ou veiculação de material de cunho pornográfico e/ou imoral, discriminatório, ofensivo, contra a ética e os bons costumes, no equipamento fornecido.</li>
+                    
+                    <li>Diante do exposto acima, reconheço que a Companhia, dentro de suas atribuições independentemente de aviso, está autorizada a:
+                        <ul style="margin-top: 5px;">
+                            <li>monitorar, registrar e analisar todas as aplicações e dados localizados no equipamento que foram acessados através de minha senha;</li>
+                            <li>modificar e/ou bloquear os acessos sempre que houver necessidade e a critério desta;</li>
+                            <li>verificar todos os arquivos contidos no equipamento a qualquer momento.</li>
+                        </ul>
+                    </li>
+                    
+                    <li>Estou ciente que este termo terá validade a partir de sua assinatura e permanecerá válido enquanto meu contrato com a Gramado Parks estiver vigente.</li>
+                    
+                    <li>O descumprimento das obrigações assumidas neste compromisso caracterizará grave infração, resultando em ações disciplinares aplicáveis, como medidas administrativas e/ou disciplinares no âmbito da Companhia, sujeitando-me à reparação pelos danos causados, sendo facultado à Companha a adoção de medidas pertinentes, incluindo as de natureza indenizatória, em valor equivalente ou substituição (idêntico ou similar).</li>
+                    
+                    <li>Reconheço que em caso de desligamento ou rescisão de contrato devo devolver o equipamento para o líder da área em que atuo/ presto serviço no prazo em até 1 (um) dia. Saliento que fui informado que caso o equipamento não seja entregue neste prazo, o valor do equipamento na data de desligamento/ rescisão será descontado das minhas verbas rescisórias ou da NF em caso de Prestador de Serviços.</li>
+                </ol>
+            </div>
+
+            <!-- Assinaturas Centralizadas na Segunda Página -->
+            <div class="signature-section" style="margin-top: 30px;">
+                <div class="signature-line">Gramado Parks-T.I</div>
+                <div class="signature-label">Responsável pela Entrega (nome/assinatura)</div>
+                
+                <div class="signature-line" id="userSignature2"></div>
+                <div class="signature-label">
+                    Assinatura Usuário/Responsável Equipamento(s)
+                    <button class="sign-button" onclick="signDocument2()">Assinar Agora</button>
+                </div>
+            </div>
+        </div>
+
         <!-- Rodapé Fixo -->
         <div style="margin-top: auto;">
             <div class="internal-info">
@@ -482,7 +661,7 @@
                 <span>As informações contidas neste documento são destinadas ao uso interno.</span>
             </div>
             <div class="footer-info">
-                <span>Página 1/1</span>
+                <span>Página 1/2</span>
                 <span>FR.14.01.001<br>Versão 05 – 11/08/2023</span>
             </div>
         </div>
@@ -512,35 +691,111 @@
         Documento enviado com sucesso!
     </div>
 
+    <div id="errorMessage">
+        Erro ao enviar documento!
+    </div>
+
     <script>
         function sendEmail() {
-            document.getElementById('loadingScreen').style.display = 'flex';
+            const loadingScreen = document.getElementById('loadingScreen');
+            const successMessage = document.getElementById('successMessage');
+            const errorMessage = document.getElementById('errorMessage');
+            
+            // Mostrar tela de carregamento
+            loadingScreen.style.display = 'flex';
+            successMessage.style.display = 'none';
+            errorMessage.style.display = 'none';
+            
             let progress = 0;
             const progressElement = document.getElementById('progress');
             const percentageElement = document.getElementById('percentage');
 
+            // Coletar dados do formulário
+            const formData = {
+                nome: '<%= typeof nome !== "undefined" ? nome : "" %>',
+                unidade: '<%= typeof unidade !== "undefined" ? unidade : "" %>',
+                setor: '<%= typeof setor !== "undefined" ? setor : "" %>',
+                email: '<%= typeof email !== "undefined" ? email : "" %>',
+                usuario: '<%= typeof usuario !== "undefined" ? usuario : "" %>',
+                telefone: '<%= typeof telefone !== "undefined" ? telefone : "" %>',
+                cpf: '<%= typeof cpf !== "undefined" ? cpf : "" %>',
+                rg: '<%= typeof rg !== "undefined" ? rg : "" %>',
+                cnpj: '<%= typeof cnpj !== "undefined" ? cnpj : "" %>',
+                tipoUsuario: '<%= typeof tipoUsuario !== "undefined" ? tipoUsuario : "" %>',
+                tipoUso: '<%= typeof tipoUso !== "undefined" ? tipoUso : "P" %>'
+            };
+
+            // Função para atualizar a barra de progresso
             function updateProgress() {
                 if (progress < 100) {
                     progress += 1;
                     progressElement.style.width = progress + '%';
                     percentageElement.textContent = progress + '%';
                     setTimeout(updateProgress, 30);
-                } else {
-                    console.log("Simulando envio de e-mail...");
-                    // Lógica de envio real iria aqui
-                    setTimeout(() => {
-                        document.getElementById('loadingScreen').style.display = 'none';
-                        document.getElementById('successMessage').style.display = 'block';
-                        setTimeout(() => {
-                            document.getElementById('successMessage').style.display = 'none';
-                        }, 5000);
-                    }, 500);
                 }
             }
             updateProgress();
+
+            // Enviar dados para o servidor
+            fetch('/enviar-email', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formData)
+            })
+            .then(response => {
+                if (response.ok) {
+                    return response.text();
+                } else {
+                    throw new Error('Erro no servidor: ' + response.status);
+                }
+            })
+            .then(data => {
+                // Completar barra de progresso
+                progress = 100;
+                progressElement.style.width = '100%';
+                percentageElement.textContent = '100%';
+                
+                // Mostrar mensagem de sucesso
+                setTimeout(() => {
+                    loadingScreen.style.display = 'none';
+                    successMessage.style.display = 'block';
+                    
+                    // Ocultar mensagem após 5 segundos
+                    setTimeout(() => {
+                        successMessage.style.display = 'none';
+                    }, 5000);
+                }, 1000);
+            })
+            .catch(error => {
+                console.error('Erro ao enviar e-mail:', error);
+                loadingScreen.style.display = 'none';
+                errorMessage.style.display = 'block';
+                
+                // Ocultar mensagem de erro após 5 segundos
+                setTimeout(() => {
+                    errorMessage.style.display = 'none';
+                }, 5000);
+            });
+        }
+
+        function signDocument() {
+            const userName = '<%= typeof nome !== "undefined" ? nome : "N/A" %>';
+            const signatureElement = document.getElementById('userSignature');
+            signatureElement.textContent = userName;
+            signatureElement.style.fontWeight = 'bold';
+            signatureElement.style.color = '#1B4D3E';
+        }
+
+        function signDocument2() {
+            const userName = '<%= typeof nome !== "undefined" ? nome : "N/A" %>';
+            const signatureElement = document.getElementById('userSignature2');
+            signatureElement.textContent = userName;
+            signatureElement.style.fontWeight = 'bold';
+            signatureElement.style.color = '#1B4D3E';
         }
     </script>
 
 </body>
 </html>
-
