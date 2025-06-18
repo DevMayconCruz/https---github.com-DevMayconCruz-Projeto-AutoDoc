@@ -59,26 +59,23 @@ const app = express();
 const port = 3000;
 
 // Configuração do body-parser
-app.use(bodyParser.urlencoded({ extended: true })); // Use extended: true for potentially complex form data
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 // Configurar o EJS como view engine
 app.set('view engine', 'ejs');
-app.set('views', path.join(__dirname, 'views')); // Certifique-se de que o diretório 'views' existe e contém formularios.ejs
+app.set('views', path.join(__dirname, 'views'));
 
-// Configurar o diretório público para servir arquivos estáticos (CSS, JS, Imagens do HTML/EJS)
-// Adicione outros diretórios se necessário
-app.use(express.static(__dirname)); // Serve arquivos do diretório raiz (como Dados-colaborador.html)
-app.use(express.static(path.join(__dirname, 'public'))); // Exemplo: se tiver uma pasta 'public'
-app.use(express.static(path.join(__dirname, 'img'))); // Para imagens locais referenciadas
-app.use('/img', express.static('\\\\Gpk-fs02\\Publico\\TI\\Projeto-AutoDocServidor\\img')); // Para imagens na rede
+// Configurar o diretório público para servir arquivos estáticos
+app.use(express.static(__dirname));
+app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'img')));
+app.use('/img', express.static('\\\\Gpk-fs02\\Publico\\TI\\Projeto-AutoDocServidor\\img'));
 
-// Função para obter o caminho do arquivo informacoes.txt em um caminho de rede fixo
+// Função para obter o caminho do arquivo informacoes.txt
 function getUserInfoFilePath() {
-    return '\\\\gpk-fs02\\Publico\\TI\\Projeto-AutoDocServidor\\CapturaDoSistema\\informacoes.txt'; // Caminho de rede fixo
+    return '\\\\gpk-fs02\\Publico\\TI\\Projeto-AutoDocServidor\\CapturaDoSistema\\informacoes.txt';
 }
-
-
 
 // Função para extrair o BLOCO de texto bruto do usuário especificado
 function collectUserDataBlock(usuario, lines) {
@@ -91,73 +88,102 @@ function collectUserDataBlock(usuario, lines) {
         const trimmedLine = line.trim();
         if (trimmedLine.startsWith(startMarker)) {
             collecting = true;
-            // Não incluir a linha do marcador inicial no bloco,
-            // userBlock.push(line);
-            continue; // Pula para a próxima linha
+            continue;
         }
 
         if (collecting) {
             if (trimmedLine.startsWith(endMarker)) {
                 collecting = false;
-                // Não incluir a linha do marcador final no bloco, 
-                // userBlock.push(line);
-                break; // Encontrou o fim do bloco do usuário
+                break;
             }
-            // Adiciona a linha atual ao bloco do usuário
             userBlock.push(line);
         }
     }
-    // Retorna as linhas como um único texto ou array, dependendo de como será usado no EJS
-    return userBlock.join('\n'); // Retorna como string única com quebras de linha
+    return userBlock.join('\n');
 }
-
-// Função para analisar os dados DENTRO do bloco do usuário (exemplo)
-// Adapte esta função conforme a estrutura exata dos dados que você precisa extrair do bloco
 function parseUserData(userBlockString) {
     const userData = {
         equipamentos: [],
-        outrasInfos: {}
-        // Adicione outras estruturas conforme necessário
+        outrasInfos: {},
+        fonte: null
     };
+    
     const lines = userBlockString.split('\n');
     let currentEquipment = null;
 
     lines.forEach(line => {
         line = line.trim();
-        if (!line) return; // Ignora linhas vazias
+        if (!line) return;
 
+        // Processar equipamentos normais
         if (line.startsWith('Descritivo:')) {
+            const descritivo = line.split(':')[1]?.trim();
+            
+            // Finalizar equipamento anterior
             if (currentEquipment) {
                 userData.equipamentos.push(currentEquipment);
             }
-            currentEquipment = { descritivo: line.split(':')[1]?.trim() };
-        } else if (currentEquipment) {
-            if (line.startsWith('Fabricante:')) {
-                currentEquipment.fabricante = line.split(':')[1]?.trim();
-            } else if (line.startsWith('Modelo:')) {
-                currentEquipment.modelo = line.split(':')[1]?.trim();
-            } else if (line.startsWith('Número de Série:') || line.startsWith('Nmero de Srie:')) {
-                 // Tratar possível problema de encoding no marcador também
-                currentEquipment.numeroSerie = line.split(':')[1]?.trim();
+            
+            // Verificar se é uma fonte VÁLIDA (com informações subsequentes)
+            if (descritivo.toLowerCase() === 'fonte') {
+                // Não criar objeto ainda, só se tiver dados
+                currentEquipment = null;
+            } else {
+                // É um equipamento normal
+                currentEquipment = { descritivo };
             }
-            // Adicione outras extrações de dados do equipamento aqui
-        } else {
-            // Processar outras linhas que não são de equipamento, se houver
+        }
+        // Processar fabricante
+        else if (line.startsWith('Fabricante:')) {
+            const valor = line.split(':')[1]?.trim();
+            
+            if (currentEquipment) {
+                currentEquipment.fabricante = valor;
+            } 
+            // Se não temos equipamento atual, pode ser uma fonte
+            else if (!userData.fonte) {
+                userData.fonte = { descritivo: 'fonte', fabricante: valor };
+            } else if (userData.fonte) {
+                userData.fonte.fabricante = valor;
+            }
+        }
+        // Processar modelo
+        else if (line.startsWith('Modelo:')) {
+            const valor = line.split(':')[1]?.trim();
+            
+            if (currentEquipment) {
+                currentEquipment.modelo = valor;
+            } 
+            // Se não temos equipamento atual, pode ser uma fonte
+            else if (!userData.fonte) {
+                userData.fonte = { descritivo: 'fonte', modelo: valor };
+            } else if (userData.fonte) {
+                userData.fonte.modelo = valor;
+            }
+        }
+        // Processar número de série
+        else if (line.startsWith('Número de Série:') || line.startsWith('Nmero de Srie:')) {
+            const valor = line.split(':')[1]?.trim();
+            if (currentEquipment) {
+                currentEquipment.numeroSerie = valor;
+            }
+        }
+        // Processar outras informações
+        else {
             const parts = line.split(':');
             if (parts.length >= 2) {
-                const key = parts[0].trim().replace(/\[/g, '').replace(/\]/g, ''); // Limpa chave se necessário
+                const key = parts[0].trim();
                 const value = parts.slice(1).join(':').trim();
                 userData.outrasInfos[key] = value;
             }
         }
     });
 
-    // Adiciona o último equipamento processado
+    // Adicionar o último equipamento processado
     if (currentEquipment) {
         userData.equipamentos.push(currentEquipment);
     }
 
-    console.log('Dados parseados do bloco:', JSON.stringify(userData, null, 2));
     return userData;
 }
 
@@ -181,137 +207,77 @@ app.get('/dados-colaborador', (req, res) => {
 // --- ROTA PRINCIPAL PARA PROCESSAR FORMULÁRIO E DADOS DO TXT ---
 
 app.post('/formularios', (req, res) => {
-    // 1. Obter dados do formulário
     const formData = req.body;
-    const { usuario, email, telefone, tipoUso } = formData; // Pega o usuário e os novos campos informados no form
+    const { usuario, email, telefone, tipoUso } = formData;
 
     if (!usuario) {
         return res.status(400).send('Nome de usuário não fornecido no formulário.');
     }
 
-    // 2. Obter a data atual
     const dataAtual = new Date().toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric' });
 
-    // 3. Ler e filtrar o arquivo informacoes.txt
     const filePath = getUserInfoFilePath();
-    // Tentar ler com 'latin1' devido ao erro de encoding UTF-8. Ajuste se necessário (ex: 'cp1252')
     fs.readFile(filePath, 'latin1', (err, fileContent) => {
-        let userDataBlock = ''; // Bloco de texto bruto do usuário
-        let parsedUserData = {}; // Dados estruturados após parse
+        let userDataBlock = '';
+        let parsedUserData = {};
         let fileReadError = null;
 
         if (err) {
             console.error(`Erro ao ler o arquivo ${filePath}:`, err);
             fileReadError = `Erro ao ler o arquivo de informações (${filePath}). Verifique o caminho e as permissões.`;
-            // Continuar mesmo com erro para renderizar o formulário, mas indicar o problema
         } else {
-            const lines = fileContent.split(/\r?\n/); // Divide por quebra de linha Windows/Unix
+            const lines = fileContent.split(/\r?\n/);
             userDataBlock = collectUserDataBlock(usuario, lines);
 
             if (!userDataBlock) {
                 console.warn(`Bloco de dados para o usuário '${usuario}' não encontrado em ${filePath}.`);
                 fileReadError = `Bloco de dados para o usuário '${usuario}' não encontrado. Verifique o nome de usuário e o conteúdo do arquivo.`;
-                // Bloco não encontrado, mas continuar para renderizar o form
             } else {
-                 // Opcional: Fazer o parse do bloco se precisar dos dados estruturados no EJS
-                 parsedUserData = parseUserData(userDataBlock);
+                parsedUserData = parseUserData(userDataBlock);
             }
         }
 
-        // 4. Renderizar o template EJS
-        // Passar os dados do formulário, a data, o bloco de texto bruto e/ou os dados parseados
         res.render('formularios', {
-            // Dados do formulário
-            ...formData, // Passa todos os campos do formulário (nome, cpf, rg, etc.)
-            // Data
+            ...formData,
             dataAtual,
-            // Dados do arquivo TXT (escolha como passar para o EJS)
-            userDataBlock: userDataBlock, // Passa o bloco de texto bruto
-            parsedUserData: parsedUserData, // Passa os dados já parseados (se o parse foi feito)
-            // Informação sobre erros
-            fileReadError: fileReadError,
-            // Novos campos específicos
+            userDataBlock,
+            parsedUserData,
+            fileReadError,
             email: email || '',
             telefone: telefone || '',
-            tipoUso: tipoUso || 'P' // Padrão para Permanente se não for especificado
+            tipoUso: tipoUso || 'P',
+            cpf: formData.cpf || '',
+            // Valores padrão para as assinaturas
+            assinatura1: "Gramado Parks-T.I",
+            assinatura2: "",
+            assinatura3: "Gramado Parks-T.I",
+            assinatura4: ""
         });
     });
 });
 
-
-// Rota antiga para retornar informações do usuário (pode ser removida se não usada diretamente pelo frontend)
-/*
-app.post('/getUserData', (req, res) => {
-    const { usuario } = req.body;
-    const filePath = getUserInfoFilePath();
-
-    fs.readFile(filePath, 'latin1', (err, data) => { // Usar latin1
-        if (err) {
-            return res.status(500).send('Erro ao ler o arquivo');
-        }
-        const lines = data.split(/\r?\n/);
-        const userBlock = collectUserDataBlock(usuario, lines);
-        if (!userBlock) {
-             return res.status(404).json({ error: `Usuário '${usuario}' não encontrado.` });
-        }
-        // Decidir se retorna o bloco bruto ou parseado
-        const parsedData = parseUserData(userBlock);
-        res.json(parsedData); // Exemplo: retorna dados parseados
-    });
-});
-*/
-
-// Rota para retornar a data atual (se usada pelo frontend)
+// Rota para retornar a data atual
 app.get('/getDate', (req, res) => {
     const date = new Date().toLocaleDateString('pt-BR');
     res.json({ data: date });
 });
 
-// Rota para retornar informações do PC e monitores 
-// Esta rota parece ler o *mesmo* arquivo informacoes.txt mas usa uma função parseData diferente
-// e não filtra por usuário. Avaliar se deve ser mantida, removida ou integrada.
-/*
-app.get('/getPCInfo', (req, res) => {
-    const filePath = getUserInfoFilePath();
-    fs.readFile(filePath, 'latin1', (err, data) => { // Usar latin1
-        if (err) {
-            return res.status(500).send('Erro ao ler o arquivo');
-        }
-        const lines = data.split(/\r?\n/);
-        const equipmentData = parseData(lines); // CUIDADO: parseData original não filtra por usuário
-        res.json(equipmentData);
-    });
-});
-
-// Função parseData original 
-function parseData(lines) {
-    // ... (código original da função parseData)
-    // Esta função lia o arquivo inteiro sem filtro de usuário.
-}
-*/
-
 // Endpoint para executar o arquivo batch
 app.post('/execute-batch', (req, res) => {
-    // ATENÇÃO: Verifique se este caminho está correto e acessível pelo servidor Node.js
     const batchFilePath = '\\\\gpk-fs02\\Publico\\TI\\Projeto-AutoDocServidor\\Conclusao\\final.bat';
 
-    exec(`"${batchFilePath}"`, { encoding: 'latin1' }, (error, stdout, stderr) => { // Especificar encoding para saída do batch
+    exec(`"${batchFilePath}"`, { encoding: 'latin1' }, (error, stdout, stderr) => {
         if (error) {
             console.error(`Erro ao executar o batch: ${error.message}`);
-            // Tentar decodificar stderr com latin1 também
             const decodedStderr = stderr ? Buffer.from(stderr, 'binary').toString('latin1') : '';
-            console.error(`Stderr (raw): ${stderr}`);
-            console.error(`Stderr (decoded): ${decodedStderr}`);
             return res.status(500).send(`Erro ao executar o script batch: ${error.message}. Stderr: ${decodedStderr}`);
         }
 
-        // Tentar decodificar stdout e stderr com latin1
         const decodedStdout = stdout ? Buffer.from(stdout, 'binary').toString('latin1') : '';
         const decodedStderr = stderr ? Buffer.from(stderr, 'binary').toString('latin1') : '';
 
         if (stderr) {
             console.warn(`Stderr (decoded): ${decodedStderr}`);
-            // Decidir se stderr deve ser tratado como erro dependendo do batch
         }
 
         console.log(`Stdout (decoded): ${decodedStdout}`);
@@ -323,7 +289,7 @@ app.post('/execute-batch', (req, res) => {
 const emailTransporter = nodemailer.createTransport({
     host: 'smtp.gmail.com',
     port: 465,
-    secure: true, // true para 465, false para outras portas
+    secure: true,
     auth: {
         user: 'termo.equipamentos@gramadoparks.com',
         pass: 'heerbrxuraixpefx'
@@ -369,10 +335,26 @@ async function generatePDFFromHTML(htmlContent, outputPath) {
 // Endpoint para envio de e-mail
 app.post('/enviar-email', async (req, res) => {
     try {
-        const { email, nome, unidade, setor } = req.body;
+        const { 
+            email, 
+            nome, 
+            unidade, 
+            setor, 
+            usuario, 
+            telefone, 
+            cpf, 
+            rg, 
+            cnpj, 
+            tipoUsuario, 
+            tipoUso, 
+            assinatura1, 
+            assinatura2,
+            assinatura3,
+            assinatura4
+        } = req.body;
 
-        if (!email || !nome || !unidade) {
-            return res.status(400).send('Dados obrigatórios não fornecidos (email, nome, unidade)');
+        if (!email || !nome || !unidade || !assinatura2 || !assinatura4) {
+            return res.status(400).send('Dados obrigatórios não fornecidos (email, nome, unidade, assinatura do Colaborador/Prestador de Serviço e assinatura do Gestor)');
         }
 
         // Renderizar o formulário EJS com os dados
@@ -385,11 +367,11 @@ app.post('/enviar-email', async (req, res) => {
             try {
                 const fileContent = await fs.promises.readFile(filePath, "latin1");
                 const lines = fileContent.split(/\r?\n/);
-                userDataBlock = collectUserDataBlock(req.body.usuario, lines);
+                userDataBlock = collectUserDataBlock(usuario, lines);
 
                 if (!userDataBlock) {
-                    console.warn(`Bloco de dados para o usuário '${req.body.usuario}' não encontrado em ${filePath}.`);
-                    fileReadError = `Bloco de dados para o usuário '${req.body.usuario}' não encontrado.`;
+                    console.warn(`Bloco de dados para o usuário '${usuario}' não encontrado em ${filePath}.`);
+                    fileReadError = `Bloco de dados para o usuário '${usuario}' não encontrado.`;
                 } else {
                     parsedUserData = parseUserData(userDataBlock);
                 }
@@ -400,11 +382,16 @@ app.post('/enviar-email', async (req, res) => {
 
             app.render("formularios", {
                 ...req.body,
-                usuario: req.body.usuario, // Garantir que 'usuario' é passado
+                usuario: usuario,
                 dataAtual: new Date().toLocaleDateString("pt-BR"),
                 userDataBlock: userDataBlock,
                 parsedUserData: parsedUserData,
-                fileReadError: fileReadError
+                fileReadError: fileReadError,
+                // Passar as assinaturas para o template
+                assinatura1: assinatura1 || "Gramado Parks-T.I",
+                assinatura2: assinatura2 || "",
+                assinatura3: assinatura3 || "Gramado Parks-T.I",
+                assinatura4: assinatura4 || ""
             }, (err, html) => {
                 if (err) reject(err);
                 else resolve(html);
@@ -422,7 +409,6 @@ app.post('/enviar-email', async (req, res) => {
         const pdfPath1 = path.join(pdfDir, `termo_empresa_${timestamp}.pdf`);
         const pdfPath2 = path.join(pdfDir, `termo_${nome.replace(/\s+/g, '_')}_${unidade.replace(/\s+/g, '_')}_${timestamp}.pdf`);
 
-        // Gerar ambos os PDFs (mesmo conteúdo, mas com nomes diferentes para empresa e usuário)
         const pdfGenerated1 = await generatePDFFromHTML(htmlContent, pdfPath1);
         const pdfGenerated2 = await generatePDFFromHTML(htmlContent, pdfPath2);
 
@@ -470,23 +456,7 @@ app.post('/enviar-email', async (req, res) => {
     }
 });
 
-// Rota antiga para obter o nome do usuário logado (REMOVER - lógica agora em /formularios)
-/*
-app.get('/getLoggedUser', (req, res) => {
-    const filePath = getUserInfoFilePath();
-    fs.readFile(filePath, 'latin1', (err, data) => { // Usar latin1
-        if (err) {
-            console.error('Erro ao ler o arquivo:', err);
-            return res.status(500).send('Erro ao ler o arquivo.');
-        }
-        const match = data.match(/UsuarioLogado:\s*(\S+)/);
-        const loggedUser = match ? match[1] : 'Usuário não encontrado';
-        res.json({ loggedUser });
-    });
-});
-*/
-
-// Iniciar o servidor escutando em todas as interfaces de rede (0.0.0.0)
+// Iniciar o servidor
 app.listen(port, '0.0.0.0', () => {
-    console.log(`Servidor rodando em http://localhost:${port} e acessível na rede local (ex: http://192.168.0.22:${port})`);
+    console.log(`Servidor rodando em http://localhost:${port} e acessível na rede local (ex: http://192.168.0.33:${port})`);
 });
