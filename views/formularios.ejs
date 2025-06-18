@@ -1,10 +1,13 @@
+
+   
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Termo de Cessão, Guarda, Uso e Devolução de Equipamento</title>
-    <style>
+   
+        <style>
         @media print {
             @page {
                 size: A4 portrait; /* Orientação Retrato para permitir duas páginas */
@@ -400,34 +403,29 @@
             margin-bottom: 15px;
             border: 1px solid #f5c6cb;
         }
-        .raw-data-block {
-            background-color: #f8f9fa;
-            border: 1px solid #dee2e6;
-            border-radius: 4px;
-            padding: 10px;
-            margin-bottom: 15px;
-            font-family: monospace;
-            font-size: 12px;
-            white-space: pre-wrap;
-            max-height: 200px;
-            overflow-y: auto;
-            display: none;
+        .signature-warning {
+            background-color: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 20px auto;
+            max-width: 600px;
+            text-align: center;
+            color: #856404;
+            font-weight: bold;
         }
-    </style>
-</head>
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Termo de Cessão de Equipamentos</title>
-    <style>
-        /* ... (seus estilos CSS existentes permanecem aqui) ... */
+        .email-button:disabled {
+            background-color: #6c757d !important;
+            cursor: not-allowed !important;
+            opacity: 0.6;
+        }
+        .email-button:disabled:hover {
+            background-color: #6c757d !important;
+        }
     </style>
 </head>
 <body>
 
-    <!-- Informação do usuário logado (fora do container principal para não imprimir) -->
     <div class="user-info-header">
         Usuário logado: <span id="loggedUser"><%= typeof usuario !== 'undefined' ? usuario : 'N/A' %></span>
     </div>
@@ -439,9 +437,7 @@
     <% } %>
 
     <div class="container" id="content">
-        <!-- Conteúdo principal do termo -->
         <div>
-            <!-- Cabeçalho com a imagem gpk.png à esquerda e título ao lado -->
             <div class="header-container">
                 <div class="header-image">
                     <img src="/img/gpk.png" alt="GPK Logo">
@@ -450,11 +446,9 @@
                     FORMULÁRIO<br>
                     TERMO DE CESSÃO, GUARDA, USO E DEVOLUÇÃO DE EQUIPAMENTO
                 </div>
-                <!-- Espaço vazio para manter o título centralizado -->
                 <div style="width: 80px;"></div>
             </div>
 
-            <!-- Dados de Identificação -->
             <div class="section-title">DADOS DE IDENTIFICAÇÃO</div>
             <table class="identification-table">
                 <tr>
@@ -463,7 +457,14 @@
                     <td style="width: 25%;"><span class="label">Razão Social (se PJ):</span> <% if (tipoUsuario === 'Prestador de Serviços') { %><%= typeof cnpj !== 'undefined' ? cnpj : 'N/A' %><% } else { %> N/A <% } %></td>
                 </tr>
                 <tr>
-                    <td><span class="label">CPF:</span> <% if (tipoUsuario === 'Colaborador') { %><%= typeof cpf !== 'undefined' ? cpf : 'N/A' %><% } else { %> N/A <% } %></td>
+                    <td>
+                        <span class="label">CPF:</span> 
+                        <% if (tipoUsuario === 'Colaborador') { %>
+                            <%= typeof cpf !== 'undefined' ? cpf : 'N/A' %>
+                        <% } else { %>
+                            N/A 
+                        <% } %>
+                    </td>
                     <td><span class="label">Área/Diretoria:</span> <%= typeof setor !== 'undefined' ? setor : 'N/A' %></td>
                     <td><span class="label">Telefone:</span> <%= typeof telefone !== 'undefined' ? telefone : '' %></td>
                 </tr>
@@ -472,51 +473,73 @@
                 </tr>
             </table>
 
-            <!-- Identificação do(s) Equipamento(s) -->
             <div class="section-title">IDENTIFICAÇÃO DO(S) EQUIPAMENTO(S)</div>
-            <table class="equipment-table">
-                <thead>
-                    <tr>
-                        <th style="width: 5%;">Item</th>
-                        <th style="width: 30%;">Descritivo</th>
-                        <th style="width: 15%;">Marca</th>
-                        <th style="width: 15%;">Modelo</th>
-                        <th style="width: 15%;">Serial</th>
-                        <th style="width: 10%;">Uso<br><span style="font-size: 6pt; font-weight: normal;">(P/T)</span></th>
-                        <th style="width: 10%;">Visto usuário</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <% let itemCounter = 0; %>
-                    <% if (typeof parsedUserData !== 'undefined' && parsedUserData.equipamentos && parsedUserData.equipamentos.length > 0) { %>
-                        <% parsedUserData.equipamentos.forEach((equip, index) => { %>
-                            <% if (!(equip.descritivo && equip.descritivo.toLowerCase().includes('monitor') && equip.modelo && equip.modelo.toLowerCase().includes('desconhecido'))) { %>
-                                <% itemCounter++; %>
-                                <tr>
-                                    <td style="text-align: center;"><%= itemCounter %></td>
-                                    <td><%= equip.descritivo || 'N/A' %></td>
-                                    <td><%= equip.fabricante || 'N/A' %></td>
-                                    <td><%= equip.modelo || 'N/A' %></td>
-                                    <td><%= equip.numeroSerie || 'N/A' %></td>
-                                    <td style="text-align: center;"><%= typeof tipoUso !== 'undefined' ? tipoUso : 'P' %></td>
-                                    <td style="text-align: center;"><%= typeof nome !== 'undefined' ? nome : 'N/A' %></td>
-                                </tr>
-                            <% } %>
-                        <% }); %>
-                        <% if (itemCounter === 0) { %>
-                             <tr>
-                                <td colspan="7" style="text-align: center;">Nenhum equipamento externo encontrado para este usuário.</td>
-                            </tr>
-                        <% } %>
-                    <% } else { %>
-                        <tr>
-                            <td colspan="7" style="text-align: center;">Nenhum equipamento listado para este usuário.</td>
-                        </tr>
-                    <% } %>
-                </tbody>
-            </table>
+           <table class="equipment-table">
+    <thead>
+        <tr>
+            <th style="width: 5%;">Item</th>
+            <th style="width: 30%;">Descritivo</th>
+            <th style="width: 15%;">Marca</th>
+            <th style="width: 15%;">Modelo</th>
+            <th style="width: 15%;">Serial</th>
+            <th style="width: 10%;">Uso<br><span style="font-size: 6pt; font-weight: normal;">(P/T)</span></th>
+            <th style="width: 10%;">Visto usuário</th>
+        </tr>
+    </thead>
+    <tbody>
+      <tbody>
+      <tbody>
+   <!-- Tabela de equipamentos -->
+<tbody>
+    <% let itemCounter = 0; %>
+    
+    <!-- Equipamentos normais -->
+    <% if (typeof parsedUserData !== 'undefined' && parsedUserData.equipamentos && parsedUserData.equipamentos.length > 0) { %>
+        <% parsedUserData.equipamentos.forEach((equip, index) => { %>
+            <% 
+                const isMonitor = equip.descritivo && equip.descritivo.toLowerCase().includes('monitor');
+                const isUnknownModel = equip.modelo && equip.modelo.toLowerCase().includes('desconhecido');
+                
+                // Não mostrar monitores com modelo desconhecido
+                if (!(isMonitor && isUnknownModel)) { 
+            %>
+                <% itemCounter++; %>
+                <tr>
+                    <td style="text-align: center;"><%= itemCounter %></td>
+                    <td><%= equip.descritivo || 'N/A' %></td>
+                    <td><%= equip.fabricante || 'N/A' %></td>
+                    <td><%= equip.modelo || 'N/A' %></td>
+                    <td><%= equip.numeroSerie || 'N/A' %></td>
+                    <td style="text-align: center;"><%= typeof tipoUso !== 'undefined' ? tipoUso : 'P' %></td>
+                    <td style="text-align: center;"><%= typeof nome !== 'undefined' ? nome : 'N/A' %></td>
+                </tr>
+            <% } %>
+        <% }); %>
+    <% } %>
+    
+    <!-- Fonte (apenas se tiver informações válidas) -->
+    <% if (parsedUserData.fonte && (parsedUserData.fonte.fabricante || parsedUserData.fonte.modelo)) { %>
+        <% itemCounter++; %>
+        <tr>
+            <td style="text-align: center;"><%= itemCounter %></td>
+            <td><%= parsedUserData.fonte.descritivo || 'fonte' %></td>
+            <td><%= parsedUserData.fonte.fabricante || 'N/A' %></td>
+            <td><%= parsedUserData.fonte.modelo || 'N/A' %></td>
+            <td>N/A</td>
+            <td style="text-align: center;"><%= typeof tipoUso !== 'undefined' ? tipoUso : 'P' %></td>
+            <td style="text-align: center;"><%= typeof nome !== 'undefined' ? nome : 'N/A' %></td>
+        </tr>
+    <% } %>
+    
+    <% if (itemCounter === 0) { %>
+        <tr>
+            <td colspan="7" style="text-align: center;">Nenhum equipamento externo encontrado para este usuário.</td>
+        </tr>
+    <% } %>
+</tbody>
 
-            <!-- Regras, Responsabilidades e Declaração de Cessão de Uso -->
+</table>
+
             <div class="section-title">REGRAS, RESPONSABILIDADES E DECLARAÇÃO DE CESSÃO DE USO</div>
             <div style="border: 1px solid #B3B3B3; border-top: none; padding: 3px;">
                 <div class="rules-section">
@@ -534,70 +557,88 @@
                     Gerado em: <%= new Date().toLocaleDateString('pt-BR') %>, <%= new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }) %>
                 </div>
 
-                <!-- Assinaturas Centralizadas -->
                 <div class="signature-section">
-                    <div class="signature-line">Gramado Parks-T.I</div>
+                    <div class="signature-line"><%= typeof assinatura1 !== 'undefined' ? assinatura1 : "Gramado Parks-T.I" %></div>
                     <div class="signature-label">Responsável pela Entrega (nome/assinatura)</div>
                     
-                    <div class="signature-line" id="userSignature"></div>
+                    <div class="signature-line" id="userSignature"><%= typeof assinatura2 !== 'undefined' ? assinatura2 : "" %></div>
                     <div class="signature-label">
                         Assinatura Usuário/Responsável Equipamento(s)
-                        <button class="sign-button" onclick="signDocument()">Assinar Agora</button>
+                        <button class="sign-button" onclick="signFirstPage()">Assinar Agora</button>
                     </div>
                 </div>
             </div>
 
-            <!-- Declaração de Devolução -->
             <div class="section-title">DECLARAÇÃO DE DEVOLUÇÃO</div>
             <div style="border: 1px solid #B3B3B3; border-top: none; padding: 3px;">
                 Por gentileza, eu, __________________________________________________________________________, declaro que o(s) equipamento(s) sob a minha guarda foi(foram) devolvido(s) nas seguintes condições:
-                <table class="declaration-table" style="margin-top: 3px;">
-                    <thead>
-                        <tr>
-                            <th style="width: 5%;">Item</th>
-                            <th style="width: 45%;">Situação</th>
-                            <th style="width: 30%;">Descrição do Estado/Situação do Equipamento</th>
-                            <th style="width: 10%;">Data</th>
-                            <th style="width: 10%;">Visto usuário</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <% let returnItemCounter = 0; %>
-                        <% if (typeof parsedUserData !== 'undefined' && parsedUserData.equipamentos && parsedUserData.equipamentos.length > 0) { %>
-                            <% parsedUserData.equipamentos.forEach((equip, index) => { %>
-                                <% if (!(equip.descritivo && equip.descritivo.toLowerCase().includes('monitor') && equip.modelo && equip.modelo.toLowerCase().includes('desconhecido'))) { %>
-                                    <% returnItemCounter++; %>
-                                    <tr>
-                                        <td style="text-align: center;"><%= returnItemCounter %></td>
-                                        <td>
-                                            <span class="checkbox"></span><span class="checkbox-label">Em perfeito estado</span>
-                                            <span class="checkbox"></span><span class="checkbox-label">Apresentando defeito</span>
-                                            <span class="checkbox"></span><span class="checkbox-label">Faltando peças ou acessórios</span>
-                                        </td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                    </tr>
-                                <% } %>
-                            <% }); %>
-                            <% if (returnItemCounter === 0) { %>
-                                <tr>
-                                    <td colspan="5" style="text-align: center;">Nenhum equipamento externo listado para devolução.</td>
-                                </tr>
-                            <% } %>
-                        <% } else { %>
-                            <tr>
-                                <td colspan="5" style="text-align: center;">Nenhum equipamento listado para devolução.</td>
-                            </tr>
-                        <% } %>
-                    </tbody>
-                </table>
+           <table class="declaration-table" style="margin-top: 3px;">
+    <thead>
+        <tr>
+            <th style="width: 5%;">Item</th>
+            <th style="width: 45%;">Situação</th>
+            <th style="width: 30%;">Descrição do Estado/Situação do Equipamento</th>
+            <th style="width: 10%;">Data</th>
+            <th style="width: 10%;">Visto usuário</th>
+        </tr>
+    </thead>
+    <tbody>
+      <tbody>
+   <tbody>
+    <% let returnItemCounter = 0; %>
+    
+    <!-- Equipamentos normais -->
+    <% if (typeof parsedUserData !== 'undefined' && parsedUserData.equipamentos && parsedUserData.equipamentos.length > 0) { %>
+        <% parsedUserData.equipamentos.forEach((equip, index) => { %>
+            <% 
+                const isMonitor = equip.descritivo && equip.descritivo.toLowerCase().includes('monitor');
+                const isUnknownModel = equip.modelo && equip.modelo.toLowerCase().includes('desconhecido');
+                
+                if (!(isMonitor && isUnknownModel)) { 
+            %>
+                <% returnItemCounter++; %>
+                <tr>
+                    <td style="text-align: center;"><%= returnItemCounter %></td>
+                    <td>
+                        <span class="checkbox"></span><span class="checkbox-label">Em perfeito estado</span>
+                        <span class="checkbox"></span><span class="checkbox-label">Apresentando defeito</span>
+                        <span class="checkbox"></span><span class="checkbox-label">Faltando peças ou acessórios</span>
+                    </td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            <% } %>
+        <% }); %>
+    <% } %>
+    
+    <!-- Fonte na devolução -->
+    <% if (parsedUserData.fonte) { %>
+        <% returnItemCounter++; %>
+        <tr>
+            <td style="text-align: center;"><%= returnItemCounter %></td>
+            <td>
+                <span class="checkbox"></span><span class="checkbox-label">Em perfeito estado</span>
+                <span class="checkbox"></span><span class="checkbox-label">Apresentando defeito</span>
+                <span class="checkbox"></span><span class="checkbox-label">Faltando peças ou acessórios</span>
+            </td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+    <% } %>
+    
+    <% if (returnItemCounter === 0) { %>
+        <tr>
+            <td colspan="5" style="text-align: center;">Nenhum equipamento externo listado para devolução.</td>
+        </tr>
+    <% } %>
+</tbody>
+</table>
             </div>
         </div>
 
-        <!-- Quebra de página para os termos adicionais -->
         <div class="page-break">
-            <!-- Cabeçalho repetido na segunda página -->
             <div class="header-container">
                 <div class="header-image">
                     <img src="/img/gpk.png" alt="GPK Logo">
@@ -609,7 +650,6 @@
                 <div style="width: 80px;"></div>
             </div>
 
-            <!-- Termos Adicionais -->
             <div class="section-title">TERMOS E CONDIÇÕES ADICIONAIS</div>
             <div class="additional-terms">
                 <p><strong>Declaro ter ciência e estar de acordo com os procedimentos descritos na Política PL.GC.028 Trabalho Remoto - Home Office e PL.GC.035 Entrega, Uso e Devolução de Equipamentos de TI e Periféricos, emitidas e divulgadas pela Gramado Parks, comprometendo-me a respeitá-las, cumprindo e aceitando-as plenamente, bem como o disposto abaixo:</strong></p>
@@ -641,20 +681,18 @@
                 </ol>
             </div>
 
-            <!-- Assinaturas Centralizadas na Segunda Página -->
             <div class="signature-section" style="margin-top: 30px;">
-                <div class="signature-line">Gramado Parks-T.I</div>
+                <div class="signature-line"><%= typeof assinatura3 !== 'undefined' ? assinatura3 : "Gramado Parks-T.I" %></div>
                 <div class="signature-label">Responsável pela Entrega (nome/assinatura)</div>
                 
-                <div class="signature-line" id="userSignature2"></div>
+                <div class="signature-line" id="userSignature2" style="margin-top: 20px;"><%= typeof assinatura4 !== 'undefined' ? assinatura4 : "" %></div>
                 <div class="signature-label">
                     Assinatura Usuário/Responsável Equipamento(s)
-                    <button class="sign-button" onclick="signDocument2()">Assinar Agora</button>
+                    <button class="sign-button" onclick="signSecondPage()">Assinar Agora</button>
                 </div>
             </div>
         </div>
 
-        <!-- Rodapé Fixo -->
         <div style="margin-top: auto;">
             <div class="internal-info">
                 INTERNO
@@ -666,17 +704,38 @@
             </div>
         </div>
 
-        <!-- Bloco de dados brutos (opcional, fora do fluxo principal) -->
         <% if (typeof userDataBlock !== 'undefined' && userDataBlock) { %>
         <div class="raw-data-block" id="rawDataBlock">
             <%= userDataBlock %>
         </div>
         <% } %>
 
-    </div> <!-- Fim .container -->
+    </div>
 
-    <!-- Botão de E-mail e Telas de Feedback (fora do container para não imprimir) -->
-    <button class="email-button" onclick="sendEmail()">
+    <div class="signature-warning" id="signatureWarning" style="
+        background-color: #fff3cd;
+        border: 1px solid #ffeaa7;
+        border-radius: 5px;
+        padding: 15px;
+        margin: 20px auto;
+        max-width: 600px;
+        text-align: center;
+        color: #856404;
+        font-weight: bold;
+        display: block;
+    ">
+        ⚠️ <strong>ATENÇÃO:</strong> Para enviar o termo por e-mail, é obrigatório que ambas as partes assinem o documento.<br>
+        <small style="font-weight: normal; margin-top: 5px; display: block;">
+            • O <strong>Colaborador/Prestador de Serviço</strong> deve assinar na primeira página<br>
+            • O <strong>Usuário/Responsável pelo Equipamento</strong> deve assinar na segunda página<br>
+            <em>Apenas após ambas as assinaturas o botão de envio será habilitado.</em>
+        </small>
+    </div>
+
+    <button class="email-button" id="sendEmailButton" onclick="sendEmail()" disabled style="
+        background-color: #6c757d;
+        cursor: not-allowed;
+    ">
         Enviar Termo por E-mail
     </button>
 
@@ -696,12 +755,89 @@
     </div>
 
     <script>
+        function signFirstPage() {
+            const userName = '<%= typeof nome !== "undefined" ? nome : "N/A" %>';
+            const currentDate = new Date().toLocaleDateString('pt-BR');
+            const currentTime = new Date().toLocaleTimeString('pt-BR');
+            const signatureText = `${userName} - Assinado em ${currentDate} às ${currentTime}`;
+            
+            // Atualiza apenas a primeira assinatura (página 1)
+            const signatureElement = document.getElementById('userSignature');
+            signatureElement.textContent = signatureText;
+            signatureElement.style.fontWeight = 'bold';
+            signatureElement.style.color = '#1B4D3E';
+            
+            checkSignatures();
+        }
+
+        function signSecondPage() {
+            const userName = '<%= typeof nome !== "undefined" ? nome : "N/A" %>';
+            const currentDate = new Date().toLocaleDateString('pt-BR');
+            const currentTime = new Date().toLocaleTimeString('pt-BR');
+            const signatureText = `${userName} - Assinado em ${currentDate} às ${currentTime}`;
+            
+            // Atualiza apenas a segunda assinatura (página 2)
+            const signatureElement2 = document.getElementById('userSignature2');
+            if(signatureElement2) {
+                signatureElement2.textContent = signatureText;
+                signatureElement2.style.fontWeight = 'bold';
+                signatureElement2.style.color = '#1B4D3E';
+            }
+            
+            checkSignatures();
+        }
+
+        function checkSignatures() {
+            const signature1 = document.getElementById('userSignature').textContent.trim();
+            const signature2 = document.getElementById('userSignature2').textContent.trim();
+            const sendButton = document.getElementById('sendEmailButton');
+            const warningDiv = document.getElementById('signatureWarning');
+            
+            const userName = '<%= typeof nome !== "undefined" ? nome : "N/A" %>';
+            const isSignature1Valid = signature1.includes(userName) && signature1.includes('Assinado em');
+            const isSignature2Valid = signature2.includes(userName) && signature2.includes('Assinado em');
+            
+            if (isSignature1Valid && isSignature2Valid) {
+                // Ambas as assinaturas estão presentes
+                sendButton.disabled = false;
+                sendButton.style.backgroundColor = '#007bff';
+                sendButton.style.cursor = 'pointer';
+                warningDiv.style.display = 'none';
+            } else {
+                // Faltam assinaturas
+                sendButton.disabled = true;
+                sendButton.style.backgroundColor = '#6c757d';
+                sendButton.style.cursor = 'not-allowed';
+                warningDiv.style.display = 'block';
+            }
+        }
+
+        // Verificar assinaturas ao carregar a página
+        document.addEventListener('DOMContentLoaded', function() {
+            checkSignatures();
+        });
+
         function sendEmail() {
+            // Verificar novamente se as assinaturas estão presentes antes de enviar
+            const signature1 = document.getElementById('userSignature').textContent.trim();
+            const signature2 = document.getElementById('userSignature2').textContent.trim();
+            const userName = '<%= typeof nome !== "undefined" ? nome : "N/A" %>';
+            
+            const isSignature1Valid = signature1.includes(userName) && signature1.includes('Assinado em');
+            const isSignature2Valid = signature2.includes(userName) && signature2.includes('Assinado em');
+            
+            if (!isSignature1Valid || !isSignature2Valid) {
+                alert('⚠️ ATENÇÃO: É obrigatório que ambas as partes assinem o documento antes de enviar o e-mail.\n\n' +
+                      '• Colaborador/Prestador de Serviço deve assinar na primeira página\n' +
+                      '• Usuário/Responsável pelo Equipamento deve assinar na segunda página\n\n' +
+                      'Por favor, complete todas as assinaturas antes de prosseguir.');
+                return;
+            }
+            
             const loadingScreen = document.getElementById('loadingScreen');
             const successMessage = document.getElementById('successMessage');
             const errorMessage = document.getElementById('errorMessage');
             
-            // Mostrar tela de carregamento
             loadingScreen.style.display = 'flex';
             successMessage.style.display = 'none';
             errorMessage.style.display = 'none';
@@ -710,7 +846,12 @@
             const progressElement = document.getElementById('progress');
             const percentageElement = document.getElementById('percentage');
 
-            // Coletar dados do formulário
+            // Coletar todas as assinaturas
+            const assinatura1 = document.querySelector('.signature-section .signature-line:first-child').textContent;
+            const assinatura2 = document.getElementById('userSignature').textContent;
+            const assinatura3 = document.querySelector('.page-break .signature-section .signature-line:first-child').textContent;
+            const assinatura4 = document.getElementById('userSignature2').textContent;
+
             const formData = {
                 nome: '<%= typeof nome !== "undefined" ? nome : "" %>',
                 unidade: '<%= typeof unidade !== "undefined" ? unidade : "" %>',
@@ -722,10 +863,13 @@
                 rg: '<%= typeof rg !== "undefined" ? rg : "" %>',
                 cnpj: '<%= typeof cnpj !== "undefined" ? cnpj : "" %>',
                 tipoUsuario: '<%= typeof tipoUsuario !== "undefined" ? tipoUsuario : "" %>',
-                tipoUso: '<%= typeof tipoUso !== "undefined" ? tipoUso : "P" %>'
+                tipoUso: '<%= typeof tipoUso !== "undefined" ? tipoUso : "P" %>',
+                assinatura1: assinatura1,
+                assinatura2: assinatura2,
+                assinatura3: assinatura3,
+                assinatura4: assinatura4
             };
 
-            // Função para atualizar a barra de progresso
             function updateProgress() {
                 if (progress < 100) {
                     progress += 1;
@@ -736,7 +880,6 @@
             }
             updateProgress();
 
-            // Enviar dados para o servidor
             fetch('/enviar-email', {
                 method: 'POST',
                 headers: {
@@ -752,17 +895,14 @@
                 }
             })
             .then(data => {
-                // Completar barra de progresso
                 progress = 100;
                 progressElement.style.width = '100%';
                 percentageElement.textContent = '100%';
                 
-                // Mostrar mensagem de sucesso
                 setTimeout(() => {
                     loadingScreen.style.display = 'none';
                     successMessage.style.display = 'block';
                     
-                    // Ocultar mensagem após 5 segundos
                     setTimeout(() => {
                         successMessage.style.display = 'none';
                     }, 5000);
@@ -773,27 +913,10 @@
                 loadingScreen.style.display = 'none';
                 errorMessage.style.display = 'block';
                 
-                // Ocultar mensagem de erro após 5 segundos
                 setTimeout(() => {
                     errorMessage.style.display = 'none';
                 }, 5000);
             });
-        }
-
-        function signDocument() {
-            const userName = '<%= typeof nome !== "undefined" ? nome : "N/A" %>';
-            const signatureElement = document.getElementById('userSignature');
-            signatureElement.textContent = userName;
-            signatureElement.style.fontWeight = 'bold';
-            signatureElement.style.color = '#1B4D3E';
-        }
-
-        function signDocument2() {
-            const userName = '<%= typeof nome !== "undefined" ? nome : "N/A" %>';
-            const signatureElement = document.getElementById('userSignature2');
-            signatureElement.textContent = userName;
-            signatureElement.style.fontWeight = 'bold';
-            signatureElement.style.color = '#1B4D3E';
         }
     </script>
 
