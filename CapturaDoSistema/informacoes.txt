@@ -1,40 +1,68 @@
 
+
+
+
+
+
+
+
+
+
+
+
 UsuarioLogado: maycon.cruz
-Data: 02/06/2025
+Data: 18/06/2025
 Descritivo: Notebook
 Fabricante: Dell Inc.
 Modelo: Vostro 5481
 Número de Série: 70J6K03
-Descritivo: Monitor 1
+Descritivo: fonte externa
+Fabricante: Dell
+Modelo: Vostro 5481
+Descritivo: Monitor Externo 1
 Fabricante: LGD
 Modelo: Desconhecido
 Número de Série: 0
-Descritivo: Monitor 2
-Fabricante: SAM
-Modelo: S24D390
-Número de Série: 1496462137
+Descritivo: Monitor Externo 2
+Fabricante: DEL
+Modelo: DELL P2319H
+Número de Série: HQL2JS2
 FimDeColetaDeDadosDe: maycon.cruz
 
 
-UsuarioLogado: anne.vogt
-Data: 02/06/2025
+
+
+
+UsuarioLogado: renan.menegais
+Data: 18/06/2025
 Descritivo: Notebook
 Fabricante: Dell Inc.
-Modelo: Latitude 3420
-Número de Série: F3GXYL3
-Descritivo: Monitor 1
+Modelo: Latitude 3400
+Número de Série: 9J8NS53
+Descritivo: Monitor Externo 1
+Fabricante: CMN
+Modelo: Desconhecido
+Número de Série: 0
+Descritivo: Monitor Externo 2
 Fabricante: DEL
 Modelo: DELL P2422H
 Número de Série: DT1FZM3
-Descritivo: Monitor 2
-Fabricante: BOE
-Modelo: Desconhecido
-Número de Série: 0
-FimDeColetaDeDadosDe: anne.vogt
+FimDeColetaDeDadosDe: renan.menegais
 
 
 
-
-
-
-
+UsuarioLogado: bruno.ferreira
+Data: 24/06/2025
+Descritivo: Notebook
+Fabricante: Dell Inc.
+Modelo: Latitude 3420
+Número de Série: DLZH8K3
+Descritivo: Monitor Externo 1
+Fabricante: DEL
+Modelo: DELL P2317H
+Número de Série: DCHJ68667EDL
+Descritivo: Monitor Externo 2
+Fabricante: SAM
+Modelo: C24F390
+Número de Série: HX5NB06412
+FimDeColetaDeDadosDe: bruno.ferreira

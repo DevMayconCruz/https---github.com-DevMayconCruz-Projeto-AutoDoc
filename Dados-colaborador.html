@@ -156,6 +156,185 @@
             margin-top: 0;
         }
     </style>
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Informações do colaborador</title>
+    <style>
+        /* Estilos existentes mantidos */
+        #loadingScreen {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            display: none;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        #loadingLogo {
+            width: 150px;
+            animation: spin 6s linear infinite;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        #loadingText {
+            margin-top: 20px;
+            color: #ffffff;
+            font-size: 18px;
+        }
+
+        #loadingFooter {
+            margin-top: 10px;
+            color: #ffffff;
+            font-size: 14px;
+        }
+
+        #progressBar {
+            width: 80%;
+            height: 10px;
+            background-color: #ddd;
+            border-radius: 5px;
+            margin-top: 20px;
+            overflow: hidden;
+        }
+
+        #progress {
+            height: 100%;
+            width: 0;
+            background-color: #28a745;
+            transition: width 0.3s;
+        }
+
+        #percentage {
+            font-size: 20px;
+            color: #ffffff;
+            margin-top: 10px;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #e9ecef;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 30px auto;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            position: relative;
+        }
+
+        h1 {
+            text-align: center;
+            color: #343a40;
+        }
+
+        .logo {
+            display: block;
+            margin: 20px auto;
+            max-width: 150px;
+        }
+
+        label {
+            display: block;
+            margin-top: 15px;
+            font-weight: bold;
+            color: #495057;
+        }
+
+        input[type="text"], input[type="tel"], input[type="email"], select, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        textarea {
+            height: 100px;
+        }
+
+        button {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            margin-top: 20px;
+            background-color: #007bff;
+            border: none;
+            color: #ffffff;
+            font-size: 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .cpfCnpjField {
+            display: none;
+        }
+        
+        .radio-group {
+            margin-top: 10px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .radio-group input[type="radio"] {
+            margin-right: 5px;
+        }
+        
+        .radio-group label {
+            display: inline-block;
+            margin-right: 20px;
+            margin-top: 0;
+        }
+
+        /* Novos estilos adicionados */
+        .user-format-warning {
+            color: #dc3545;
+            font-size: 13px;
+            margin-top: 5px;
+            display: none;
+        }
+        
+        .confirmation-check {
+            margin-top: 10px;
+            padding: 10px;
+            background-color: #f8f9fa;
+            border-radius: 4px;
+            border-left: 4px solid #007bff;
+        }
+        
+        .invalid-input {
+            border-color: #dc3545 !important;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
@@ -166,8 +345,18 @@
             <label for="nome">Nome Completo:</label>
             <input type="text" id="nome" name="nome" required> 
 
-            <label for="usuario">Digite seu usuário (ex: maria.jose):</label>
-            <input type="text" id="usuario" name="usuario" required>
+            <label for="usuario">Digite seu usuário (formato obrigatório: nome.sobrenome):</label>
+            <input type="text" id="usuario" name="usuario" required 
+                   placeholder="Ex: maria.jose"
+                   oninput="validarFormatoUsuario()">
+            <div id="usuarioWarning" class="user-format-warning">
+                Formato inválido! O usuário deve estar no formato "nome.sobrenome" (ex: maria.jose)
+            </div>
+
+            <div class="confirmation-check">
+                <input type="checkbox" id="confirmarUsuario" required>
+                <label for="confirmarUsuario">Confirmo que meu usuário está correto e no formato "nome.sobrenome"</label>
+            </div>
 
             <label for="tipoUsuario">Tipo de Usuário:</label>
             <select id="tipoUsuario" name="tipoUsuario" required onchange="mostrarCampoCpfCnpj()">
@@ -186,8 +375,8 @@
                 <input type="text" id="cnpj" name="cnpj" oninput="formatarCnpj()" maxlength="18">
             </div>
 
-            <label for="rg">Digite seu RG:</label>
-            <input type="text" id="rg" name="rg" required oninput="formatarRg()">
+           <!--- <label for="rg">Digite seu RG:</label>
+            <input type="text" id="rg" name="rg" required oninput="formatarRg()"> -->
 
             <label for="telefone">Telefone:</label>
             <input type="tel" id="telefone" name="telefone" required>
@@ -240,36 +429,39 @@
     </div>
 
     <script>
-        const setores = {
-            "Snowland": [
-                "Administração ",
-                "Alimentos e Bebidas (A&B)",
-                
-                "Winebar"
-            ],
-            "Acquamotion": [
-                "Setor 1",
-                "Setor 2"
-            ],
-            "Buona Vitta": [
-                "Setor 1",
-                "Setor 2"
-            ],
-            "Bella": [
-                "Setor 1",
-                "Setor 2"
-            ],
-            "Escritório": [
-                "Setor 1",
-                "Setor 2"
-            ]
-        };
+    const setores = {
+    "Snowland": [
+        "Alimentos e Bebidas (A&B)",
+        "Operações e Atrações",
+        "Atendimento ao Cliente",
+        "Comercial e Vendas",
+        "Administrativo e Corporativo",
+        "Infraestrutura e Manutenção",
+        "Logística e Suprimentos"
+    ],
+    "Acquamotion": [
+        "Setor 1",
+        "Setor 2"
+    ],
+    "Buona Vitta": [
+        "Setor 1",
+        "Setor 2"
+    ],
+    "Bella": [
+        "Setor 1",
+        "Setor 2"
+    ],
+    "Escritório": [
+        "Setor 1",
+        "Setor 2"
+    ]
+};
 
         function atualizarSetores() {
             const unidadeSelecionada = document.getElementById('unidade').value;
             const setorSelect = document.getElementById('setor');
 
-            setorSelect.innerHTML = '<option value="" disabled selected>Selecione o setor</option>'; // Limpa as opções anteriores
+            setorSelect.innerHTML = '<option value="" disabled selected>Selecione o setor</option>';
 
             if (unidadeSelecionada && setores[unidadeSelecionada]) {
                 setores[unidadeSelecionada].forEach(setor => {
@@ -278,9 +470,9 @@
                     option.textContent = setor;
                     setorSelect.appendChild(option);
                 });
-                setorSelect.disabled = false; // Habilita o campo de setor
+                setorSelect.disabled = false;
             } else {
-                setorSelect.disabled = true; // Desabilita o campo de setor
+                setorSelect.disabled = true;
             }
         }
 
@@ -289,115 +481,127 @@
             document.getElementById('cpfField').style.display = tipoUsuario === 'Colaborador' ? 'block' : 'none';
             document.getElementById('cnpjField').style.display = tipoUsuario === 'Prestador de Serviços' ? 'block' : 'none';
         }
+        
         function formatarCpf() {
-    const cpfField = document.getElementById('cpf');
-    let cpf = cpfField.value.replace(/\D/g, '');
-    if (cpf.length > 11) {
-        cpf = cpf.slice(0, 11);
-    }
-    cpfField.value = cpf.replace(/(\d{3})(\d)/, '$1.$2')
-                        .replace(/(\d{3})(\d)/, '$1.$2')
-                        .replace(/(\d{3})(\d{1,2})$/, '$1-$2');
-}
-
-function formatarCnpj() {
-    const cnpjField = document.getElementById('cnpj');
-    let cnpj = cnpjField.value.replace(/\D/g, '');
-    if (cnpj.length > 14) {
-        cnpj = cnpj.slice(0, 14);
-    }
-    cnpjField.value = cnpj.replace(/^(\d{2})(\d)/, '$1.$2')
-                          .replace(/^(\d{2})\.(\d{3})(\d)/, '$1.$2.$3')
-                          .replace(/\.(\d{3})(\d)/, '.$1/$2')
-                          .replace(/(\d{4})(\d{1,2})$/, '$1-$2');
-}
-
-
-function formatarRg() {
-    const rgField = document.getElementById('rg');
-    let rg = rgField.value.replace(/\D/g, ''); // Remove todos os caracteres não numéricos
-
-    if (rg.length > 9) {
-        rg = rg.slice(0, 9); // Limita a 9 dígitos
-    }
-
-    // Formatação geral (ex: 12.345.678-9)
-    rgField.value = rg.replace(/(\d{2})(\d)/, '$1.$2')
-                      .replace(/(\d{3})(\d)/, '$1.$2')
-                      .replace(/(\d{3})(\d{1})$/, '$1-$2');
-}
-
-function formatarRgVariante() {
-    const rgField = document.getElementById('rg');
-    let rg = rgField.value.replace(/\D/g, ''); // Remove todos os caracteres não numéricos
-
-    // Exemplo de formatação variante (ex: 12345678-9)
-    if (rg.length > 8 && rg.length <= 9) {
-        rgField.value = rg.replace(/(\d{8})(\d{1})$/, '$1-$2');
-    } else if (rg.length > 9) {
-        rg = rg.slice(0, 9); // Limita a 9 dígitos
-        rgField.value = rg.replace(/(\d{2})(\d)/, '$1.$2')
-                          .replace(/(\d{3})(\d)/, '$1.$2')
-                          .replace(/(\d{3})(\d{1})$/, '$1-$2');
-    }
-}
-
-function validarFormulario() {
-    const cpf = document.getElementById('cpf').value.replace(/\D/g, '');
-    const cnpj = document.getElementById('cnpj').value.replace(/\D/g, '');
-    const tipoUsuario = document.getElementById('tipoUsuario').value;
-
-    if (tipoUsuario === 'Colaborador' && !validarCpf(cpf)) {
-        alert('CPF inválido');
-        return false;
-    }
-
-    if (tipoUsuario === 'Prestador de Serviços' && !validarCnpj(cnpj)) {
-        alert('CNPJ inválido');
-        return false;
-    }
-
-    mostrarTelaDeCarregamento();
-    return true;
-}
-
-function validarCpf(cpf) {
-    // Implemente a lógica de validação do CPF
-    if (cpf.length !== 11) return false;
-    // Adicione mais regras de validação se necessário
-    return true; // Substitua pelo resultado da validação
-}
-
-function validarCnpj(cnpj) {
-    // Implemente a lógica de validação do CNPJ
-    if (cnpj.length !== 14) return false;
-    // Adicione mais regras de validação se necessário
-    return true; // Substitua pelo resultado da validação
-}
-
-
-function mostrarTelaDeCarregamento() {
-    const loadingScreen = document.getElementById('loadingScreen');
-    const progress = document.getElementById('progress');
-    const percentage = document.getElementById('percentage');
-    let width = 0;
-
-    loadingScreen.style.display = 'flex'; // Mostra a tela de carregamento
-
-    const interval = setInterval(() => {
-        if (width >= 100) {
-            clearInterval(interval);
-            setTimeout(() => {
-                window.location.href = '/formularios'; // Redireciona para a página de informações após o carregamento
-            }, 1000);
-        } else {
-            width++;
-            progress.style.width = width + '%';
-            percentage.textContent = width + '%';
+            const cpfField = document.getElementById('cpf');
+            let cpf = cpfField.value.replace(/\D/g, '');
+            if (cpf.length > 11) {
+                cpf = cpf.slice(0, 11);
+            }
+            cpfField.value = cpf.replace(/(\d{3})(\d)/, '$1.$2')
+                                .replace(/(\d{3})(\d)/, '$1.$2')
+                                .replace(/(\d{3})(\d{1,2})$/, '$1-$2');
         }
-    }, 60); // Aumenta a velocidade de carregamento conforme necessário
-}
 
+        function formatarCnpj() {
+            const cnpjField = document.getElementById('cnpj');
+            let cnpj = cnpjField.value.replace(/\D/g, '');
+            if (cnpj.length > 14) {
+                cnpj = cnpj.slice(0, 14);
+            }
+            cnpjField.value = cnpj.replace(/^(\d{2})(\d)/, '$1.$2')
+                                .replace(/^(\d{2})\.(\d{3})(\d)/, '$1.$2.$3')
+                                .replace(/\.(\d{3})(\d)/, '.$1/$2')
+                                .replace(/(\d{4})(\d{1,2})$/, '$1-$2');
+        }
+
+      //  function formatarRg() {
+        //    const rgField = document.getElementById('rg');
+          // let rg = rgField.value.replace(/\D/g, '');
+           //if (rg.length > 9) {
+              // rg = rg.slice(0, 9);
+        // }
+          //  rgField.value = rg.replace(/(\d{2})(\d)/, '$1.$2')
+            //                .replace(/(\d{3})(\d)/, '$1.$2')
+              //              .replace(/(\d{3})(\d{1})$/, '$1-$2');
+        //}
+       
+        // Função para validar o formato do usuário
+        function validarFormatoUsuario() {
+            const usuarioInput = document.getElementById('usuario');
+            const warningElement = document.getElementById('usuarioWarning');
+            const usuario = usuarioInput.value.trim();
+            
+            // Verifica se tem exatamente um ponto e não começa/termina com ponto
+            const isValid = /^[^.]+\.[^.]+$/.test(usuario);
+            
+            if (!isValid && usuario.length > 0) {
+                warningElement.style.display = 'block';
+                usuarioInput.classList.add('invalid-input');
+            } else {
+                warningElement.style.display = 'none';
+                usuarioInput.classList.remove('invalid-input');
+            }
+            
+            return isValid;
+        }
+
+        function validarFormulario() {
+            // Valida primeiro o formato do usuário
+            if (!validarFormatoUsuario()) {
+                alert('Formato de usuário inválido! Por favor, use o formato "nome.sobrenome" (ex: maria.jose)');
+                return false;
+            }
+            
+            // Verifica se o usuário confirmou o nome
+            const confirmacao = document.getElementById('confirmarUsuario').checked;
+            if (!confirmacao) {
+                alert('Por favor, confirme que seu usuário está correto antes de prosseguir!');
+                return false;
+            }
+
+            // Validações de CPF/CNPJ permanecem iguais
+            const cpf = document.getElementById('cpf').value.replace(/\D/g, '');
+            const cnpj = document.getElementById('cnpj').value.replace(/\D/g, '');
+            const tipoUsuario = document.getElementById('tipoUsuario').value;
+
+            if (tipoUsuario === 'Colaborador' && !validarCpf(cpf)) {
+                alert('CPF inválido');
+                return false;
+            }
+
+            if (tipoUsuario === 'Prestador de Serviços' && !validarCnpj(cnpj)) {
+                alert('CNPJ inválido');
+                return false;
+            }
+
+            mostrarTelaDeCarregamento();
+            return true;
+        }
+
+        function validarCpf(cpf) {
+            if (cpf.length !== 11) return false;
+            // Adicione mais regras de validação se necessário
+            return true;
+        }
+
+        function validarCnpj(cnpj) {
+            if (cnpj.length !== 14) return false;
+            // Adicione mais regras de validação se necessário
+            return true;
+        }
+
+        function mostrarTelaDeCarregamento() {
+            const loadingScreen = document.getElementById('loadingScreen');
+            const progress = document.getElementById('progress');
+            const percentage = document.getElementById('percentage');
+            let width = 0;
+
+            loadingScreen.style.display = 'flex'; 
+
+            const interval = setInterval(() => {
+                if (width >= 100) {
+                    clearInterval(interval);
+                    setTimeout(() => {
+                        window.location.href = '/formularios';
+                    }, 1000);
+                } else {
+                    width++;
+                    progress.style.width = width + '%';
+                    percentage.textContent = width + '%';
+                }
+            }, 60);
+        }
     </script>
 </body>
 </html>
