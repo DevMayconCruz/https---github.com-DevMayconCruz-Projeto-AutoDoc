@@ -1,17 +1,14 @@
-
-   
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Termo de Cessão, Guarda, Uso e Devolução de Equipamento</title>
-   
-        <style>
+    <style>
         @media print {
             @page {
-                size: A4 portrait; /* Orientação Retrato para permitir duas páginas */
-                margin: 10mm; /* Margens adequadas */
+                size: A4 portrait;
+                margin: 10mm;
             }
             html, body {
                 width: 100%;
@@ -19,10 +16,11 @@
                 margin: 0;
                 padding: 0;
                 background-color: #ffffff;
-                font-size: 8pt; /* Fonte adequada para impressão */
+                font-size: 8pt;
                 line-height: 1.2;
             }
-            .email-button, #loadingScreen, #successMessage, .user-info-header, .sign-button {
+            .email-button, #loadingScreen, #successMessage, .user-info-header, .sign-button,
+            .signature-pad-container, .signature-actions, .signature-warning {
                 display: none;
             }
             .container {
@@ -108,15 +106,17 @@
                 margin-top: 10px;
                 text-align: center;
             }
-            .signature-line {
-                height: 15px;
-                margin-top: 5px;
-                margin-bottom: 2px;
-                border-bottom: 1px solid #333;
-                width: 300px;
-                margin-left: auto;
-                margin-right: auto;
-            }
+        .signature-line {
+    border-bottom: 1px solid #333; /* */
+    height: 80px; /* */
+    width: 300px; /* */
+    margin: 10px auto 3px auto; /* Margem simplificada */
+    
+    /* Propriedades para alinhamentoo */
+    display: flex;
+    justify-content: center; /* Centraliza horizontalmente */
+    align-items: flex-end;   /* Alinha o item na parte inferior */
+}
             .signature-label {
                 font-size: 7pt;
                 text-align: center;
@@ -152,6 +152,12 @@
             }
             .additional-terms li {
                 margin-bottom: 5px;
+            }
+            .signature-image {
+                height: 80px;
+                max-width: 300px;
+                margin: 0 auto;
+                display: block;
             }
         }
 
@@ -276,7 +282,7 @@
         }
         .signature-line {
             border-bottom: 1px solid #333;
-            height: 20px;
+            height: 80px;
             margin-top: 10px;
             margin-bottom: 3px;
             position: relative;
@@ -285,8 +291,9 @@
             margin-right: auto;
         }
         .signature-label {
-            font-size: 7pt;
+            font-size: 8pt;
             text-align: center;
+            margin-top: 5px;
             margin-bottom: 15px;
         }
         .checkbox-label {
@@ -422,6 +429,94 @@
         .email-button:disabled:hover {
             background-color: #6c757d !important;
         }
+        /* Estilos melhorados para a área de assinatura */
+        .signature-pad-container {
+    margin: 30px auto 15px; /* Aumenta a margem superior para 30px */
+    text-align: center; /* */
+    width: 100%; /* */
+    max-width: 550px; /* Aumenta a largura máxima para 550px */
+}
+        .signature-pad {
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            margin-bottom: 10px;
+            background-color: #f8f9fa;
+            touch-action: none;
+        }
+      canvas {
+    background-color: #f8f9fa; /* */
+    width: 100% !important; /* */
+    height: 100px !important; /* Diminui a altura para 100px */
+    display: block; /* */
+}
+      #userSignature, #userSignature2 {
+    height: 80px; /* */
+    width: 300px; /* */
+    margin: 10px auto; /* */
+    background-size: contain; /* */
+    background-repeat: no-repeat; /* */
+    background-position: center bottom; /* Alinha a imagem de fundo na parte inferior */
+    border-bottom: 1px solid #333; /* */
+    position: relative; /* */
+}
+        .signature-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 10px;
+        }
+        .clear-button, .save-button {
+            padding: 5px 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 10px;
+        }
+        .clear-button {
+            background-color: #f8f9fa;
+            border: 1px solid #ccc;
+        }
+        .save-button {
+            background-color: #28a745;
+            color: white;
+        }
+        .signature-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.7);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        .signature-modal-content {
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+            width: 80%;
+            max-width: 500px;
+        }
+        .signature-modal-title {
+            font-weight: bold;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        .signature-modal-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 15px;
+        }
+        .signature-agreement {
+            margin: 10px 0;
+            font-size: 10pt;
+            text-align: center;
+        }
+        .signature-agreement input {
+            margin-right: 5px;
+        }
     </style>
 </head>
 <body>
@@ -440,7 +535,7 @@
         <div>
             <div class="header-container">
                 <div class="header-image">
-                    <img src="/img/gpk.png" alt="GPK Logo">
+                  <img src="<%= typeof logoDataUri !== 'undefined' && logoDataUri ? logoDataUri : '/img/gpk.png' %>" alt="GPK Logo">
                 </div>
                 <div class="header-title">
                     FORMULÁRIO<br>
@@ -474,71 +569,62 @@
             </table>
 
             <div class="section-title">IDENTIFICAÇÃO DO(S) EQUIPAMENTO(S)</div>
-           <table class="equipment-table">
-    <thead>
-        <tr>
-            <th style="width: 5%;">Item</th>
-            <th style="width: 30%;">Descritivo</th>
-            <th style="width: 15%;">Marca</th>
-            <th style="width: 15%;">Modelo</th>
-            <th style="width: 15%;">Serial</th>
-            <th style="width: 10%;">Uso<br><span style="font-size: 6pt; font-weight: normal;">(P/T)</span></th>
-            <th style="width: 10%;">Visto usuário</th>
-        </tr>
-    </thead>
-    <tbody>
-      <tbody>
-      <tbody>
-   <!-- Tabela de equipamentos -->
-<tbody>
-    <% let itemCounter = 0; %>
-    
-    <!-- Equipamentos normais -->
-    <% if (typeof parsedUserData !== 'undefined' && parsedUserData.equipamentos && parsedUserData.equipamentos.length > 0) { %>
-        <% parsedUserData.equipamentos.forEach((equip, index) => { %>
-            <% 
-                const isMonitor = equip.descritivo && equip.descritivo.toLowerCase().includes('monitor');
-                const isUnknownModel = equip.modelo && equip.modelo.toLowerCase().includes('desconhecido');
-                
-                // Não mostrar monitores com modelo desconhecido
-                if (!(isMonitor && isUnknownModel)) { 
-            %>
-                <% itemCounter++; %>
-                <tr>
-                    <td style="text-align: center;"><%= itemCounter %></td>
-                    <td><%= equip.descritivo || 'N/A' %></td>
-                    <td><%= equip.fabricante || 'N/A' %></td>
-                    <td><%= equip.modelo || 'N/A' %></td>
-                    <td><%= equip.numeroSerie || 'N/A' %></td>
-                    <td style="text-align: center;"><%= typeof tipoUso !== 'undefined' ? tipoUso : 'P' %></td>
-                    <td style="text-align: center;"><%= typeof nome !== 'undefined' ? nome : 'N/A' %></td>
-                </tr>
-            <% } %>
-        <% }); %>
-    <% } %>
-    
-    <!-- Fonte (apenas se tiver informações válidas) -->
-    <% if (parsedUserData.fonte && (parsedUserData.fonte.fabricante || parsedUserData.fonte.modelo)) { %>
-        <% itemCounter++; %>
-        <tr>
-            <td style="text-align: center;"><%= itemCounter %></td>
-            <td><%= parsedUserData.fonte.descritivo || 'fonte' %></td>
-            <td><%= parsedUserData.fonte.fabricante || 'N/A' %></td>
-            <td><%= parsedUserData.fonte.modelo || 'N/A' %></td>
-            <td>N/A</td>
-            <td style="text-align: center;"><%= typeof tipoUso !== 'undefined' ? tipoUso : 'P' %></td>
-            <td style="text-align: center;"><%= typeof nome !== 'undefined' ? nome : 'N/A' %></td>
-        </tr>
-    <% } %>
-    
-    <% if (itemCounter === 0) { %>
-        <tr>
-            <td colspan="7" style="text-align: center;">Nenhum equipamento externo encontrado para este usuário.</td>
-        </tr>
-    <% } %>
-</tbody>
-
-</table>
+            <table class="equipment-table">
+                <thead>
+                    <tr>
+                        <th style="width: 5%;">Item</th>
+                        <th style="width: 30%;">Descritivo</th>
+                        <th style="width: 15%;">Marca</th>
+                        <th style="width: 15%;">Modelo</th>
+                        <th style="width: 15%;">Serial</th>
+                        <th style="width: 10%;">Uso<br><span style="font-size: 6pt; font-weight: normal;">(P/T)</span></th>
+                        <th style="width: 10%;">Visto usuário</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% let itemCounter = 0; %>
+                    <% if (typeof parsedUserData !== 'undefined' && parsedUserData.equipamentos && parsedUserData.equipamentos.length > 0) { %>
+                        <% parsedUserData.equipamentos.forEach((equip, index) => { %>
+                            <% 
+                                const isMonitor = equip.descritivo && equip.descritivo.toLowerCase().includes('monitor');
+                                const isUnknownModel = equip.modelo && equip.modelo.toLowerCase().includes('desconhecido');
+                                
+                                if (!(isMonitor && isUnknownModel)) { 
+                            %>
+                                <% itemCounter++; %>
+                                <tr>
+                                    <td style="text-align: center;"><%= itemCounter %></td>
+                                    <td><%= equip.descritivo || 'N/A' %></td>
+                                    <td><%= equip.fabricante || 'N/A' %></td>
+                                    <td><%= equip.modelo || 'N/A' %></td>
+                                    <td><%= equip.numeroSerie || 'N/A' %></td>
+                                    <td style="text-align: center;"><%= typeof tipoUso !== 'undefined' ? tipoUso : 'P' %></td>
+                                    <td style="text-align: center;"><%= typeof nome !== 'undefined' ? nome : 'N/A' %></td>
+                                </tr>
+                            <% } %>
+                        <% }); %>
+                    <% } %>
+                    
+                    <% if (parsedUserData.fonte && (parsedUserData.fonte.fabricante || parsedUserData.fonte.modelo)) { %>
+                        <% itemCounter++; %>
+                        <tr>
+                            <td style="text-align: center;"><%= itemCounter %></td>
+                            <td><%= parsedUserData.fonte.descritivo || 'fonte' %></td>
+                            <td><%= parsedUserData.fonte.fabricante || 'N/A' %></td>
+                            <td><%= parsedUserData.fonte.modelo || 'N/A' %></td>
+                            <td>N/A</td>
+                            <td style="text-align: center;"><%= typeof tipoUso !== 'undefined' ? tipoUso : 'P' %></td>
+                            <td style="text-align: center;"><%= typeof nome !== 'undefined' ? nome : 'N/A' %></td>
+                        </tr>
+                    <% } %>
+                    
+                    <% if (itemCounter === 0) { %>
+                        <tr>
+                            <td colspan="7" style="text-align: center;">Nenhum equipamento externo encontrado para este usuário.</td>
+                        </tr>
+                    <% } %>
+                </tbody>
+            </table>
 
             <div class="section-title">REGRAS, RESPONSABILIDADES E DECLARAÇÃO DE CESSÃO DE USO</div>
             <div style="border: 1px solid #B3B3B3; border-top: none; padding: 3px;">
@@ -561,364 +647,570 @@
                     <div class="signature-line"><%= typeof assinatura1 !== 'undefined' ? assinatura1 : "Gramado Parks-T.I" %></div>
                     <div class="signature-label">Responsável pela Entrega (nome/assinatura)</div>
                     
-                    <div class="signature-line" id="userSignature"><%= typeof assinatura2 !== 'undefined' ? assinatura2 : "" %></div>
-                    <div class="signature-label">
-                        Assinatura Usuário/Responsável Equipamento(s)
-                        <button class="sign-button" onclick="signFirstPage()">Assinar Agora</button>
+                   <div class="signature-line" id="userSignature">
+    <% if (typeof assinatura2 !== 'undefined' && assinatura2.startsWith('data:image')) { %>
+      <img src="<%= assinatura2 %>" alt="Assinatura do Usuário" style="position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); max-height: 75px; max-width: 100%;">
+    <% } else if (typeof assinatura2 !== 'undefined') { %>
+        <%= assinatura2 %>
+    <% } %>
+</div>
+<div class="signature-label">
+    Assinatura Usuário/Responsável Equipamento(s)
+</div>
+                    
+                    <div class="signature-pad-container">
+                        <div class="signature-pad">
+                            <canvas id="signatureCanvas1"></canvas>
+                        </div>
+                        <div class="signature-actions">
+                            <button class="clear-button" onclick="clearSignature(1)">Limpar</button>
+                            <button class="save-button" onclick="saveSignature(1)">Salvar Assinatura</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section-title">DECLARAÇÃO DE DEVOLUÇÃO</div>
+                <div style="border: 1px solid #B3B3B3; border-top: none; padding: 3px;">
+                    Por gentileza, eu, __________________________________________________________________________, declaro que o(s) equipamento(s) sob a minha guarda foi(foram) devolvido(s) nas seguintes condições:
+                    <table class="declaration-table" style="margin-top: 3px;">
+                        <thead>
+                            <tr>
+                                <th style="width: 5%;">Item</th>
+                                <th style="width: 45%;">Situação</th>
+                                <th style="width: 30%;">Descrição do Estado/Situação do Equipamento</th>
+                                <th style="width: 10%;">Data</th>
+                                <th style="width: 10%;">Visto usuário</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% let returnItemCounter = 0; %>
+                            <% if (typeof parsedUserData !== 'undefined' && parsedUserData.equipamentos && parsedUserData.equipamentos.length > 0) { %>
+                                <% parsedUserData.equipamentos.forEach((equip, index) => { %>
+                                    <% 
+                                        const isMonitor = equip.descritivo && equip.descritivo.toLowerCase().includes('monitor');
+                                        const isUnknownModel = equip.modelo && equip.modelo.toLowerCase().includes('desconhecido');
+                                        
+                                        if (!(isMonitor && isUnknownModel)) { 
+                                    %>
+                                        <% returnItemCounter++; %>
+                                        <tr>
+                                            <td style="text-align: center;"><%= returnItemCounter %></td>
+                                            <td>
+                                                <span class="checkbox"></span><span class="checkbox-label">Em perfeito estado</span>
+                                                <span class="checkbox"></span><span class="checkbox-label">Apresentando defeito</span>
+                                                <span class="checkbox"></span><span class="checkbox-label">Faltando peças ou acessórios</span>
+                                            </td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                    <% } %>
+                                <% }); %>
+                            <% } %>
+                            
+                            <% if (parsedUserData.fonte) { %>
+                                <% returnItemCounter++; %>
+                                <tr>
+                                    <td style="text-align: center;"><%= returnItemCounter %></td>
+                                    <td>
+                                        <span class="checkbox"></span><span class="checkbox-label">Em perfeito estado</span>
+                                        <span class="checkbox"></span><span class="checkbox-label">Apresentando defeito</span>
+                                        <span class="checkbox"></span><span class="checkbox-label">Faltando peças ou acessórios</span>
+                                    </td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                            <% } %>
+                            
+                            <% if (returnItemCounter === 0) { %>
+                                <tr>
+                                    <td colspan="5" style="text-align: center;">Nenhum equipamento externo listado para devolução.</td>
+                                </tr>
+                            <% } %>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="page-break">
+                <div class="header-container">
+                    <div class="header-image">
+                        <img src="/img/gpk.png" alt="GPK Logo">
+                    </div>
+                    <div class="header-title">
+                        FORMULÁRIO<br>
+                        TERMO DE CESSÃO, GUARDA, USO E DEVOLUÇÃO DE EQUIPAMENTO
+                    </div>
+                    <div style="width: 80px;"></div>
+                </div>
+
+                <div class="section-title">TERMOS E CONDIÇÕES ADICIONAIS</div>
+                <div class="additional-terms">
+                    <p><strong>Declaro ter ciência e estar de acordo com os procedimentos descritos na Política PL.GC.028 Trabalho Remoto - Home Office e PL.GC.035 Entrega, Uso e Devolução de Equipamentos de TI e Periféricos, emitidas e divulgadas pela Gramado Parks, comprometendo-me a respeitá-las, cumprindo e aceitando-as plenamente, bem como o disposto abaixo:</strong></p>
+                    
+                    <ol>
+                        <li>Estou ciente de que o equipamento fornecido é de propriedade da empresa que o forneceu; portanto, será utilizado por mim única e exclusivamente a título de empréstimo para o melhor desempenho e execução das atividades para as quais fui contratado, não tendo em hipótese alguma conotação de uso pessoal.</li>
+                        
+                        <li>Devo utilizá-lo com cuidado, mantê-lo e guardá-lo em local seguro, além de garantir a utilização adequada e, no caso de equipamentos de TI, o uso das ferramentas de criptografia, antivírus e proteção, visando assegurar que as informações nele contidas não sejam divulgadas, nem tenham destinação diversa dos objetivos da Companhia, responsabilizando-me civilmente pela eventual divulgação indevida destas informações, nos termos da lei.</li>
+                        
+                        <li>Se os equipamentos forem danificados ou inutilizados por emprego inadequado, mau uso, negligência ou extravio, deverei comunicar imediatamente a área competente. A Companhia me fornecerá novo(s) equipamento(s) e cobrará o valor do(s) equipamento(s) da mesma marca ou equivalentes.</li>
+                        
+                        <li>Devo utilizar somente os softwares instalados e homologados pela área de Tecnologia da Informação (TI) da Gramado Parks, não removendo, alterando ou acrescentando, sem autorização expressa desta, qualquer tipo de dispositivo periférico ou software neste equipamento. Todos os softwares contidos neste são devidamente licenciados e é proibida a sua distribuição ou cópia sem prévia autorização. Qualquer outro software que venha a ser necessário para o exercício de minhas atividades deve ser aprovado e instalado pela área de TI.</li>
+                        
+                        <li>São expressamente proibidos a: criação, download, guarda ou veiculação de material de cunho pornográfico e/ou imoral, discriminatório, ofensivo, contra a ética e os bons costumes, no equipamento fornecido.</li>
+                        
+                        <li>Diante do exposto acima, reconheço que a Companhia, dentro de suas atribuições independentemente de aviso, está autorizada a:
+                            <ul style="margin-top: 5px;">
+                                <li>monitorar, registrar e analisar todas as aplicações e dados localizados no equipamento que foram acessados através de minha senha;</li>
+                                <li>modificar e/ou bloquear os acessos sempre que houver necessidade e a critério desta;</li>
+                                <li>verificar todos os arquivos contidos no equipamento a qualquer momento.</li>
+                            </ul>
+                        </li>
+                        
+                        <li>Estou ciente que este termo terá validade a partir de sua assinatura e permanecerá válido enquanto meu contrato com a Gramado Parks estiver vigente.</li>
+                        
+                        <li>O descumprimento das obrigações assumidas neste compromisso caracterizará grave infração, resultando em ações disciplinares aplicáveis, como medidas administrativas e/ou disciplinares no âmbito da Companhia, sujeitando-me à reparação pelos danos causados, sendo facultado à Companha a adoção de medidas pertinentes, incluindo as de natureza indenizatória, em valor equivalente ou substituição (idêntico ou similar).</li>
+                        
+                        <li>Reconheço que em caso de desligamento ou rescisão de contrato devo devolver o equipamento para o líder da área em que atuo/ presto serviço no prazo em até 1 (um) dia. Saliento que fui informado que caso o equipamento não seja entregue neste prazo, o valor do equipamento na data de desligamento/ rescisão será descontado das minhas verbas rescisórias ou da NF em caso de Prestador de Serviços.</li>
+                    </ol>
+                </div>
+
+                <div class="signature-section" style="margin-top: 30px;">
+                    <div class="signature-line"><%= typeof assinatura3 !== 'undefined' ? assinatura3 : "Gramado Parks-T.I" %></div>
+                    <div class="signature-label">Responsável pela Entrega (nome/assinatura)</div>
+                    
+                  <div class="signature-line" id="userSignature2">
+    <% if (typeof assinatura4 !== 'undefined' && assinatura4.startsWith('data:image')) { %>
+     <img src="<%= assinatura4 %>" alt="Assinatura do Usuário" style="position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); max-height: 75px; max-width: 100%;">
+    <% } else if (typeof assinatura4 !== 'undefined') { %>
+        <%= assinatura4 %>
+    <% } %>
+</div>
+<div class="signature-label">
+    Assinatura Usuário/Responsável Equipamento(s)
+</div>
+                    
+                    <div class="signature-pad-container">
+                        <div class="signature-pad">
+                            <canvas id="signatureCanvas2"></canvas>
+                        </div>
+                        <div class="signature-actions">
+                            <button class="clear-button" onclick="clearSignature(2)">Limpar</button>
+                            <button class="save-button" onclick="saveSignature(2)">Salvar Assinatura</button>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <div class="section-title">DECLARAÇÃO DE DEVOLUÇÃO</div>
-            <div style="border: 1px solid #B3B3B3; border-top: none; padding: 3px;">
-                Por gentileza, eu, __________________________________________________________________________, declaro que o(s) equipamento(s) sob a minha guarda foi(foram) devolvido(s) nas seguintes condições:
-           <table class="declaration-table" style="margin-top: 3px;">
-    <thead>
-        <tr>
-            <th style="width: 5%;">Item</th>
-            <th style="width: 45%;">Situação</th>
-            <th style="width: 30%;">Descrição do Estado/Situação do Equipamento</th>
-            <th style="width: 10%;">Data</th>
-            <th style="width: 10%;">Visto usuário</th>
-        </tr>
-    </thead>
-    <tbody>
-      <tbody>
-   <tbody>
-    <% let returnItemCounter = 0; %>
-    
-    <!-- Equipamentos normais -->
-    <% if (typeof parsedUserData !== 'undefined' && parsedUserData.equipamentos && parsedUserData.equipamentos.length > 0) { %>
-        <% parsedUserData.equipamentos.forEach((equip, index) => { %>
-            <% 
-                const isMonitor = equip.descritivo && equip.descritivo.toLowerCase().includes('monitor');
-                const isUnknownModel = equip.modelo && equip.modelo.toLowerCase().includes('desconhecido');
-                
-                if (!(isMonitor && isUnknownModel)) { 
-            %>
-                <% returnItemCounter++; %>
-                <tr>
-                    <td style="text-align: center;"><%= returnItemCounter %></td>
-                    <td>
-                        <span class="checkbox"></span><span class="checkbox-label">Em perfeito estado</span>
-                        <span class="checkbox"></span><span class="checkbox-label">Apresentando defeito</span>
-                        <span class="checkbox"></span><span class="checkbox-label">Faltando peças ou acessórios</span>
-                    </td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-            <% } %>
-        <% }); %>
-    <% } %>
-    
-    <!-- Fonte na devolução -->
-    <% if (parsedUserData.fonte) { %>
-        <% returnItemCounter++; %>
-        <tr>
-            <td style="text-align: center;"><%= returnItemCounter %></td>
-            <td>
-                <span class="checkbox"></span><span class="checkbox-label">Em perfeito estado</span>
-                <span class="checkbox"></span><span class="checkbox-label">Apresentando defeito</span>
-                <span class="checkbox"></span><span class="checkbox-label">Faltando peças ou acessórios</span>
-            </td>
-            <td></td>
-            <td></td>
-            <td></td>
-        </tr>
-    <% } %>
-    
-    <% if (returnItemCounter === 0) { %>
-        <tr>
-            <td colspan="5" style="text-align: center;">Nenhum equipamento externo listado para devolução.</td>
-        </tr>
-    <% } %>
-</tbody>
-</table>
-            </div>
-        </div>
-
-        <div class="page-break">
-            <div class="header-container">
-                <div class="header-image">
-                    <img src="/img/gpk.png" alt="GPK Logo">
+            <div style="margin-top: auto;">
+                <div class="internal-info">
+                    INTERNO
+                    <span>As informações contidas neste documento são destinadas ao uso interno.</span>
                 </div>
-                <div class="header-title">
-                    FORMULÁRIO<br>
-                    TERMO DE CESSÃO, GUARDA, USO E DEVOLUÇÃO DE EQUIPAMENTO
-                </div>
-                <div style="width: 80px;"></div>
-            </div>
-
-            <div class="section-title">TERMOS E CONDIÇÕES ADICIONAIS</div>
-            <div class="additional-terms">
-                <p><strong>Declaro ter ciência e estar de acordo com os procedimentos descritos na Política PL.GC.028 Trabalho Remoto - Home Office e PL.GC.035 Entrega, Uso e Devolução de Equipamentos de TI e Periféricos, emitidas e divulgadas pela Gramado Parks, comprometendo-me a respeitá-las, cumprindo e aceitando-as plenamente, bem como o disposto abaixo:</strong></p>
-                
-                <ol>
-                    <li>Estou ciente de que o equipamento fornecido é de propriedade da empresa que o forneceu; portanto, será utilizado por mim única e exclusivamente a título de empréstimo para o melhor desempenho e execução das atividades para as quais fui contratado, não tendo em hipótese alguma conotação de uso pessoal.</li>
-                    
-                    <li>Devo utilizá-lo com cuidado, mantê-lo e guardá-lo em local seguro, além de garantir a utilização adequada e, no caso de equipamentos de TI, o uso das ferramentas de criptografia, antivírus e proteção, visando assegurar que as informações nele contidas não sejam divulgadas, nem tenham destinação diversa dos objetivos da Companhia, responsabilizando-me civilmente pela eventual divulgação indevida destas informações, nos termos da lei.</li>
-                    
-                    <li>Se os equipamentos forem danificados ou inutilizados por emprego inadequado, mau uso, negligência ou extravio, deverei comunicar imediatamente a área competente. A Companhia me fornecerá novo(s) equipamento(s) e cobrará o valor do(s) equipamento(s) da mesma marca ou equivalentes.</li>
-                    
-                    <li>Devo utilizar somente os softwares instalados e homologados pela área de Tecnologia da Informação (TI) da Gramado Parks, não removendo, alterando ou acrescentando, sem autorização expressa desta, qualquer tipo de dispositivo periférico ou software neste equipamento. Todos os softwares contidos neste são devidamente licenciados e é proibida a sua distribuição ou cópia sem prévia autorização. Qualquer outro software que venha a ser necessário para o exercício de minhas atividades deve ser aprovado e instalado pela área de TI.</li>
-                    
-                    <li>São expressamente proibidos a: criação, download, guarda ou veiculação de material de cunho pornográfico e/ou imoral, discriminatório, ofensivo, contra a ética e os bons costumes, no equipamento fornecido.</li>
-                    
-                    <li>Diante do exposto acima, reconheço que a Companhia, dentro de suas atribuições independentemente de aviso, está autorizada a:
-                        <ul style="margin-top: 5px;">
-                            <li>monitorar, registrar e analisar todas as aplicações e dados localizados no equipamento que foram acessados através de minha senha;</li>
-                            <li>modificar e/ou bloquear os acessos sempre que houver necessidade e a critério desta;</li>
-                            <li>verificar todos os arquivos contidos no equipamento a qualquer momento.</li>
-                        </ul>
-                    </li>
-                    
-                    <li>Estou ciente que este termo terá validade a partir de sua assinatura e permanecerá válido enquanto meu contrato com a Gramado Parks estiver vigente.</li>
-                    
-                    <li>O descumprimento das obrigações assumidas neste compromisso caracterizará grave infração, resultando em ações disciplinares aplicáveis, como medidas administrativas e/ou disciplinares no âmbito da Companhia, sujeitando-me à reparação pelos danos causados, sendo facultado à Companha a adoção de medidas pertinentes, incluindo as de natureza indenizatória, em valor equivalente ou substituição (idêntico ou similar).</li>
-                    
-                    <li>Reconheço que em caso de desligamento ou rescisão de contrato devo devolver o equipamento para o líder da área em que atuo/ presto serviço no prazo em até 1 (um) dia. Saliento que fui informado que caso o equipamento não seja entregue neste prazo, o valor do equipamento na data de desligamento/ rescisão será descontado das minhas verbas rescisórias ou da NF em caso de Prestador de Serviços.</li>
-                </ol>
-            </div>
-
-            <div class="signature-section" style="margin-top: 30px;">
-                <div class="signature-line"><%= typeof assinatura3 !== 'undefined' ? assinatura3 : "Gramado Parks-T.I" %></div>
-                <div class="signature-label">Responsável pela Entrega (nome/assinatura)</div>
-                
-                <div class="signature-line" id="userSignature2" style="margin-top: 20px;"><%= typeof assinatura4 !== 'undefined' ? assinatura4 : "" %></div>
-                <div class="signature-label">
-                    Assinatura Usuário/Responsável Equipamento(s)
-                    <button class="sign-button" onclick="signSecondPage()">Assinar Agora</button>
+                <div class="footer-info">
+                    <span>Página 1/2</span>
+                    <span>FR.14.01.001<br>Versão 05 – 11/08/2023</span>
                 </div>
             </div>
-        </div>
 
-        <div style="margin-top: auto;">
-            <div class="internal-info">
-                INTERNO
-                <span>As informações contidas neste documento são destinadas ao uso interno.</span>
-            </div>
-            <div class="footer-info">
-                <span>Página 1/2</span>
-                <span>FR.14.01.001<br>Versão 05 – 11/08/2023</span>
-            </div>
-        </div>
-
-        <% if (typeof userDataBlock !== 'undefined' && userDataBlock) { %>
-        <div class="raw-data-block" id="rawDataBlock">
-            <%= userDataBlock %>
-        </div>
-        <% } %>
-
+           <% if (typeof isPdfGeneration === 'undefined' || !isPdfGeneration) { %>
+    <% if (typeof userDataBlock !== 'undefined' && userDataBlock) { %>
+    <div class="raw-data-block" id="rawDataBlock">
+        <%= userDataBlock %>
     </div>
+    <% } %>
+<% } %>
+        </div>
 
-    <div class="signature-warning" id="signatureWarning" style="
-        background-color: #fff3cd;
-        border: 1px solid #ffeaa7;
-        border-radius: 5px;
-        padding: 15px;
-        margin: 20px auto;
-        max-width: 600px;
-        text-align: center;
-        color: #856404;
-        font-weight: bold;
-        display: block;
-    ">
+        <!-- Modal para aceite de termos -->
+        <div id="signatureModal" class="signature-modal">
+            <div class="signature-modal-content">
+                <div class="signature-modal-title">Termo de Aceite</div>
+                <p>Eu, <strong><%= typeof nome !== 'undefined' ? nome : 'N/A' %></strong>, declaro que li e compreendi todos os termos deste documento e que minha assinatura abaixo tem o mesmo valor legal que uma assinatura manuscrita.</p>
+                <div class="signature-agreement">
+                    <input type="checkbox" id="agreeTerms"> <label for="agreeTerms">Concordo com os termos acima</label>
+                </div>
+                <div class="signature-modal-buttons">
+                    <button class="clear-button" onclick="document.getElementById('signatureModal').style.display = 'none'">Cancelar</button>
+                    <button class="save-button" id="confirmSignatureBtn" disabled>Confirmar Assinatura</button>
+                </div>
+            </div>
+        </div>
+<% if (typeof isPdfGeneration === 'undefined' || !isPdfGeneration) { %>
+    <div class="signature-warning" id="signatureWarning">
         ⚠️ <strong>ATENÇÃO:</strong> Para enviar o termo por e-mail, é obrigatório que ambas as partes assinem o documento.<br>
         <small style="font-weight: normal; margin-top: 5px; display: block;">
-            • O <strong>Colaborador/Prestador de Serviço</strong> deve assinar na primeira página<br>
-            • O <strong>Usuário/Responsável pelo Equipamento</strong> deve assinar na segunda página<br>
+            • O <strong>Colaborador/Prestador de Serviço</strong> deve assinar nas duas páginas<br>
+           <!-- • O <strong>Usuário/Responsável pelo Equipamento</strong> deve assinar na segunda página<br>-->
             <em>Apenas após ambas as assinaturas o botão de envio será habilitado.</em>
         </small>
     </div>
+<% } %>
 
-    <button class="email-button" id="sendEmailButton" onclick="sendEmail()" disabled style="
-        background-color: #6c757d;
-        cursor: not-allowed;
-    ">
-        Enviar Termo por E-mail
-    </button>
+        <button class="email-button" id="sendEmailButton" onclick="sendEmail()" disabled>
+            Enviar Termo por E-mail
+        </button>
 
-    <div id="loadingScreen">
-        <img src="/LogoEfeito.png" alt="Logo girando" id="loadingLogo">
-        <div id="loadingText">Enviando documento...</div>
-        <div id="progressBar"><div id="progress"></div></div>
-        <div id="percentage">0%</div>
-    </div>
+        <div id="loadingScreen">
+            <img src="/LogoEfeito.png" alt="Logo girando" id="loadingLogo">
+            <div id="loadingText">Enviando documento...</div>
+            <div id="progressBar"><div id="progress"></div></div>
+            <div id="percentage">0%</div>
+        </div>
 
-    <div id="successMessage">
-        Documento enviado com sucesso!
-    </div>
+        <div id="successMessage">
+            Documento enviado com sucesso!
+        </div>
 
-    <div id="errorMessage">
-        Erro ao enviar documento!
-    </div>
+        <div id="errorMessage">
+            Erro ao enviar documento!
+        </div>
 
-    <script>
-        function signFirstPage() {
-            const userName = '<%= typeof nome !== "undefined" ? nome : "N/A" %>';
-            const currentDate = new Date().toLocaleDateString('pt-BR');
-            const currentTime = new Date().toLocaleTimeString('pt-BR');
-            const signatureText = `${userName} - Assinado em ${currentDate} às ${currentTime}`;
+        <script>
+            // Variáveis para controle da assinatura
+            let isDrawing = false;
+            let lastX = 0;
+            let lastY = 0;
+            let currentCanvas = null;
+            let currentCtx = null;
             
-            // Atualiza apenas a primeira assinatura (página 1)
-            const signatureElement = document.getElementById('userSignature');
-            signatureElement.textContent = signatureText;
-            signatureElement.style.fontWeight = 'bold';
-            signatureElement.style.color = '#1B4D3E';
-            
-            checkSignatures();
-        }
-
-        function signSecondPage() {
-            const userName = '<%= typeof nome !== "undefined" ? nome : "N/A" %>';
-            const currentDate = new Date().toLocaleDateString('pt-BR');
-            const currentTime = new Date().toLocaleTimeString('pt-BR');
-            const signatureText = `${userName} - Assinado em ${currentDate} às ${currentTime}`;
-            
-            // Atualiza apenas a segunda assinatura (página 2)
-            const signatureElement2 = document.getElementById('userSignature2');
-            if(signatureElement2) {
-                signatureElement2.textContent = signatureText;
-                signatureElement2.style.fontWeight = 'bold';
-                signatureElement2.style.color = '#1B4D3E';
-            }
-            
-            checkSignatures();
-        }
-
-        function checkSignatures() {
-            const signature1 = document.getElementById('userSignature').textContent.trim();
-            const signature2 = document.getElementById('userSignature2').textContent.trim();
-            const sendButton = document.getElementById('sendEmailButton');
-            const warningDiv = document.getElementById('signatureWarning');
-            
-            const userName = '<%= typeof nome !== "undefined" ? nome : "N/A" %>';
-            const isSignature1Valid = signature1.includes(userName) && signature1.includes('Assinado em');
-            const isSignature2Valid = signature2.includes(userName) && signature2.includes('Assinado em');
-            
-            if (isSignature1Valid && isSignature2Valid) {
-                // Ambas as assinaturas estão presentes
-                sendButton.disabled = false;
-                sendButton.style.backgroundColor = '#007bff';
-                sendButton.style.cursor = 'pointer';
-                warningDiv.style.display = 'none';
-            } else {
-                // Faltam assinaturas
-                sendButton.disabled = true;
-                sendButton.style.backgroundColor = '#6c757d';
-                sendButton.style.cursor = 'not-allowed';
-                warningDiv.style.display = 'block';
-            }
-        }
-
-        // Verificar assinaturas ao carregar a página
-        document.addEventListener('DOMContentLoaded', function() {
-            checkSignatures();
-        });
-
-        function sendEmail() {
-            // Verificar novamente se as assinaturas estão presentes antes de enviar
-            const signature1 = document.getElementById('userSignature').textContent.trim();
-            const signature2 = document.getElementById('userSignature2').textContent.trim();
-            const userName = '<%= typeof nome !== "undefined" ? nome : "N/A" %>';
-            
-            const isSignature1Valid = signature1.includes(userName) && signature1.includes('Assinado em');
-            const isSignature2Valid = signature2.includes(userName) && signature2.includes('Assinado em');
-            
-            if (!isSignature1Valid || !isSignature2Valid) {
-                alert('⚠️ ATENÇÃO: É obrigatório que ambas as partes assinem o documento antes de enviar o e-mail.\n\n' +
-                      '• Colaborador/Prestador de Serviço deve assinar na primeira página\n' +
-                      '• Usuário/Responsável pelo Equipamento deve assinar na segunda página\n\n' +
-                      'Por favor, complete todas as assinaturas antes de prosseguir.');
-                return;
-            }
-            
-            const loadingScreen = document.getElementById('loadingScreen');
-            const successMessage = document.getElementById('successMessage');
-            const errorMessage = document.getElementById('errorMessage');
-            
-            loadingScreen.style.display = 'flex';
-            successMessage.style.display = 'none';
-            errorMessage.style.display = 'none';
-            
-            let progress = 0;
-            const progressElement = document.getElementById('progress');
-            const percentageElement = document.getElementById('percentage');
-
-            // Coletar todas as assinaturas
-            const assinatura1 = document.querySelector('.signature-section .signature-line:first-child').textContent;
-            const assinatura2 = document.getElementById('userSignature').textContent;
-            const assinatura3 = document.querySelector('.page-break .signature-section .signature-line:first-child').textContent;
-            const assinatura4 = document.getElementById('userSignature2').textContent;
-
-            const formData = {
-                nome: '<%= typeof nome !== "undefined" ? nome : "" %>',
-                unidade: '<%= typeof unidade !== "undefined" ? unidade : "" %>',
-                setor: '<%= typeof setor !== "undefined" ? setor : "" %>',
-                email: '<%= typeof email !== "undefined" ? email : "" %>',
-                usuario: '<%= typeof usuario !== "undefined" ? usuario : "" %>',
-                telefone: '<%= typeof telefone !== "undefined" ? telefone : "" %>',
-                cpf: '<%= typeof cpf !== "undefined" ? cpf : "" %>',
-                rg: '<%= typeof rg !== "undefined" ? rg : "" %>',
-                cnpj: '<%= typeof cnpj !== "undefined" ? cnpj : "" %>',
-                tipoUsuario: '<%= typeof tipoUsuario !== "undefined" ? tipoUsuario : "" %>',
-                tipoUso: '<%= typeof tipoUso !== "undefined" ? tipoUso : "P" %>',
-                assinatura1: assinatura1,
-                assinatura2: assinatura2,
-                assinatura3: assinatura3,
-                assinatura4: assinatura4
-            };
-
-            function updateProgress() {
-                if (progress < 100) {
-                    progress += 1;
-                    progressElement.style.width = progress + '%';
-                    percentageElement.textContent = progress + '%';
-                    setTimeout(updateProgress, 30);
-                }
-            }
-            updateProgress();
-
-            fetch('/enviar-email', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(formData)
-            })
-            .then(response => {
-                if (response.ok) {
-                    return response.text();
-                } else {
-                    throw new Error('Erro no servidor: ' + response.status);
-                }
-            })
-            .then(data => {
-                progress = 100;
-                progressElement.style.width = '100%';
-                percentageElement.textContent = '100%';
+         const signatureSettings = {
+    lineWidth: 1.5, // Linha um pouco mais grossa
+    lineCap: 'round',
+    lineJoin: 'round',
+    strokeStyle: '#004A99'
+};
+            // Inicializa os canvases de assinatura
+            document.addEventListener('DOMContentLoaded', function() {
+                const canvas1 = document.getElementById('signatureCanvas1');
+                const ctx1 = canvas1.getContext('2d');
+                setupCanvas(canvas1, ctx1);
                 
-                setTimeout(() => {
-                    loadingScreen.style.display = 'none';
-                    successMessage.style.display = 'block';
+                const canvas2 = document.getElementById('signatureCanvas2');
+                const ctx2 = canvas2.getContext('2d');
+                setupCanvas(canvas2, ctx2);
+                
+                // Configura o modal de aceite
+                document.getElementById('agreeTerms').addEventListener('change', function() {
+                    document.getElementById('confirmSignatureBtn').disabled = !this.checked;
+                });
+                
+                checkSignatures();
+                
+                // Ajusta o tamanho do canvas para alta resolução
+                resizeCanvas(canvas1);
+                resizeCanvas(canvas2);
+            });
+
+            function resizeCanvas(canvas) {
+                const ratio = window.devicePixelRatio || 1;
+                canvas.width = canvas.offsetWidth * ratio;
+                canvas.height = canvas.offsetHeight * ratio;
+                canvas.getContext('2d').scale(ratio, ratio);
+            }
+
+     // Função setupCanvas SIMPLIFICADA
+function setupCanvas(canvas, ctx) {
+    // Adiciona os listeners, as configurações foram movidas
+    canvas.addEventListener('mousedown', startDrawing);
+    canvas.addEventListener('mousemove', draw);
+    canvas.addEventListener('mouseup', stopDrawing);
+    canvas.addEventListener('mouseout', stopDrawing);
+    
+    canvas.addEventListener('touchstart', handleTouchStart, { passive: false });
+    canvas.addEventListener('touchmove', handleTouchMove, { passive: false });
+    canvas.addEventListener('touchend', handleTouchEnd);
+}
+// Função startDrawing NOVA
+// Função startDrawing CORRIGIDA
+// Função startDrawing CORRIGIDA com as configurações
+function startDrawing(e) {
+    isDrawing = true;
+    const canvas = e.target;
+    const rect = canvas.getBoundingClientRect();
+    currentCanvas = canvas;
+    currentCtx = canvas.getContext('2d');
+
+    // ** APLICA AS CONFIGURAÇÕES AQUI **
+    currentCtx.strokeStyle = signatureSettings.strokeStyle;
+    currentCtx.lineWidth = signatureSettings.lineWidth;
+    currentCtx.lineCap = signatureSettings.lineCap;
+    currentCtx.lineJoin = signatureSettings.lineJoin;
+
+    if (e.type === 'mousedown') {
+        [lastX, lastY] = [e.clientX - rect.left, e.clientY - rect.top];
+    } else if (e.type === 'touchstart') {
+        e.preventDefault();
+        [lastX, lastY] = [e.touches[0].clientX - rect.left, e.touches[0].clientY - rect.top];
+    }
+    
+    currentCtx.beginPath();
+    currentCtx.moveTo(lastX, lastY);
+}
+
+// Função draw CORRIGIDA
+function draw(e) {
+    if (!isDrawing) return;
+    const rect = currentCanvas.getBoundingClientRect();
+    let currentX, currentY;
+
+    if (e.type === 'mousemove') {
+        currentX = e.clientX - rect.left;
+        currentY = e.clientY - rect.top;
+    } else if (e.type === 'touchmove') {
+        e.preventDefault();
+        currentX = e.touches[0].clientX - rect.top;
+    }
+
+    //  Desenhar no caminho já iniciado
+    currentCtx.lineTo(currentX, currentY);
+    currentCtx.stroke();
+
+    [lastX, lastY] = [currentX, currentY];
+}
+
+// Função draw NOVA (com curvas)
+function draw(e) {
+    if (!isDrawing) return;
+    const rect = currentCanvas.getBoundingClientRect();
+    let currentX, currentY;
+
+    if (e.type === 'mousemove') {
+        currentX = e.clientX - rect.left;
+        currentY = e.clientY - rect.top;
+    } else if (e.type === 'touchmove') {
+        e.preventDefault();
+        currentX = e.touches[0].clientX - rect.top;
+    }
+
+    //  Desenhar no caminho já iniciado
+    currentCtx.lineTo(currentX, currentY);
+    currentCtx.stroke();
+
+    [lastX, lastY] = [currentX, currentY];
+}
+
+            function stopDrawing() {
+                isDrawing = false;
+            }
+
+            // Funções para touch devices
+            function handleTouchStart(e) {
+                if (e.touches.length === 1) {
+                    const touch = e.touches[0];
+                    const mouseEvent = new MouseEvent('mousedown', {
+                        clientX: touch.clientX,
+                        clientY: touch.clientY
+                    });
+                    e.target.dispatchEvent(mouseEvent);
+                }
+            }
+
+            function handleTouchMove(e) {
+                if (e.touches.length === 1) {
+                    const touch = e.touches[0];
+                    const mouseEvent = new MouseEvent('mousemove', {
+                        clientX: touch.clientX,
+                        clientY: touch.clientY
+                    });
+                    e.target.dispatchEvent(mouseEvent);
+                }
+            }
+
+            function handleTouchEnd(e) {
+                const mouseEvent = new MouseEvent('mouseup', {});
+                e.target.dispatchEvent(mouseEvent);
+            }
+
+            function clearSignature(pageNum) {
+                const canvas = pageNum === 1 ? document.getElementById('signatureCanvas1') : document.getElementById('signatureCanvas2');
+                const ctx = canvas.getContext('2d');
+                
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                
+                // Atualiza o estado da assinatura
+                const signatureElement = pageNum === 1 ? 
+                    document.getElementById('userSignature') : 
+                    document.getElementById('userSignature2');
+                signatureElement.style.backgroundImage = 'none';
+                signatureElement.textContent = '';
+                
+                checkSignatures();
+            }
+
+            function saveSignature(pageNum) {
+                const canvas = pageNum === 1 ? document.getElementById('signatureCanvas1') : document.getElementById('signatureCanvas2');
+                
+                // Verifica se há alguma assinatura no canvas
+                const blankCanvas = document.createElement('canvas');
+                blankCanvas.width = canvas.width;
+                blankCanvas.height = canvas.height;
+                
+                if (canvas.toDataURL() === blankCanvas.toDataURL()) {
+                    alert('Por favor, forneça sua assinatura antes de salvar.');
+                    return;
+                }
+                
+                // Mostra o modal de aceite
+                document.getElementById('signatureModal').style.display = 'flex';
+                document.getElementById('agreeTerms').checked = false;
+                document.getElementById('confirmSignatureBtn').disabled = true;
+                
+                // Configura o botão de confirmação
+                document.getElementById('confirmSignatureBtn').onclick = function() {
+                    confirmSignature(pageNum, canvas);
+                    document.getElementById('signatureModal').style.display = 'none';
+                };
+            }
+
+            function confirmSignature(pageNum, canvas) {
+                const signatureElement = pageNum === 1 ? 
+                    document.getElementById('userSignature') : 
+                    document.getElementById('userSignature2');
+                
+                // Converte a assinatura para imagem e exibe no lugar apropriado
+                const signatureDataUrl = canvas.toDataURL();
+                signatureElement.style.backgroundImage = `url(${signatureDataUrl})`;
+                signatureElement.textContent = '';
+                
+                // Adiciona metadados para verificação
+                const userName = '<%= typeof nome !== "undefined" ? nome : "N/A" %>';
+                const currentDate = new Date().toLocaleDateString('pt-BR');
+                const currentTime = new Date().toLocaleTimeString('pt-BR');
+                signatureElement.setAttribute('data-signed-by', userName);
+                signatureElement.setAttribute('data-signed-at', `${currentDate} ${currentTime}`);
+                
+                checkSignatures();
+            }
+
+            function checkSignatures() {
+                const signature1 = document.getElementById('userSignature');
+                const signature2 = document.getElementById('userSignature2');
+                const sendButton = document.getElementById('sendEmailButton');
+                const warningDiv = document.getElementById('signatureWarning');
+                
+                const isSignature1Valid = signature1.style.backgroundImage !== 'none' && 
+                                        signature1.style.backgroundImage !== '';
+                const isSignature2Valid = signature2.style.backgroundImage !== 'none' && 
+                                        signature2.style.backgroundImage !== '';
+                
+                if (isSignature1Valid && isSignature2Valid) {
+                    sendButton.disabled = false;
+                    sendButton.style.backgroundColor = '#007bff';
+                    sendButton.style.cursor = 'pointer';
+                    warningDiv.style.display = 'none';
+                } else {
+                    sendButton.disabled = true;
+                    sendButton.style.backgroundColor = '#6c757d';
+                    sendButton.style.cursor = 'not-allowed';
+                    warningDiv.style.display = 'block';
+                }
+            }
+
+            function sendEmail() {
+                // Verificar assinaturas
+                const signature1 = document.getElementById('userSignature');
+                const signature2 = document.getElementById('userSignature2');
+                
+                const isSignature1Valid = signature1.style.backgroundImage !== 'none' && 
+                                        signature1.style.backgroundImage !== '';
+                const isSignature2Valid = signature2.style.backgroundImage !== 'none' && 
+                                        signature2.style.backgroundImage !== '';
+                
+                if (!isSignature1Valid || !isSignature2Valid) {
+                    alert('⚠️ ATENÇÃO: É obrigatório que ambas as partes assinem o documento antes de enviar o e-mail.');
+                    return;
+                }
+                
+                const loadingScreen = document.getElementById('loadingScreen');
+                const successMessage = document.getElementById('successMessage');
+                const errorMessage = document.getElementById('errorMessage');
+                
+                loadingScreen.style.display = 'flex';
+                successMessage.style.display = 'none';
+                errorMessage.style.display = 'none';
+                
+                let progress = 0;
+                const progressElement = document.getElementById('progress');
+                const percentageElement = document.getElementById('percentage');
+
+                // Obter as assinaturas como dados base64
+                const canvas1 = document.getElementById('signatureCanvas1');
+                const canvas2 = document.getElementById('signatureCanvas2');
+                const signatureData1 = canvas1.toDataURL();
+                const signatureData2 = canvas2.toDataURL();
+
+                // Coletar todas as informações do formulário
+                const formData = {
+                    nome: '<%= typeof nome !== "undefined" ? nome : "" %>',
+                    unidade: '<%= typeof unidade !== "undefined" ? unidade : "" %>',
+                    setor: '<%= typeof setor !== "undefined" ? setor : "" %>',
+                    email: '<%= typeof email !== "undefined" ? email : "" %>',
+                    usuario: '<%= typeof usuario !== "undefined" ? usuario : "" %>',
+                    telefone: '<%= typeof telefone !== "undefined" ? telefone : "" %>',
+                    cpf: '<%= typeof cpf !== "undefined" ? cpf : "" %>',
+                    rg: '<%= typeof rg !== "undefined" ? rg : "" %>',
+                    cnpj: '<%= typeof cnpj !== "undefined" ? cnpj : "" %>',
+                    tipoUsuario: '<%= typeof tipoUsuario !== "undefined" ? tipoUsuario : "" %>',
+                    tipoUso: '<%= typeof tipoUso !== "undefined" ? tipoUso : "P" %>',
+                    assinatura1: document.querySelector('.signature-section .signature-line:first-child').textContent,
+                    assinatura2: signatureData1,
+                    assinatura3: document.querySelector('.page-break .signature-section .signature-line:first-child').textContent,
+                    assinatura4: signatureData2,
+                    dataAssinatura1: document.getElementById('userSignature').getAttribute('data-signed-at') || '',
+                    dataAssinatura2: document.getElementById('userSignature2').getAttribute('data-signed-at') || ''
+                };
+
+                function updateProgress() {
+                    if (progress < 100) {
+                        progress += 1;
+                        progressElement.style.width = progress + '%';
+                        percentageElement.textContent = progress + '%';
+                        setTimeout(updateProgress, 30);
+                    }
+                }
+                updateProgress();
+
+                fetch('/enviar-email', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(formData)
+                })
+                .then(response => {
+                    if (response.ok) {
+                        return response.text();
+                    } else {
+                        throw new Error('Erro no servidor: ' + response.status);
+                    }
+                })
+                .then(data => {
+                    progress = 100;
+                    progressElement.style.width = '100%';
+                    percentageElement.textContent = '100%';
                     
                     setTimeout(() => {
-                        successMessage.style.display = 'none';
+                        loadingScreen.style.display = 'none';
+                        successMessage.style.display = 'block';
+                        
+                        setTimeout(() => {
+                            successMessage.style.display = 'none';
+                        }, 5000);
+                    }, 1000);
+                })
+                .catch(error => {
+                    console.error('Erro ao enviar e-mail:', error);
+                    loadingScreen.style.display = 'none';
+                    errorMessage.style.display = 'block';
+                    
+                    setTimeout(() => {
+                        errorMessage.style.display = 'none';
                     }, 5000);
-                }, 1000);
-            })
-            .catch(error => {
-                console.error('Erro ao enviar e-mail:', error);
-                loadingScreen.style.display = 'none';
-                errorMessage.style.display = 'block';
-                
-                setTimeout(() => {
-                    errorMessage.style.display = 'none';
-                }, 5000);
-            });
-        }
-    </script>
-
+                });
+            }
+        </script>
+    </div>
 </body>
 </html>
