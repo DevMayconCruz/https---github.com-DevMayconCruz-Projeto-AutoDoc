@@ -1,6 +1,6 @@
 /**
  * @fileoverview
- * Código proprietário da Gramado Parks, protegido contra alterações e redistribuição não autorizadas.
+ * ódigo proprietário da Gramado Parks, protegido contra alterações e redistribuição não autorizadas.
  * 
  * @author Maycon Cruz
  * 
@@ -34,7 +34,7 @@
  * 
  * - parseUserData(rawData: string): Object
  *     Converte o bloco de texto extraído em estrutura de dados utilizável pela aplicação.
- * 
+ * w
  * @middlewares
  * - bodyParser
  *     Interpreta corpos de requisições HTTP com dados JSON ou URL-encoded.
@@ -296,6 +296,7 @@ const emailTransporter = nodemailer.createTransport({
     }
 });
 
+
 // Função para gerar PDF a partir do HTML renderizado
 async function generatePDFFromHTML(htmlContent, outputPath) {
     let browser;
@@ -308,15 +309,35 @@ async function generatePDFFromHTML(htmlContent, outputPath) {
         const page = await browser.newPage();
         await page.setContent(htmlContent, { waitUntil: 'networkidle0' });
         
+       
+        // Força a aplicação de estilos que removem o "box" do container.
+        // O !important garante que estas regras tenham prioridade máxima.
+        await page.addStyleTag({ content: `
+            body {
+                padding: 0 !important;
+                margin: 0 !important;
+            }
+            .container {
+                max-width: none !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                border: none !important;
+                box-shadow: none !important;
+            }
+        `});
+       
+
+        await page.emulateMediaType('print'); // Mantemos isso por segurança
+        
         await page.pdf({
             path: outputPath,
             format: 'A4',
-            printBackground: true,
+            printBackground: true, 
             margin: {
-                top: '10mm',
-                right: '10mm',
-                bottom: '10mm',
-                left: '10mm'
+                top: '0mm',
+                right: '0mm',
+                bottom: '0mm',
+                left: '0mm'
             }
         });
         
@@ -379,7 +400,17 @@ app.post('/enviar-email', async (req, res) => {
                 console.error(`Erro ao ler o arquivo ${filePath}:`, err);
                 fileReadError = `Erro ao ler o arquivo de informações (${filePath}). Verifique o caminho e as permissões.`;
             }
-
+         
+           // Bloco para imagem/logo pdf
+let logoBase64 = '';
+try {
+    // Caminho para a imagem, o mesmo que você usa no express.static
+    const logoPath = '\\\\Gpk-fs02\\Publico\\TI\\Projeto-AutoDocServidor\\img\\gpk.png';
+    const logoData = fs.readFileSync(logoPath);
+    logoBase64 = `data:image/png;base64,${logoData.toString('base64')}`;
+} catch (logoErr) {
+    console.error('Erro ao ler o arquivo do logo:', logoErr);
+}
             app.render("formularios", {
                 ...req.body,
                 usuario: usuario,
@@ -391,7 +422,9 @@ app.post('/enviar-email', async (req, res) => {
                 assinatura1: assinatura1 || "Gramado Parks-T.I",
                 assinatura2: assinatura2 || "",
                 assinatura3: assinatura3 || "Gramado Parks-T.I",
-                assinatura4: assinatura4 || ""
+                assinatura4: assinatura4 || "",
+                isPdfGeneration: true,
+                 logoDataUri: logoBase64 // <-- ADICIONE ESTA LINHA
             }, (err, html) => {
                 if (err) reject(err);
                 else resolve(html);
@@ -458,5 +491,6 @@ app.post('/enviar-email', async (req, res) => {
 
 // Iniciar o servidor
 app.listen(port, '0.0.0.0', () => {
-    console.log(`Servidor rodando em http://localhost:${port} e acessível na rede local (ex: http://192.168.0.33:${port})`);
+    console.log(`Servidor rodando em http://localhost:${port} e acessível na rede local (ex: http://192.168.0.19:${port})`);
 });
+
