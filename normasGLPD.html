@@ -18,124 +18,603 @@
   - Controla a visibilidade do botão "Avançar" com base na seleção dos checkboxes.
   - Aplica uma transição de fade-out ao corpo da página e redireciona para uma nova URL após a transição.-->
 
-  <!DOCTYPE html>
-  <html lang="pt-BR">
-  <head>
-      <meta charset="UTF-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <title>Assinatura do Termo</title>
-      <style>
-          body {
-              font-family: Arial, sans-serif;
-              margin: 0;
-              padding: 0;
-              background-color: #f4f4f4;
-              display: flex;
-              justify-content: center;
-              align-items: center;
-              height: 100vh;
-              overflow: hidden; /* Evitar barras de rolagem durante a transição */
-              transition: opacity 0.5s ease-out; /* Transição suave de desvanecimento */
-          }
-          .container {
-              background-color: #fff;
-              padding: 20px;
-              border-radius: 8px;
-              box-shadow: 0 0 10px rgba(0,0,0,0.1);
-              text-align: center;
-              width: 90%;
-              max-width: 600px;
-              position: relative; /* Adicionado para posicionar o botão dentro do container */
-          }
-          .logo {
-              width: 200px;
-              margin-bottom: 20px;
-          }
-          .message {
-              margin-bottom: 20px; /* Margem ajustada para dar espaço para as caixas de seleção */
-              text-align: left;
-          }
-          .highlight-text {
-              font-size: 20px; /* Aumentar o tamanho da fonte */
-              font-weight: bold; /* Tornar o texto em negrito */
-              color: #333; /* Cor do texto escura para melhor legibilidade */
-              font-family: 'Georgia', serif; /* Usar uma fonte serifada para ênfase */
-              margin-bottom: 20px; /* Espaço abaixo do texto destacado */
-              line-height: 1.6;
-          }
-          .highlight-text span {
-              display: block;
-              margin-bottom: 10px; /* Espaço entre as linhas de texto */
-          }
-          .checkbox-group {
-              margin-bottom: 20px;
-              text-align: left;
-          }
-          .checkbox-group label {
-              display: block;
-              margin-bottom: 10px;
-          }
-          .btn-advance {
-              background-color: #4CAF50;
-              color: white;
-              border: none;
-              padding: 10px 20px;
-              text-align: center;
-              text-decoration: none;
-              display: inline-block;
-              font-size: 16px;
-              border-radius: 5px;
-              cursor: pointer;
-              position: absolute;
-              bottom: 20px;
-              right: 20px;
-              display: none; /* Ocultar botão inicialmente */
-          }
-      </style>
-  </head>
-  <body>
-      <div class="container">
-          <img src="/gramado_verde-640w.webp" alt="Logo" class="logo" class="logo">
-          <div id="message" class="message">
-              <p class="highlight-text">
-                  <span>Ao marcar as caixas de seleção abaixo, você, TITULAR, declara estar ciente de que seus dados coletados serão tratados conforme a Lei Geral de Proteção de Dados (Lei nº 13.709/2018).</span>
-                  <span></span>
-              </p>
-              <div class="checkbox-group">
-                  <p>As informações relatadas neste termo serão prescritas quando:</p>
-                  <label><input type="checkbox" id="checkbox1"> 1.1- Um novo termo for assinado por você.</label>
-                  <label><input type="checkbox" id="checkbox2"> 1.2- O equipamento citado for devolvido por você ao RH.</label>
-              </div>
-          </div>
-          <button class="btn-advance" onclick="checkConditions()">Avançar</button>
-      </div>
-  
-      <script>
-          const checkbox1 = document.getElementById('checkbox1');
-          const checkbox2 = document.getElementById('checkbox2');
-          const btnAdvance = document.querySelector('.btn-advance');
-  
-          function updateButtonVisibility() {
-              if (checkbox1.checked && checkbox2.checked) {
-                  btnAdvance.style.display = 'inline-block';
-              } else {
-                  btnAdvance.style.display = 'none';
-              }
-          }
-  
-          checkbox1.addEventListener('change', updateButtonVisibility);
-          checkbox2.addEventListener('change', updateButtonVisibility);
-  
-          function checkConditions() {
-              // Aplicar transição de desvanecimento
-              document.body.style.opacity = '0';
-  
-              // Redirecionar após o término da transição
-              setTimeout(function() {
-                window.location.href = "http://192.168.0.19:3000/dados-colaborador";
-              }, 500); // O atraso deve corresponder à duração da transição
-          }
-      </script>
-  </body>
-  </html>
- 
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Assinatura do Termo - Gramado Parks</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            overflow: hidden;
+            /* Gradiente com as cores da Gramado Parks: verde, azul e laranja */
+            background: linear-gradient(135deg, #2E8B57 0%, #4682B4 50%, #FF8C00 100%);
+            font-family: 'Inter', sans-serif;
+            color: #333;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            width: 100vw;
+            position: relative;
+        }
+
+        #fireworksCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .container {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            max-width: 90%;
+            width: 100%;
+            max-width: 700px;
+            padding: 40px 30px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            animation: slideUp 0.8s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .logo-container {
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+        .logo {
+            max-width: 250px;
+            width: 100%;
+            height: auto;
+            margin-bottom: 30px;
+            filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.1));
+            animation: logoFloat 3s ease-in-out infinite;
+        }
+
+        @keyframes logoFloat {
+            0%, 100% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-5px);
+            }
+        }
+
+        .title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 25px;
+            line-height: 1.3;
+            /* Gradiente com as cores da marca */
+            background: linear-gradient(135deg, #2E8B57, #4682B4, #FF8C00);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: titleGlow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes titleGlow {
+            from {
+                filter: drop-shadow(0 0 5px rgba(46, 139, 87, 0.3));
+            }
+            to {
+                filter: drop-shadow(0 0 15px rgba(70, 130, 180, 0.5));
+            }
+        }
+
+        .highlight-text {
+            font-size: 1.2rem;
+            font-weight: 500;
+            color: #2d3748;
+            margin-bottom: 25px;
+            line-height: 1.7;
+            text-align: left;
+            padding: 20px;
+            background: rgba(46, 139, 87, 0.1);
+            border-left: 4px solid #2E8B57;
+            border-radius: 8px;
+        }
+
+        .checkbox-group {
+            margin-bottom: 30px;
+            text-align: left;
+            padding: 20px;
+            background: rgba(70, 130, 180, 0.05);
+            border-radius: 12px;
+            border: 1px solid rgba(70, 130, 180, 0.2);
+        }
+
+        .checkbox-group p {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 15px;
+        }
+
+        .checkbox-group label {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            font-size: 1rem;
+            color: #4a5568;
+            cursor: pointer;
+            padding: 10px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .checkbox-group label:hover {
+            background: rgba(46, 139, 87, 0.1);
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            margin-right: 12px;
+            accent-color: #2E8B57;
+            cursor: pointer;
+        }
+
+        .button-container {
+            position: relative;
+            margin-top: 30px;
+        }
+
+        .btn-advance {
+            padding: 16px 40px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            /* Gradiente com as cores da Gramado Parks */
+            background: linear-gradient(135deg, #2E8B57, #4682B4);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 25px rgba(46, 139, 87, 0.3);
+            position: relative;
+            overflow: hidden;
+            font-family: 'Inter', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: none;
+        }
+
+        .btn-advance::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn-advance:hover::before {
+            left: 100%;
+        }
+
+        .btn-advance:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 35px rgba(46, 139, 87, 0.4);
+            background: linear-gradient(135deg, #FF8C00, #2E8B57);
+        }
+
+        .btn-advance:active {
+            transform: translateY(0);
+            box-shadow: 0 6px 20px rgba(46, 139, 87, 0.3);
+        }
+
+        .btn-advance.show {
+            display: inline-block;
+            animation: buttonAppear 0.5s ease-out;
+        }
+
+        @keyframes buttonAppear {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Decoração com as cores da marca */
+        .decoration-dots {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            gap: 8px;
+        }
+
+        .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        .dot:nth-child(1) {
+            background-color: #2E8B57;
+            animation-delay: 0s;
+        }
+
+        .dot:nth-child(2) {
+            background-color: #4682B4;
+            animation-delay: 0.3s;
+        }
+
+        .dot:nth-child(3) {
+            background-color: #FF8C00;
+            animation-delay: 0.6s;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+                opacity: 0.7;
+            }
+            50% {
+                transform: scale(1.2);
+                opacity: 1;
+            }
+        }
+
+        /* Responsividade aprimorada */
+        @media (max-width: 768px) {
+            .container {
+                padding: 30px 25px;
+                margin: 20px;
+                border-radius: 20px;
+            }
+
+            .logo {
+                max-width: 200px;
+            }
+
+            .title {
+                font-size: 1.7rem;
+                margin-bottom: 20px;
+            }
+
+            .highlight-text {
+                font-size: 1.1rem;
+                padding: 15px;
+            }
+
+            .checkbox-group {
+                padding: 15px;
+            }
+
+            .btn-advance {
+                padding: 14px 35px;
+                font-size: 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 25px 20px;
+                margin: 15px;
+                border-radius: 16px;
+            }
+
+            .logo {
+                max-width: 180px;
+            }
+
+            .title {
+                font-size: 1.5rem;
+                margin-bottom: 18px;
+            }
+
+            .highlight-text {
+                font-size: 1rem;
+                padding: 12px;
+            }
+
+            .checkbox-group {
+                padding: 12px;
+            }
+
+            .checkbox-group label {
+                font-size: 0.95rem;
+            }
+
+            .btn-advance {
+                padding: 12px 30px;
+                font-size: 0.95rem;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .container {
+                padding: 20px 15px;
+                margin: 10px;
+            }
+
+            .logo {
+                max-width: 160px;
+            }
+
+            .title {
+                font-size: 1.3rem;
+            }
+
+            .highlight-text {
+                font-size: 0.95rem;
+            }
+
+            .btn-advance {
+                padding: 10px 25px;
+                font-size: 0.9rem;
+            }
+        }
+
+        /* Melhorias para telas muito pequenas */
+        @media (max-height: 700px) {
+            .container {
+                padding: 20px;
+                max-height: 90vh;
+                overflow-y: auto;
+            }
+
+            .logo {
+                max-width: 150px;
+                margin-bottom: 20px;
+            }
+
+            .title {
+                font-size: 1.4rem;
+                margin-bottom: 15px;
+            }
+
+            .highlight-text {
+                margin-bottom: 20px;
+            }
+
+            .checkbox-group {
+                margin-bottom: 20px;
+            }
+        }
+
+        /* Animação de fade-out */
+        .fade-out {
+            opacity: 0;
+            transition: opacity 0.5s ease-out;
+        }
+
+        /* Efeitos especiais para os fogos */
+        .firework-burst {
+            position: absolute;
+            pointer-events: none;
+            z-index: 5;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="fireworksCanvas"></canvas>
+
+    <div class="container">
+        <!-- Decoração com as cores da marca -->
+        <div class="decoration-dots">
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+        </div>
+
+        <div class="logo-container">
+            <img src="LogoEfeito.png" alt="Gramado Parks Logo" class="logo">
+        </div>
+        
+        <h1 class="title">Termos de Proteção de Dados</h1>
+        
+        <div class="highlight-text">
+            Ao marcar as caixas de seleção abaixo, você, TITULAR, declara estar ciente de que seus dados coletados serão tratados conforme a Lei Geral de Proteção de Dados (Lei nº 13.709/2018).
+        </div>
+        
+        <div class="checkbox-group">
+            <p>As informações relatadas neste termo serão prescritas quando:</p>
+            <label>
+                <input type="checkbox" id="checkbox1">
+                1.1 - Um novo termo for assinado por você.
+            </label>
+            <label>
+                <input type="checkbox" id="checkbox2">
+                1.2 - O equipamento citado for devolvido por você ao RH.
+            </label>
+        </div>
+        
+        <div class="button-container">
+            <button class="btn-advance" id="btnAdvance">Avançar</button>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('fireworksCanvas');
+        const ctx = canvas.getContext('2d');
+
+        // Cores da Gramado Parks para os fogos de artifício
+        const brandColors = [
+            '#2E8B57', // Verde
+            '#4682B4', // Azul
+            '#FF8C00', // Laranja
+            '#32CD32', // Verde claro
+            '#87CEEB', // Azul claro
+            '#FFA500'  // Laranja claro
+        ];
+
+        // Redimensiona o canvas para o tamanho da janela
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+
+        class Firework {
+            constructor(x, y) {
+                this.x = x;
+                this.y = y;
+                this.radius = Math.random() * 4 + 2;
+                // Usa as cores da marca
+                this.color = brandColors[Math.floor(Math.random() * brandColors.length)];
+                this.speedX = (Math.random() - 0.5) * 4;
+                this.speedY = (Math.random() - 0.5) * 4;
+                this.alpha = 1;
+                this.decay = Math.random() * 0.02 + 0.01;
+                this.gravity = 0.05;
+                this.sparkle = Math.random() > 0.5;
+            }
+
+            draw() {
+                ctx.save();
+                ctx.globalAlpha = this.alpha;
+                
+                // Partícula principal
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                ctx.fillStyle = this.color;
+                ctx.fill();
+                
+                // Brilho interno
+                if (this.sparkle) {
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.radius * 0.5, 0, Math.PI * 2);
+                    ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
+                    ctx.fill();
+                }
+                
+                ctx.restore();
+            }
+
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                this.speedY += this.gravity;
+                this.alpha -= this.decay;
+                this.radius *= 0.995;
+            }
+        }
+
+        const fireworks = [];
+
+        function animate() {
+            // Fundo semi-transparente para efeito de rastro
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // Cria novos fogos de artifício (menos frequentes que na página de boas-vindas)
+            if (Math.random() < 0.02) {
+                const x = Math.random() * canvas.width;
+                const y = Math.random() * canvas.height;
+                const particleCount = Math.random() * 25 + 15;
+                
+                for (let i = 0; i < particleCount; i++) {
+                    fireworks.push(new Firework(x, y));
+                }
+            }
+
+            // Atualiza e desenha fogos de artifício
+            for (let i = fireworks.length - 1; i >= 0; i--) {
+                fireworks[i].update();
+                fireworks[i].draw();
+                
+                if (fireworks[i].alpha <= 0 || fireworks[i].radius <= 0.5) {
+                    fireworks.splice(i, 1);
+                }
+            }
+
+            requestAnimationFrame(animate);
+        }
+
+        animate();
+
+        // Lógica dos checkboxes e botão
+        const checkbox1 = document.getElementById('checkbox1');
+        const checkbox2 = document.getElementById('checkbox2');
+        const btnAdvance = document.getElementById('btnAdvance');
+
+        function updateButtonVisibility() {
+            if (checkbox1.checked && checkbox2.checked) {
+                btnAdvance.classList.add('show');
+            } else {
+                btnAdvance.classList.remove('show');
+            }
+        }
+
+        checkbox1.addEventListener('change', updateButtonVisibility);
+        checkbox2.addEventListener('change', updateButtonVisibility);
+
+        // Evento do botão com animação melhorada
+        btnAdvance.addEventListener('click', (e) => {
+            // Cria explosão de partículas no botão
+            const rect = e.target.getBoundingClientRect();
+            const x = rect.left + rect.width / 2;
+            const y = rect.top + rect.height / 2;
+            
+            for (let i = 0; i < 20; i++) {
+                fireworks.push(new Firework(x, y));
+            }
+
+            // Adiciona classe de fade-out
+            document.body.classList.add('fade-out');
+            
+            // Redireciona após a animação
+            setTimeout(() => {
+                window.location.href = "http://192.168.56.1:3000/dados-colaborador";
+            }, 500);
+        });
+
+        // Cria fogos de artifício especiais ao carregar a página
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                for (let i = 0; i < 2; i++) {
+                    setTimeout(() => {
+                        const x = Math.random() * canvas.width;
+                        const y = Math.random() * canvas.height;
+                        for (let j = 0; j < 30; j++) {
+                            fireworks.push(new Firework(x, y));
+                        }
+                    }, i * 400);
+                }
+            }, 1000);
+        });
+    </script>
+</body>
+</html>
+
