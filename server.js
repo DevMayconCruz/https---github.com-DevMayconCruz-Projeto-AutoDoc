@@ -285,7 +285,7 @@ app.post('/execute-batch', (req, res) => {
     });
 });
 
-// Configuração do transporter de e-mail
+// Configuração do transporter de e-mail (CORRIGIDO)
 const emailTransporter = nodemailer.createTransport({
     host: 'smtp.gmail.com',
     port: 465,
@@ -323,6 +323,18 @@ async function generatePDFFromHTML(htmlContent, outputPath) {
                 padding: 0 !important;
                 border: none !important;
                 box-shadow: none !important;
+            }
+            .docusign-container {
+                display: none !important;
+            }
+            .signature-line {
+                border-bottom: 1px solid #333 !important;
+                height: 80px !important;
+                width: 300px !important;
+                margin: 10px auto !important;
+                background-size: contain !important;
+                background-repeat: no-repeat !important;
+                background-position: center bottom !important;
             }
         `});
        
@@ -453,44 +465,73 @@ try {
         const mailOptions = {
             from: 'termo.equipamentos@gramadoparks.com',
             to: `${email};termo.equipamentos@gramadoparks.com`,
-            subject: `Termo assinado por ${nome} da Unidade de trabalho ${unidade}`,
-            text: 'Prezado, segue em anexo o Termo de Cessão.',
+            subject: `Termo de Cessão, Guarda, Uso e Devolução de Equipamento - ${nome} - ${unidade}`,
+            html: `
+                <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+                    <div style="text-align: center; margin-bottom: 30px;">
+                        <h2 style="color: #1B4D3E; margin-bottom: 10px;">📋 Termo de Cessão, Guarda, Uso e Devolução de Equipamento</h2>
+                        <p style="color: #666; font-size: 14px;">Documento assinado digitalmente</p>
+                    </div>
+                    
+                    <div style="background: #f8f9fa; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
+                        <h3 style="color: #333; margin-top: 0;">ℹ️ Informações do Colaborador</h3>
+                        <p><strong>Nome:</strong> ${nome}</p>
+                        <p><strong>Unidade:</strong> ${unidade}</p>
+                        <p><strong>Setor:</strong> ${setor}</p>
+                        <p><strong>E-mail:</strong> ${email}</p>
+                        <p><strong>Usuário:</strong> ${usuario}</p>
+                    </div>
+                    
+                    <div style="background: #e7f3ff; padding: 20px; border-radius: 8px; border-left: 4px solid #007bff; margin-bottom: 20px;">
+                        <h3 style="color: #007bff; margin-top: 0;">✅ Status da Assinatura</h3>
+                        <p style="margin-bottom: 10px;">✓ <strong>Colaborador/Prestador:</strong> Assinado digitalmente</p>
+                        <p style="margin-bottom: 0;">✓ <strong>Gestor Responsável:</strong> Assinado digitalmente</p>
+                    </div>
+                    
+                    <div style="background: #fff3cd; padding: 15px; border-radius: 8px; border-left: 4px solid #ffc107; margin-bottom: 20px;">
+                        <p style="margin: 0; color: #856404;">
+                            <strong>📎 Anexos:</strong> Os termos assinados estão anexados a este e-mail em formato PDF.
+                        </p>
+                    </div>
+                    
+                    <div style="text-align: center; margin-top: 30px; padding-top: 20px; border-top: 1px solid #ddd;">
+                        <p style="color: #666; font-size: 12px; margin: 0;">
+                            Este documento foi gerado automaticamente pelo sistema de gestão de equipamentos da Gramado Parks.
+                        </p>
+                        <p style="color: #666; font-size: 12px; margin: 5px 0 0 0;">
+                            Data de geração: ${new Date().toLocaleDateString('pt-BR')} às ${new Date().toLocaleTimeString('pt-BR')}
+                        </p>
+                    </div>
+                </div>
+            `,
             attachments: [
                 {
-                    filename: 'termo_empresa.pdf',
+                    filename: `Termo_Empresa_${nome.replace(/\s+/g, '_')}_${unidade.replace(/\s+/g, '_')}.pdf`,
                     path: pdfPath1
                 },
                 {
-                    filename: `termo_${nome.replace(/\s+/g, '_')}.pdf`,
+                    filename: `Termo_${nome.replace(/\s+/g, '_')}_${unidade.replace(/\s+/g, '_')}.pdf`,
                     path: pdfPath2
                 }
             ]
         };
 
         // Enviar o e-mail
-        const info = await emailTransporter.sendMail(mailOptions);
-        console.log('E-mail enviado:', info.messageId);
+        await emailTransporter.sendMail(mailOptions);
         
-        // Limpar arquivos temporários após envio
-        setTimeout(() => {
-            try {
-                if (fs.existsSync(pdfPath1)) fs.unlinkSync(pdfPath1);
-                if (fs.existsSync(pdfPath2)) fs.unlinkSync(pdfPath2);
-                console.log('Arquivos temporários removidos');
-            } catch (cleanupError) {
-                console.warn('Erro ao limpar arquivos temporários:', cleanupError);
-            }
-        }, 5000);
-        
+        console.log(`E-mail enviado com sucesso para: ${email}`);
         res.status(200).send('E-mail enviado com sucesso!');
+
     } catch (error) {
         console.error('Erro ao enviar e-mail:', error);
-        res.status(500).send(`Erro ao enviar e-mail: ${error.message}`);
+        res.status(500).send('Erro interno do servidor ao enviar e-mail.');
     }
 });
 
-// Iniciar o servidor
+// Inicializar o servidor
 app.listen(port, '0.0.0.0', () => {
-    console.log(`Servidor rodando em http://localhost:${port} e acessível na rede local (ex: http://192.168.0.19:${port})`);
+    console.log(`Servidor rodando em http://192.168.56.1:${port}`);
+    console.log(`Sistema de Termo de Cessão, Guarda, Uso e Devolução de Equipamento`);
+    console.log(`Versão com assinatura digital DocuSign no formulário de adesão`);
 });
 
