@@ -20,7 +20,7 @@
                 line-height: 1.2;
             }
             .email-button, #loadingScreen, #successMessage, .user-info-header, .sign-button,
-            .signature-pad-container, .signature-actions, .signature-warning {
+            .signature-pad-container, .signature-actions, .signature-warning, .docusign-container {
                 display: none;
             }
             .container {
@@ -106,17 +106,18 @@
                 margin-top: 10px;
                 text-align: center;
             }
-        .signature-line {
-    border-bottom: 1px solid #333; /* */
-    height: 80px; /* */
-    width: 300px; /* */
-    margin: 10px auto 3px auto; /* Margem simplificada */
-    
-    /* Propriedades para alinhamentoo */
-    display: flex;
-    justify-content: center; /* Centraliza horizontalmente */
-    align-items: flex-end;   /* Alinha o item na parte inferior */
-}
+            .signature-line {
+                border-bottom: 1px solid #333;
+                height: 80px;
+                width: 300px;
+                margin: 10px auto 3px auto;
+                display: flex;
+                justify-content: center;
+                align-items: flex-end;
+                background-size: contain;
+                background-repeat: no-repeat;
+                background-position: center bottom;
+            }
             .signature-label {
                 font-size: 7pt;
                 text-align: center;
@@ -289,6 +290,9 @@
             width: 300px;
             margin-left: auto;
             margin-right: auto;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center bottom;
         }
         .signature-label {
             font-size: 8pt;
@@ -360,19 +364,6 @@
         .email-button:hover {
             background-color: #0056b3;
         }
-        .sign-button {
-            background-color: #28a745;
-            color: white;
-            padding: 5px 10px;
-            font-size: 10px;
-            border: none;
-            border-radius: 3px;
-            cursor: pointer;
-            margin-left: 5px;
-        }
-        .sign-button:hover {
-            background-color: #218838;
-        }
         .additional-terms {
             font-size: 8pt;
             margin-top: 15px;
@@ -429,56 +420,93 @@
         .email-button:disabled:hover {
             background-color: #6c757d !important;
         }
-        /* Estilos melhorados para a área de assinatura */
-        .signature-pad-container {
-    margin: 30px auto 15px; /* Aumenta a margem superior para 30px */
-    text-align: center; /* */
-    width: 100%; /* */
-    max-width: 550px; /* Aumenta a largura máxima para 550px */
-}
-        .signature-pad {
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            margin-bottom: 10px;
-            background-color: #f8f9fa;
-            touch-action: none;
+
+        /* Estilos DocuSign para assinatura */
+        .docusign-container {
+            background: linear-gradient(135deg, #e3f2fd 0%, #f8f9fa 100%);
+            border: 2px solid #2196f3;
+            border-radius: 12px;
+            padding: 25px;
+            margin: 30px auto;
+            max-width: 600px;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(33, 150, 243, 0.15);
         }
-      canvas {
-    background-color: #f8f9fa; /* */
-    width: 100% !important; /* */
-    height: 100px !important; /* Diminui a altura para 100px */
-    display: block; /* */
-}
-      #userSignature, #userSignature2 {
-    height: 80px; /* */
-    width: 300px; /* */
-    margin: 10px auto; /* */
-    background-size: contain; /* */
-    background-repeat: no-repeat; /* */
-    background-position: center bottom; /* Alinha a imagem de fundo na parte inferior */
-    border-bottom: 1px solid #333; /* */
-    position: relative; /* */
-}
-        .signature-actions {
+        .docusign-title {
+            color: #1976d2;
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 15px;
             display: flex;
-            gap: 10px;
+            align-items: center;
             justify-content: center;
-            margin-top: 10px;
+            gap: 10px;
         }
-        .clear-button, .save-button {
-            padding: 5px 10px;
-            border: none;
-            border-radius: 4px;
+        .docusign-instructions {
+            background: #fff;
+            border-left: 4px solid #2196f3;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+            text-align: left;
+            font-size: 14px;
+            color: #333;
+        }
+        .signature-field {
+            background: #e8f5e8;
+            border: 2px dashed #4caf50;
+            border-radius: 8px;
+            padding: 40px 20px;
+            margin: 20px 0;
             cursor: pointer;
-            font-size: 10px;
+            transition: all 0.3s ease;
+            position: relative;
+            min-height: 120px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
         }
-        .clear-button {
-            background-color: #f8f9fa;
-            border: 1px solid #ccc;
+        .signature-field:hover {
+            background: #f1f8e9;
+            border-color: #388e3c;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(76, 175, 80, 0.2);
         }
-        .save-button {
-            background-color: #28a745;
+        .signature-field.signed {
+            background: #e8f5e8;
+            border: 2px solid #4caf50;
+            cursor: default;
+        }
+        .signature-field.signed:hover {
+            transform: none;
+            box-shadow: none;
+        }
+        .signature-icon {
+            font-size: 32px;
+            margin-bottom: 10px;
+            color: #4caf50;
+        }
+        .signature-text {
+            font-size: 16px;
+            font-weight: 600;
+            color: #2e7d32;
+            margin-bottom: 5px;
+        }
+        .signature-subtitle {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 15px;
+        }
+        .signature-role {
+            background: #2196f3;
             color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
         .signature-modal {
             display: none;
@@ -494,28 +522,252 @@
         }
         .signature-modal-content {
             background-color: white;
-            padding: 20px;
-            border-radius: 5px;
-            width: 80%;
-            max-width: 500px;
+            padding: 30px;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 700px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+            max-height: 90vh;
+            overflow-y: auto;
         }
         .signature-modal-title {
             font-weight: bold;
+            margin-bottom: 20px;
+            text-align: center;
+            font-size: 20px;
+            color: #1976d2;
+        }
+
+        /* Abas de opções de assinatura */
+        .signature-tabs {
+            display: flex;
+            border-bottom: 2px solid #e0e0e0;
+            margin-bottom: 20px;
+        }
+        .signature-tab {
+            flex: 1;
+            padding: 12px 20px;
+            text-align: center;
+            cursor: pointer;
+            border: none;
+            background: none;
+            font-size: 14px;
+            font-weight: 600;
+            color: #666;
+            transition: all 0.3s ease;
+            border-bottom: 3px solid transparent;
+        }
+        .signature-tab.active {
+            color: #1976d2;
+            border-bottom-color: #1976d2;
+            background: #f8f9fa;
+        }
+        .signature-tab:hover {
+            background: #f5f5f5;
+        }
+
+        /* Conteúdo das abas */
+        .tab-content {
+            display: none;
+            min-height: 300px;
+        }
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Aba Selecionar Estilo */
+        .style-options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 20px 0;
+        }
+        .style-option {
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: #fafafa;
+        }
+        .style-option:hover {
+            border-color: #1976d2;
+            background: #f0f8ff;
+        }
+        .style-option.selected {
+            border-color: #1976d2;
+            background: #e3f2fd;
+        }
+        .style-preview {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-bottom: 1px solid #333;
             margin-bottom: 15px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        .style-name {
+            font-size: 12px;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Aba Desenhar */
+        .signature-pad-container {
+            margin: 20px 0;
             text-align: center;
         }
-        .signature-modal-buttons {
-            display: flex;
-            justify-content: space-between;
+        .signature-pad {
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            background-color: #fafafa;
+            touch-action: none;
+            width: 100%;
+            height: 200px;
+            position: relative;
+        }
+        #signatureCanvas {
+            background-color: #fafafa;
+            width: 100%;
+            height: 200px;
+            display: block;
+            border-radius: 6px;
+            cursor: crosshair;
+        }
+
+        /* Aba Upload */
+        .upload-area {
+            border: 2px dashed #1976d2;
+            border-radius: 8px;
+            padding: 40px 20px;
+            text-align: center;
+            background: #f8f9fa;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 20px 0;
+        }
+        .upload-area:hover {
+            background: #e3f2fd;
+            border-color: #1565c0;
+        }
+        .upload-area.dragover {
+            background: #e3f2fd;
+            border-color: #1565c0;
+        }
+        .upload-icon {
+            font-size: 48px;
+            color: #1976d2;
+            margin-bottom: 15px;
+        }
+        .upload-text {
+            font-size: 16px;
+            color: #333;
+            margin-bottom: 10px;
+        }
+        .upload-subtext {
+            font-size: 14px;
+            color: #666;
+        }
+        #fileInput {
+            display: none;
+        }
+        .uploaded-image {
+            max-width: 100%;
+            max-height: 150px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
             margin-top: 15px;
         }
-        .signature-agreement {
-            margin: 10px 0;
-            font-size: 10pt;
+
+        /* Visualização da assinatura */
+        .signature-preview {
+            background: #f8f9fa;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
             text-align: center;
         }
+        .signature-preview-title {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 15px;
+        }
+        .signature-preview-content {
+            border-bottom: 1px solid #333;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: white;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        /* Ações do modal */
+        .signature-actions {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 30px;
+        }
+        .clear-button, .save-button, .cancel-button {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        .clear-button {
+            background-color: #f5f5f5;
+            color: #666;
+            border: 2px solid #ddd;
+        }
+        .clear-button:hover {
+            background-color: #e0e0e0;
+        }
+        .cancel-button {
+            background-color: #f44336;
+            color: white;
+        }
+        .cancel-button:hover {
+            background-color: #d32f2f;
+        }
+        .save-button {
+            background-color: #4caf50;
+            color: white;
+        }
+        .save-button:hover {
+            background-color: #388e3c;
+        }
+        .save-button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+
+        .signature-agreement {
+            margin: 20px 0;
+            font-size: 14px;
+            text-align: left;
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #2196f3;
+        }
         .signature-agreement input {
-            margin-right: 5px;
+            margin-right: 8px;
+            transform: scale(1.2);
         }
     </style>
 </head>
@@ -644,29 +896,51 @@
                 </div>
 
                 <div class="signature-section">
-                    <div class="signature-line"><%= typeof assinatura1 !== 'undefined' ? assinatura1 : "Gramado Parks-T.I" %></div>
+                    <div class="signature-line">
+                        <%= typeof assinatura1 !== 'undefined' ? assinatura1 : "Gramado Parks-T.I" %>
+                    </div>
                     <div class="signature-label">Responsável pela Entrega (nome/assinatura)</div>
                     
-                   <div class="signature-line" id="userSignature">
-    <% if (typeof assinatura2 !== 'undefined' && assinatura2.startsWith('data:image')) { %>
-      <img src="<%= assinatura2 %>" alt="Assinatura do Usuário" style="position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); max-height: 75px; max-width: 100%;">
-    <% } else if (typeof assinatura2 !== 'undefined') { %>
-        <%= assinatura2 %>
-    <% } %>
-</div>
-<div class="signature-label">
-    Assinatura Usuário/Responsável Equipamento(s)
-</div>
-                    
-                    <div class="signature-pad-container">
-                        <div class="signature-pad">
-                            <canvas id="signatureCanvas1"></canvas>
-                        </div>
-                        <div class="signature-actions">
-                            <button class="clear-button" onclick="clearSignature(1)">Limpar</button>
-                            <button class="save-button" onclick="saveSignature(1)">Salvar Assinatura</button>
-                        </div>
+                    <div class="signature-line" id="userSignature">
+                        <% if (typeof assinatura2 !== 'undefined' && assinatura2.startsWith('data:image')) { %>
+                            <img src="<%= assinatura2 %>" alt="Assinatura do Usuário" style="position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); max-height: 75px; max-width: 100%;">
+                        <% } %>
                     </div>
+                    <div class="signature-label">Assinatura Usuário/Responsável Equipamento(s)</div>
+                </div>
+
+                <!-- Container DocuSign para assinatura -->
+                <% if (typeof isPdfGeneration === 'undefined' || !isPdfGeneration) { %>
+                <div class="docusign-container">
+                    <div class="docusign-title">
+                        ✓ Assinatura Digital - Termo de Adesão
+                    </div>
+                    
+                    <div class="docusign-instructions">
+                        📝 <strong>Instruções para Assinatura</strong><br>
+                        Clique no campo abaixo para assinar digitalmente este documento. Sua assinatura será salva automaticamente no PDF final.
+                    </div>
+                    
+                    <div class="signature-field" id="signatureField" onclick="openSignatureModal()">
+                        <div class="signature-icon">✍️</div>
+                        <div class="signature-text">Clique aqui para assinar</div>
+                        <div class="signature-subtitle">Colaborador/Prestador de Serviço</div>
+                        <div class="signature-role">Colaborador/Prestador de Serviço</div>
+                    </div>
+                </div>
+                <% } %>
+            </div>
+
+            <div class="page-break">
+                <div class="header-container">
+                    <div class="header-image">
+                        <img src="<%= typeof logoDataUri !== 'undefined' && logoDataUri ? logoDataUri : '/img/gpk.png' %>" alt="GPK Logo">
+                    </div>
+                    <div class="header-title">
+                        FORMULÁRIO<br>
+                        TERMO DE CESSÃO, GUARDA, USO E DEVOLUÇÃO DE EQUIPAMENTO
+                    </div>
+                    <div style="width: 80px;"></div>
                 </div>
 
                 <div class="section-title">DECLARAÇÃO DE DEVOLUÇÃO</div>
@@ -708,7 +982,7 @@
                                 <% }); %>
                             <% } %>
                             
-                            <% if (parsedUserData.fonte) { %>
+                            <% if (parsedUserData.fonte && (parsedUserData.fonte.fabricante || parsedUserData.fonte.modelo)) { %>
                                 <% returnItemCounter++; %>
                                 <tr>
                                     <td style="text-align: center;"><%= returnItemCounter %></td>
@@ -730,22 +1004,19 @@
                             <% } %>
                         </tbody>
                     </table>
-                </div>
-            </div>
 
-            <div class="page-break">
-                <div class="header-container">
-                    <div class="header-image">
-                        <img src="/img/gpk.png" alt="GPK Logo">
+                    <div class="signature-section">
+                        <div class="signature-line"><%= typeof assinatura3 !== 'undefined' ? assinatura3 : "Gramado Parks-T.I" %></div>
+                        <div class="signature-label">Responsável pelo Recebimento (nome/assinatura)</div>
+                        
+                        <div class="signature-line">
+                            <!-- Sem assinatura digital aqui - apenas linha para assinatura manual -->
+                        </div>
+                        <div class="signature-label">Assinatura Usuário/Responsável Equipamento(s)</div>
                     </div>
-                    <div class="header-title">
-                        FORMULÁRIO<br>
-                        TERMO DE CESSÃO, GUARDA, USO E DEVOLUÇÃO DE EQUIPAMENTO
-                    </div>
-                    <div style="width: 80px;"></div>
                 </div>
 
-                <div class="section-title">TERMOS E CONDIÇÕES ADICIONAIS</div>
+               <div class="section-title">TERMOS E CONDIÇÕES ADICIONAIS</div>
                 <div class="additional-terms">
                     <p><strong>Declaro ter ciência e estar de acordo com os procedimentos descritos na Política PL.GC.028 Trabalho Remoto - Home Office e PL.GC.035 Entrega, Uso e Devolução de Equipamentos de TI e Periféricos, emitidas e divulgadas pela Gramado Parks, comprometendo-me a respeitá-las, cumprindo e aceitando-as plenamente, bem como o disposto abaixo:</strong></p>
                     
@@ -776,30 +1047,14 @@
                     </ol>
                 </div>
 
-                <div class="signature-section" style="margin-top: 30px;">
+                <div class="signature-section">
                     <div class="signature-line"><%= typeof assinatura3 !== 'undefined' ? assinatura3 : "Gramado Parks-T.I" %></div>
                     <div class="signature-label">Responsável pela Entrega (nome/assinatura)</div>
                     
-                  <div class="signature-line" id="userSignature2">
-    <% if (typeof assinatura4 !== 'undefined' && assinatura4.startsWith('data:image')) { %>
-     <img src="<%= assinatura4 %>" alt="Assinatura do Usuário" style="position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); max-height: 75px; max-width: 100%;">
-    <% } else if (typeof assinatura4 !== 'undefined') { %>
-        <%= assinatura4 %>
-    <% } %>
-</div>
-<div class="signature-label">
-    Assinatura Usuário/Responsável Equipamento(s)
-</div>
-                    
-                    <div class="signature-pad-container">
-                        <div class="signature-pad">
-                            <canvas id="signatureCanvas2"></canvas>
-                        </div>
-                        <div class="signature-actions">
-                            <button class="clear-button" onclick="clearSignature(2)">Limpar</button>
-                            <button class="save-button" onclick="saveSignature(2)">Salvar Assinatura</button>
-                        </div>
+                    <div class="signature-line">
+                        <!-- Sem assinatura digital aqui - apenas linha para assinatura manual -->
                     </div>
+                    <div class="signature-label">Assinatura Usuário/Responsável Equipamento(s)</div>
                 </div>
             </div>
 
@@ -809,7 +1064,7 @@
                     <span>As informações contidas neste documento são destinadas ao uso interno.</span>
                 </div>
                 <div class="footer-info">
-                    <span>Página 1/2</span>
+                    <span>Página 2/2</span>
                     <span>FR.14.01.001<br>Versão 05 – 11/08/2023</span>
                 </div>
             </div>
@@ -823,38 +1078,90 @@
 <% } %>
         </div>
 
-        <!-- Modal para aceite de termos -->
+        <!-- Modal para assinatura DocuSign com 3 opções -->
         <div id="signatureModal" class="signature-modal">
             <div class="signature-modal-content">
-                <div class="signature-modal-title">Termo de Aceite</div>
-                <p>Eu, <strong><%= typeof nome !== 'undefined' ? nome : 'N/A' %></strong>, declaro que li e compreendi todos os termos deste documento e que minha assinatura abaixo tem o mesmo valor legal que uma assinatura manuscrita.</p>
-                <div class="signature-agreement">
-                    <input type="checkbox" id="agreeTerms"> <label for="agreeTerms">Concordo com os termos acima</label>
+                <div class="signature-modal-title">Assinatura Digital</div>
+                
+                <!-- Abas de opções -->
+                <div class="signature-tabs">
+                    <button class="signature-tab active" onclick="switchTab(event, 'style')">SELECIONAR ESTILO</button>
+                    <button class="signature-tab" onclick="switchTab(event, 'draw')">DESENHAR</button>
+                    <button class="signature-tab" onclick="switchTab(event, 'upload')">FAZER UPLOAD</button>
                 </div>
-                <div class="signature-modal-buttons">
-                    <button class="clear-button" onclick="document.getElementById('signatureModal').style.display = 'none'">Cancelar</button>
-                    <button class="save-button" id="confirmSignatureBtn" disabled>Confirmar Assinatura</button>
+
+                <!-- Conteúdo da aba Selecionar Estilo -->
+                <div id="styleTab" class="tab-content active">
+                    <div class="style-options">
+                        <div class="style-option" data-style="cursive" onclick="selectStyle('cursive')">
+                            <div class="style-preview" style="font-family: 'Brush Script MT', cursive; font-size: 16px;"><%= typeof nome !== 'undefined' ? nome : 'Nome' %></div>
+                            <div class="style-name">Cursiva</div>
+                        </div>
+                        <div class="style-option" data-style="elegant" onclick="selectStyle('elegant')">
+                            <div class="style-preview" style="font-family: 'Times New Roman', serif; font-style: italic; font-size: 16px;"><%= typeof nome !== 'undefined' ? nome : 'Nome' %></div>
+                            <div class="style-name">Elegante</div>
+                        </div>
+                    </div>
+                    <div class="signature-preview">
+                        <div class="signature-preview-title">Visualização:</div>
+                        <div class="signature-preview-content" id="stylePreview">
+                            Selecione um estilo acima
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Conteúdo da aba Desenhar -->
+                <div id="drawTab" class="tab-content">
+                    <p style="text-align: center; color: #666; margin-bottom: 20px;">Desenhe sua assinatura no campo abaixo:</p>
+                    <div class="signature-pad-container">
+                        <div class="signature-pad">
+                            <canvas id="signatureCanvas" width="600" height="200"></canvas>
+                        </div>
+                        <button class="clear-button" onclick="clearCanvas()" style="margin-top: 10px;">Limpar</button>
+                    </div>
+                </div>
+
+                <!-- Conteúdo da aba Upload -->
+                <div id="uploadTab" class="tab-content">
+                    <div class="upload-area" onclick="document.getElementById('fileInput').click()">
+                        <div class="upload-icon">📁</div>
+                        <div class="upload-text">Clique para selecionar uma imagem</div>
+                        <div class="upload-subtext">ou arraste e solte aqui</div>
+                        <div class="upload-subtext" style="margin-top: 10px; font-size: 12px;">Formatos aceitos: PNG, JPG, JPEG</div>
+                    </div>
+                    <input type="file" id="fileInput" accept="image/*" onchange="handleFileUpload(event)">
+                    <div id="uploadPreview" style="text-align: center; margin-top: 20px;"></div>
+                </div>
+                
+                <div class="signature-agreement">
+                    <input type="checkbox" id="agreeTerms"> 
+                    <label for="agreeTerms">Eu, <strong><%= typeof nome !== 'undefined' ? nome : 'N/A' %></strong>, declaro que li e compreendi todos os termos deste documento e que minha assinatura digital tem o mesmo valor legal que uma assinatura manuscrita.</label>
+                </div>
+                
+                <div class="signature-actions">
+                    <button class="cancel-button" onclick="closeSignatureModal()">Cancelar</button>
+                    <button class="save-button" id="saveSignatureBtn" onclick="saveSignature()" disabled>Adotar e Rubricar</button>
                 </div>
             </div>
         </div>
+
 <% if (typeof isPdfGeneration === 'undefined' || !isPdfGeneration) { %>
     <div class="signature-warning" id="signatureWarning">
-        ⚠️ <strong>ATENÇÃO:</strong> Para enviar o termo por e-mail, é obrigatório que ambas as partes assinem o documento.<br>
+        ⚠️ <strong>ATENÇÃO:</strong> Para enviar o termo por e-mail, é obrigatório assinar o documento.<br>
         <small style="font-weight: normal; margin-top: 5px; display: block;">
-            • O <strong>Colaborador/Prestador de Serviço</strong> deve assinar nas duas páginas<br>
-           <!-- • O <strong>Usuário/Responsável pelo Equipamento</strong> deve assinar na segunda página<br>-->
-            <em>Apenas após ambas as assinaturas o botão de envio será habilitado.</em>
+            • O <strong>Colaborador/Prestador de Serviço</strong> deve assinar o termo de adesão<br>
+            <em>Apenas após a assinatura o botão de envio será habilitado.</em>
         </small>
     </div>
 <% } %>
 
         <button class="email-button" id="sendEmailButton" onclick="sendEmail()" disabled>
-            Enviar Termo por E-mail
+            📧 Enviar por E-mail
         </button>
 
         <div id="loadingScreen">
             <img src="/LogoEfeito.png" alt="Logo girando" id="loadingLogo">
-            <div id="loadingText">Enviando documento...</div>
+            <div id="loadingText">Registrando tudo! Só mais um momento enquanto enviamos seu documento...</div>
             <div id="progressBar"><div id="progress"></div></div>
             <div id="percentage">0%</div>
         </div>
@@ -868,258 +1175,450 @@
         </div>
 
         <script>
-            // Variáveis para controle da assinatura
+            // Variáveis globais
+            let currentTab = 'style';
+            let selectedStyle = null;
+            let signatureData = null;
+            let canvas = null;
+            let ctx = null;
             let isDrawing = false;
             let lastX = 0;
             let lastY = 0;
-            let currentCanvas = null;
-            let currentCtx = null;
             
-         const signatureSettings = {
-    lineWidth: 1.5, // Linha um pouco mais grossa
-    lineCap: 'round',
-    lineJoin: 'round',
-    strokeStyle: '#004A99'
-};
-            // Inicializa os canvases de assinatura
+            const signatureSettings = {
+                lineWidth: 3,
+                lineCap: 'round',
+                lineJoin: 'round',
+                strokeStyle: '#1976d2'
+            };
+
+            // Inicializa o sistema
             document.addEventListener('DOMContentLoaded', function() {
-                const canvas1 = document.getElementById('signatureCanvas1');
-                const ctx1 = canvas1.getContext('2d');
-                setupCanvas(canvas1, ctx1);
-                
-                const canvas2 = document.getElementById('signatureCanvas2');
-                const ctx2 = canvas2.getContext('2d');
-                setupCanvas(canvas2, ctx2);
+                canvas = document.getElementById('signatureCanvas');
+                if (canvas) {
+                    ctx = canvas.getContext('2d');
+                    setupCanvas();
+                }
                 
                 // Configura o modal de aceite
-                document.getElementById('agreeTerms').addEventListener('change', function() {
-                    document.getElementById('confirmSignatureBtn').disabled = !this.checked;
-                });
+                const agreeTerms = document.getElementById('agreeTerms');
+                if (agreeTerms) {
+                    agreeTerms.addEventListener('change', function() {
+                        updateSaveButton();
+                    });
+                }
+                
+                // Configura drag and drop para upload
+                setupDragAndDrop();
                 
                 checkSignatures();
-                
-                // Ajusta o tamanho do canvas para alta resolução
-                resizeCanvas(canvas1);
-                resizeCanvas(canvas2);
             });
 
-            function resizeCanvas(canvas) {
-                const ratio = window.devicePixelRatio || 1;
-                canvas.width = canvas.offsetWidth * ratio;
-                canvas.height = canvas.offsetHeight * ratio;
-                canvas.getContext('2d').scale(ratio, ratio);
+            function setupCanvas() {
+                if (!canvas || !ctx) return;
+                
+                // Configurar dimensões do canvas
+                const rect = canvas.getBoundingClientRect();
+                const dpr = window.devicePixelRatio || 1;
+                
+                canvas.width = rect.width * dpr;
+                canvas.height = rect.height * dpr;
+                
+                ctx.scale(dpr, dpr);
+                
+                // Configurar estilos
+                ctx.strokeStyle = signatureSettings.strokeStyle;
+                ctx.lineWidth = signatureSettings.lineWidth;
+                ctx.lineCap = signatureSettings.lineCap;
+                ctx.lineJoin = signatureSettings.lineJoin;
+                
+                // Event listeners para mouse
+                canvas.addEventListener('mousedown', startDrawing);
+                canvas.addEventListener('mousemove', draw);
+                canvas.addEventListener('mouseup', stopDrawing);
+                canvas.addEventListener('mouseout', stopDrawing);
+                
+                // Event listeners para touch
+                canvas.addEventListener('touchstart', handleTouchStart, { passive: false });
+                canvas.addEventListener('touchmove', handleTouchMove, { passive: false });
+                canvas.addEventListener('touchend', handleTouchEnd, { passive: false });
             }
 
-     // Função setupCanvas SIMPLIFICADA
-function setupCanvas(canvas, ctx) {
-    // Adiciona os listeners, as configurações foram movidas
-    canvas.addEventListener('mousedown', startDrawing);
-    canvas.addEventListener('mousemove', draw);
-    canvas.addEventListener('mouseup', stopDrawing);
-    canvas.addEventListener('mouseout', stopDrawing);
-    
-    canvas.addEventListener('touchstart', handleTouchStart, { passive: false });
-    canvas.addEventListener('touchmove', handleTouchMove, { passive: false });
-    canvas.addEventListener('touchend', handleTouchEnd);
-}
-// Função startDrawing NOVA
-// Função startDrawing CORRIGIDA
-// Função startDrawing CORRIGIDA com as configurações
-function startDrawing(e) {
-    isDrawing = true;
-    const canvas = e.target;
-    const rect = canvas.getBoundingClientRect();
-    currentCanvas = canvas;
-    currentCtx = canvas.getContext('2d');
-
-    // ** APLICA AS CONFIGURAÇÕES AQUI **
-    currentCtx.strokeStyle = signatureSettings.strokeStyle;
-    currentCtx.lineWidth = signatureSettings.lineWidth;
-    currentCtx.lineCap = signatureSettings.lineCap;
-    currentCtx.lineJoin = signatureSettings.lineJoin;
-
-    if (e.type === 'mousedown') {
-        [lastX, lastY] = [e.clientX - rect.left, e.clientY - rect.top];
-    } else if (e.type === 'touchstart') {
-        e.preventDefault();
-        [lastX, lastY] = [e.touches[0].clientX - rect.left, e.touches[0].clientY - rect.top];
-    }
-    
-    currentCtx.beginPath();
-    currentCtx.moveTo(lastX, lastY);
-}
-
-// Função draw CORRIGIDA
-function draw(e) {
-    if (!isDrawing) return;
-    const rect = currentCanvas.getBoundingClientRect();
-    let currentX, currentY;
-
-    if (e.type === 'mousemove') {
-        currentX = e.clientX - rect.left;
-        currentY = e.clientY - rect.top;
-    } else if (e.type === 'touchmove') {
-        e.preventDefault();
-        currentX = e.touches[0].clientX - rect.top;
-    }
-
-    //  Desenhar no caminho já iniciado
-    currentCtx.lineTo(currentX, currentY);
-    currentCtx.stroke();
-
-    [lastX, lastY] = [currentX, currentY];
-}
-
-// Função draw NOVA (com curvas)
-function draw(e) {
-    if (!isDrawing) return;
-    const rect = currentCanvas.getBoundingClientRect();
-    let currentX, currentY;
-
-    if (e.type === 'mousemove') {
-        currentX = e.clientX - rect.left;
-        currentY = e.clientY - rect.top;
-    } else if (e.type === 'touchmove') {
-        e.preventDefault();
-        currentX = e.touches[0].clientX - rect.top;
-    }
-
-    //  Desenhar no caminho já iniciado
-    currentCtx.lineTo(currentX, currentY);
-    currentCtx.stroke();
-
-    [lastX, lastY] = [currentX, currentY];
-}
-
-            function stopDrawing() {
-                isDrawing = false;
+            function setupDragAndDrop() {
+                const uploadArea = document.querySelector('.upload-area');
+                if (!uploadArea) return;
+                
+                uploadArea.addEventListener('dragover', function(e) {
+                    e.preventDefault();
+                    uploadArea.classList.add('dragover');
+                });
+                
+                uploadArea.addEventListener('dragleave', function(e) {
+                    e.preventDefault();
+                    uploadArea.classList.remove('dragover');
+                });
+                
+                uploadArea.addEventListener('drop', function(e) {
+                    e.preventDefault();
+                    uploadArea.classList.remove('dragover');
+                    
+                    const files = e.dataTransfer.files;
+                    if (files.length > 0) {
+                        handleFile(files[0]);
+                    }
+                });
             }
 
-            // Funções para touch devices
-            function handleTouchStart(e) {
-                if (e.touches.length === 1) {
-                    const touch = e.touches[0];
-                    const mouseEvent = new MouseEvent('mousedown', {
-                        clientX: touch.clientX,
-                        clientY: touch.clientY
-                    });
-                    e.target.dispatchEvent(mouseEvent);
+            function openSignatureModal() {
+                const modal = document.getElementById('signatureModal');
+                if (modal) {
+                    modal.style.display = 'flex';
+                    
+                    const agreeTerms = document.getElementById('agreeTerms');
+                    if (agreeTerms) {
+                        agreeTerms.checked = false;
+                    }
+                    
+                    updateSaveButton();
+                    
+                    // Reset para a primeira aba
+                    switchTab(null, 'style');
+                    
+                    // Reconfigurar canvas quando modal abrir
+                    setTimeout(() => {
+                        if (canvas && ctx) {
+                            setupCanvas();
+                        }
+                    }, 100);
                 }
+            }
+
+            function closeSignatureModal() {
+                const modal = document.getElementById('signatureModal');
+                if (modal) {
+                    modal.style.display = 'none';
+                    resetModal();
+                }
+            }
+
+            function resetModal() {
+                selectedStyle = null;
+                signatureData = null;
+                clearCanvas();
+                
+                const uploadPreview = document.getElementById('uploadPreview');
+                if (uploadPreview) {
+                    uploadPreview.innerHTML = '';
+                }
+                
+                const fileInput = document.getElementById('fileInput');
+                if (fileInput) {
+                    fileInput.value = '';
+                }
+                
+                document.querySelectorAll('.style-option').forEach(opt => opt.classList.remove('selected'));
+                
+                const stylePreview = document.getElementById('stylePreview');
+                if (stylePreview) {
+                    stylePreview.textContent = 'Selecione um estilo acima';
+                }
+            }
+
+            function switchTab(event, tabName) {
+                currentTab = tabName;
+                
+                // Atualizar abas
+                document.querySelectorAll('.signature-tab').forEach(tab => tab.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+                
+                // Ativar aba selecionada
+                if (event && event.target) {
+                    event.target.classList.add('active');
+                } else {
+                    // Fallback para quando chamado programaticamente
+                    const tabs = document.querySelectorAll('.signature-tab');
+                    if (tabName === 'style' && tabs[0]) tabs[0].classList.add('active');
+                    else if (tabName === 'draw' && tabs[1]) tabs[1].classList.add('active');
+                    else if (tabName === 'upload' && tabs[2]) tabs[2].classList.add('active');
+                }
+                
+                const tabContent = document.getElementById(tabName + 'Tab');
+                if (tabContent) {
+                    tabContent.classList.add('active');
+                }
+                
+                // Reconfigurar canvas se necessário
+                if (tabName === 'draw' && canvas && ctx) {
+                    setTimeout(() => {
+                        setupCanvas();
+                    }, 50);
+                }
+                
+                updateSaveButton();
+            }
+
+            // Funções da aba Selecionar Estilo
+            function selectStyle(style) {
+                selectedStyle = style;
+                
+                // Atualizar seleção visual
+                document.querySelectorAll('.style-option').forEach(opt => opt.classList.remove('selected'));
+                const selectedOption = document.querySelector(`[data-style="${style}"]`);
+                if (selectedOption) {
+                    selectedOption.classList.add('selected');
+                }
+                
+                // Gerar preview
+                const userName = '<%= typeof nome !== "undefined" ? nome : "Nome" %>';
+                const preview = document.getElementById('stylePreview');
+                
+                if (preview) {
+                    if (style === 'cursive') {
+                        preview.style.fontFamily = "'Brush Script MT', cursive";
+                        preview.style.fontSize = '20px';
+                    } else if (style === 'elegant') {
+                        preview.style.fontFamily = "'Times New Roman', serif";
+                        preview.style.fontStyle = 'italic';
+                        preview.style.fontSize = '20px';
+                    }
+                    
+                    preview.textContent = userName;
+                }
+                
+                // Gerar dados da assinatura
+                generateStyleSignature(style, userName);
+                updateSaveButton();
+            }
+
+            function generateStyleSignature(style, name) {
+                // Criar canvas temporário para gerar a assinatura
+                const tempCanvas = document.createElement('canvas');
+                tempCanvas.width = 300;
+                tempCanvas.height = 80;
+                const tempCtx = tempCanvas.getContext('2d');
+                
+                // Configurar estilo
+                tempCtx.fillStyle = '#1976d2';
+                tempCtx.textAlign = 'center';
+                tempCtx.textBaseline = 'middle';
+                
+                if (style === 'cursive') {
+                    tempCtx.font = "20px 'Brush Script MT', cursive";
+                } else if (style === 'elegant') {
+                    tempCtx.font = "italic 20px 'Times New Roman', serif";
+                }
+                
+                // Desenhar o nome
+                tempCtx.fillText(name, 150, 40);
+                
+                // Salvar como dados da assinatura
+                signatureData = tempCanvas.toDataURL();
+            }
+
+            // Funções da aba Desenhar
+            function getEventPos(e) {
+                const rect = canvas.getBoundingClientRect();
+                const scaleX = canvas.width / rect.width;
+                const scaleY = canvas.height / rect.height;
+                
+                if (e.type.startsWith('touch')) {
+                    return {
+                        x: (e.touches[0].clientX - rect.left) * scaleX,
+                        y: (e.touches[0].clientY - rect.top) * scaleY
+                    };
+                } else {
+                    return {
+                        x: (e.clientX - rect.left) * scaleX,
+                        y: (e.clientY - rect.top) * scaleY
+                    };
+                }
+            }
+
+            function startDrawing(e) {
+                if (!canvas || !ctx) return;
+                
+                e.preventDefault();
+                isDrawing = true;
+                
+                const pos = getEventPos(e);
+                lastX = pos.x;
+                lastY = pos.y;
+                
+                ctx.beginPath();
+                ctx.moveTo(lastX, lastY);
+                
+                updateSaveButton();
+            }
+
+            function draw(e) {
+                if (!isDrawing || !canvas || !ctx) return;
+                
+                e.preventDefault();
+                
+                const pos = getEventPos(e);
+                
+                ctx.lineTo(pos.x, pos.y);
+                ctx.stroke();
+                
+                lastX = pos.x;
+                lastY = pos.y;
+            }
+
+            function stopDrawing(e) {
+                if (!isDrawing) return;
+                
+                e.preventDefault();
+                isDrawing = false;
+                
+                if (canvas) {
+                    signatureData = canvas.toDataURL();
+                }
+                
+                updateSaveButton();
+            }
+
+            function clearCanvas() {
+                if (!canvas || !ctx) return;
+                
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                signatureData = null;
+                updateSaveButton();
+            }
+
+            function handleTouchStart(e) {
+                e.preventDefault();
+                startDrawing(e);
             }
 
             function handleTouchMove(e) {
-                if (e.touches.length === 1) {
-                    const touch = e.touches[0];
-                    const mouseEvent = new MouseEvent('mousemove', {
-                        clientX: touch.clientX,
-                        clientY: touch.clientY
-                    });
-                    e.target.dispatchEvent(mouseEvent);
-                }
+                e.preventDefault();
+                draw(e);
             }
 
             function handleTouchEnd(e) {
-                const mouseEvent = new MouseEvent('mouseup', {});
-                e.target.dispatchEvent(mouseEvent);
+                e.preventDefault();
+                stopDrawing(e);
             }
 
-            function clearSignature(pageNum) {
-                const canvas = pageNum === 1 ? document.getElementById('signatureCanvas1') : document.getElementById('signatureCanvas2');
-                const ctx = canvas.getContext('2d');
-                
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                
-                // Atualiza o estado da assinatura
-                const signatureElement = pageNum === 1 ? 
-                    document.getElementById('userSignature') : 
-                    document.getElementById('userSignature2');
-                signatureElement.style.backgroundImage = 'none';
-                signatureElement.textContent = '';
-                
-                checkSignatures();
+            // Funções da aba Upload
+            function handleFileUpload(event) {
+                const file = event.target.files[0];
+                if (file) {
+                    handleFile(file);
+                }
             }
 
-            function saveSignature(pageNum) {
-                const canvas = pageNum === 1 ? document.getElementById('signatureCanvas1') : document.getElementById('signatureCanvas2');
+            function handleFile(file) {
+                if (!file.type.startsWith('image/')) {
+                    alert('Por favor, selecione apenas arquivos de imagem.');
+                    return;
+                }
+
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const img = new Image();
+                    img.onload = function() {
+                        // Mostrar preview
+                        const preview = document.getElementById('uploadPreview');
+                        if (preview) {
+                            preview.innerHTML = `<img src="${e.target.result}" class="uploaded-image" alt="Assinatura carregada">`;
+                        }
+                        
+                        // Salvar dados da assinatura
+                        signatureData = e.target.result;
+                        updateSaveButton();
+                    };
+                    img.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+
+            function updateSaveButton() {
+                const agreeTerms = document.getElementById('agreeTerms');
+                const saveBtn = document.getElementById('saveSignatureBtn');
                 
-                // Verifica se há alguma assinatura no canvas
+                if (!agreeTerms || !saveBtn) return;
+                
+                const agreeChecked = agreeTerms.checked;
+                const hasSignature = signatureData !== null || 
+                                   (currentTab === 'draw' && !isCanvasEmpty()) ||
+                                   (currentTab === 'style' && selectedStyle !== null);
+                
+                saveBtn.disabled = !agreeChecked || !hasSignature;
+            }
+
+            function isCanvasEmpty() {
+                if (!canvas) return true;
+                
                 const blankCanvas = document.createElement('canvas');
                 blankCanvas.width = canvas.width;
                 blankCanvas.height = canvas.height;
+                return canvas.toDataURL() === blankCanvas.toDataURL();
+            }
+
+            function saveSignature() {
+                // Garantir que temos dados de assinatura
+                if (currentTab === 'draw' && !isCanvasEmpty() && canvas) {
+                    signatureData = canvas.toDataURL();
+                }
                 
-                if (canvas.toDataURL() === blankCanvas.toDataURL()) {
+                if (!signatureData) {
                     alert('Por favor, forneça sua assinatura antes de salvar.');
                     return;
                 }
                 
-                // Mostra o modal de aceite
-                document.getElementById('signatureModal').style.display = 'flex';
-                document.getElementById('agreeTerms').checked = false;
-                document.getElementById('confirmSignatureBtn').disabled = true;
+                // Atualizar o campo visual
+                const signatureField = document.getElementById('signatureField');
+                const signatureLine = document.getElementById('userSignature');
                 
-                // Configura o botão de confirmação
-                document.getElementById('confirmSignatureBtn').onclick = function() {
-                    confirmSignature(pageNum, canvas);
-                    document.getElementById('signatureModal').style.display = 'none';
-                };
-            }
-
-            function confirmSignature(pageNum, canvas) {
-                const signatureElement = pageNum === 1 ? 
-                    document.getElementById('userSignature') : 
-                    document.getElementById('userSignature2');
+                if (signatureField) {
+                    signatureField.classList.add('signed');
+                    signatureField.innerHTML = `
+                        <div class="signature-icon">✅</div>
+                        <div class="signature-text">Assinado digitalmente</div>
+                        <div class="signature-subtitle">Assinatura válida</div>
+                        <div class="signature-role">Colaborador/Prestador de Serviço</div>
+                    `;
+                }
                 
-                // Converte a assinatura para imagem e exibe no lugar apropriado
-                const signatureDataUrl = canvas.toDataURL();
-                signatureElement.style.backgroundImage = `url(${signatureDataUrl})`;
-                signatureElement.textContent = '';
+                // Atualizar a linha de assinatura no documento
+                if (signatureLine) {
+                    signatureLine.style.backgroundImage = `url(${signatureData})`;
+                    signatureLine.setAttribute('data-signature', signatureData);
+                }
                 
-                // Adiciona metadados para verificação
-                const userName = '<%= typeof nome !== "undefined" ? nome : "N/A" %>';
-                const currentDate = new Date().toLocaleDateString('pt-BR');
-                const currentTime = new Date().toLocaleTimeString('pt-BR');
-                signatureElement.setAttribute('data-signed-by', userName);
-                signatureElement.setAttribute('data-signed-at', `${currentDate} ${currentTime}`);
-                
+                closeSignatureModal();
                 checkSignatures();
             }
 
             function checkSignatures() {
-                const signature1 = document.getElementById('userSignature');
-                const signature2 = document.getElementById('userSignature2');
+                const field = document.getElementById('signatureField');
                 const sendButton = document.getElementById('sendEmailButton');
                 const warningDiv = document.getElementById('signatureWarning');
                 
-                const isSignature1Valid = signature1.style.backgroundImage !== 'none' && 
-                                        signature1.style.backgroundImage !== '';
-                const isSignature2Valid = signature2.style.backgroundImage !== 'none' && 
-                                        signature2.style.backgroundImage !== '';
+                if (!field || !sendButton) return;
                 
-                if (isSignature1Valid && isSignature2Valid) {
+                const isFieldSigned = field.classList.contains('signed');
+                
+                if (isFieldSigned) {
                     sendButton.disabled = false;
                     sendButton.style.backgroundColor = '#007bff';
                     sendButton.style.cursor = 'pointer';
-                    warningDiv.style.display = 'none';
+                    if (warningDiv) warningDiv.style.display = 'none';
                 } else {
                     sendButton.disabled = true;
                     sendButton.style.backgroundColor = '#6c757d';
                     sendButton.style.cursor = 'not-allowed';
-                    warningDiv.style.display = 'block';
+                    if (warningDiv) warningDiv.style.display = 'block';
                 }
             }
 
             function sendEmail() {
-                // Verificar assinaturas
-                const signature1 = document.getElementById('userSignature');
-                const signature2 = document.getElementById('userSignature2');
+                // Verificar assinatura
+                const field = document.getElementById('signatureField');
                 
-                const isSignature1Valid = signature1.style.backgroundImage !== 'none' && 
-                                        signature1.style.backgroundImage !== '';
-                const isSignature2Valid = signature2.style.backgroundImage !== 'none' && 
-                                        signature2.style.backgroundImage !== '';
-                
-                if (!isSignature1Valid || !isSignature2Valid) {
-                    alert('⚠️ ATENÇÃO: É obrigatório que ambas as partes assinem o documento antes de enviar o e-mail.');
+                if (!field || !field.classList.contains('signed')) {
+                    alert('⚠️ ATENÇÃO: É obrigatório assinar o documento antes de enviar o e-mail.');
                     return;
                 }
                 
@@ -1127,19 +1626,17 @@ function draw(e) {
                 const successMessage = document.getElementById('successMessage');
                 const errorMessage = document.getElementById('errorMessage');
                 
-                loadingScreen.style.display = 'flex';
-                successMessage.style.display = 'none';
-                errorMessage.style.display = 'none';
+                if (loadingScreen) loadingScreen.style.display = 'flex';
+                if (successMessage) successMessage.style.display = 'none';
+                if (errorMessage) errorMessage.style.display = 'none';
                 
                 let progress = 0;
                 const progressElement = document.getElementById('progress');
                 const percentageElement = document.getElementById('percentage');
 
-                // Obter as assinaturas como dados base64
-                const canvas1 = document.getElementById('signatureCanvas1');
-                const canvas2 = document.getElementById('signatureCanvas2');
-                const signatureData1 = canvas1.toDataURL();
-                const signatureData2 = canvas2.toDataURL();
+                // Obter a assinatura
+                const userSignatureLine = document.getElementById('userSignature');
+                const userSignature = userSignatureLine ? userSignatureLine.getAttribute('data-signature') : null;
 
                 // Coletar todas as informações do formulário
                 const formData = {
@@ -1154,63 +1651,66 @@ function draw(e) {
                     cnpj: '<%= typeof cnpj !== "undefined" ? cnpj : "" %>',
                     tipoUsuario: '<%= typeof tipoUsuario !== "undefined" ? tipoUsuario : "" %>',
                     tipoUso: '<%= typeof tipoUso !== "undefined" ? tipoUso : "P" %>',
-                    assinatura1: document.querySelector('.signature-section .signature-line:first-child').textContent,
-                    assinatura2: signatureData1,
-                    assinatura3: document.querySelector('.page-break .signature-section .signature-line:first-child').textContent,
-                    assinatura4: signatureData2,
-                    dataAssinatura1: document.getElementById('userSignature').getAttribute('data-signed-at') || '',
-                    dataAssinatura2: document.getElementById('userSignature2').getAttribute('data-signed-at') || ''
+                    assinatura1: '<%= typeof assinatura1 !== "undefined" ? assinatura1 : "Gramado Parks-T.I" %>',
+                    assinatura2: userSignature,
+                    assinatura3: '<%= typeof assinatura3 !== "undefined" ? assinatura3 : "Gramado Parks-T.I" %>',
+                    assinatura4: '<%= typeof assinatura1 !== "undefined" ? assinatura1 : "Gramado Parks-T.I" %>' // Gestor automático
                 };
 
-                function updateProgress() {
-                    if (progress < 100) {
-                        progress += 1;
-                        progressElement.style.width = progress + '%';
-                        percentageElement.textContent = progress + '%';
-                        setTimeout(updateProgress, 30);
-                    }
-                }
-                updateProgress();
+                // Simular progresso
+                const progressInterval = setInterval(() => {
+                    progress += Math.random() * 15;
+                    if (progress > 90) progress = 90;
+                    if (progressElement) progressElement.style.width = progress + '%';
+                    if (percentageElement) percentageElement.textContent = Math.round(progress) + '%';
+                }, 200);
 
+                // Enviar dados para o servidor
                 fetch('/enviar-email', {
                     method: 'POST',
                     headers: {
-                        'Content-Type': 'application/json'
+                        'Content-Type': 'application/json',
                     },
                     body: JSON.stringify(formData)
                 })
                 .then(response => {
-                    if (response.ok) {
-                        return response.text();
-                    } else {
-                        throw new Error('Erro no servidor: ' + response.status);
-                    }
-                })
-                .then(data => {
-                    progress = 100;
-                    progressElement.style.width = '100%';
-                    percentageElement.textContent = '100%';
+                    clearInterval(progressInterval);
+                    if (progressElement) progressElement.style.width = '100%';
+                    if (percentageElement) percentageElement.textContent = '100%';
                     
                     setTimeout(() => {
-                        loadingScreen.style.display = 'none';
-                        successMessage.style.display = 'block';
-                        
-                        setTimeout(() => {
-                            successMessage.style.display = 'none';
-                        }, 5000);
-                    }, 1000);
+                        if (loadingScreen) loadingScreen.style.display = 'none';
+                        if (response.ok) {
+                            if (successMessage) {
+                                successMessage.style.display = 'flex';
+                                setTimeout(() => {
+                                    successMessage.style.display = 'none';
+                                }, 3000);
+                            }
+                        } else {
+                            if (errorMessage) {
+                                errorMessage.style.display = 'flex';
+                                setTimeout(() => {
+                                    errorMessage.style.display = 'none';
+                                }, 3000);
+                            }
+                        }
+                    }, 500);
                 })
                 .catch(error => {
-                    console.error('Erro ao enviar e-mail:', error);
-                    loadingScreen.style.display = 'none';
-                    errorMessage.style.display = 'block';
-                    
-                    setTimeout(() => {
-                        errorMessage.style.display = 'none';
-                    }, 5000);
+                    clearInterval(progressInterval);
+                    if (loadingScreen) loadingScreen.style.display = 'none';
+                    if (errorMessage) {
+                        errorMessage.style.display = 'flex';
+                        setTimeout(() => {
+                            errorMessage.style.display = 'none';
+                        }, 3000);
+                    }
+                    console.error('Erro:', error);
                 });
             }
         </script>
     </div>
 </body>
 </html>
+
