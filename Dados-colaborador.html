@@ -148,10 +148,10 @@
             font-size: 0.95rem;
         }
 
-        input[type="text"], 
-        input[type="tel"], 
-        input[type="email"], 
-        select, 
+        input[type="text"],
+        input[type="tel"],
+        input[type="email"],
+        select,
         textarea {
             width: 100%;
             padding: 12px 16px;
@@ -163,10 +163,10 @@
             background: rgba(255, 255, 255, 0.9);
         }
 
-        input[type="text"]:focus, 
-        input[type="tel"]:focus, 
-        input[type="email"]:focus, 
-        select:focus, 
+        input[type="text"]:focus,
+        input[type="tel"]:focus,
+        input[type="email"]:focus,
+        select:focus,
         textarea:focus {
             outline: none;
             border-color: #2E8B57;
@@ -427,10 +427,10 @@
                 margin-bottom: 20px;
             }
 
-            input[type="text"], 
-            input[type="tel"], 
-            input[type="email"], 
-            select, 
+            input[type="text"],
+            input[type="tel"],
+            input[type="email"],
+            select,
             textarea {
                 padding: 10px 14px;
                 font-size: 0.95rem;
@@ -500,18 +500,18 @@
         <div class="logo-container">
             <img src="LogoEfeito.png" alt="Gramado Parks Logo" class="logo">
         </div>
-        
+
         <h1>Informações do Colaborador</h1>
 
         <form action="/formularios" method="POST" onsubmit="return validarFormulario();">
             <div class="form-section">
                 <label for="nome">Nome Completo:</label>
-                <input type="text" id="nome" name="nome" required placeholder="Digite seu nome completo"> 
+                <input type="text" id="nome" name="nome" required placeholder="Digite seu nome completo">
             </div>
 
             <div class="form-section">
                 <label for="usuario">Digite seu usuário (formato obrigatório: nome.sobrenome):</label>
-                <input type="text" id="usuario" name="usuario" required 
+                <input type="text" id="usuario" name="usuario" required
                        placeholder="Ex: maria.jose"
                        oninput="validarFormatoUsuario()">
                 <div id="usuarioWarning" class="user-format-warning">
@@ -554,11 +554,15 @@
                 <label for="unidade">Unidade de Negócio:</label>
                 <select id="unidade" name="unidade" required onchange="atualizarSetores()">
                     <option value="" disabled selected>Selecione uma unidade</option>
-                    <option value="Snowland">Snowland</option>
                     <option value="Acquamotion">Acquamotion</option>
-                    <option value="Buona Vitta">Buona Vitta</option>
+                    <option value="Acquaventura">Acquaventura</option>
                     <option value="Bella">Bella</option>
+                    <option value="Buona Vitta">Buona Vitta</option>
                     <option value="Escritório">Escritório</option>
+                    <option value="MUSEU">MUSEU</option>
+                    <option value="Snowland">Snowland</option>
+                    <option value="YUP FOZ">YUP FOZ</option>
+                    <option value="YUP RIO">YUP RIO</option>
                 </select>
             </div>
 
@@ -576,9 +580,12 @@
 
             <div class="form-section">
                 <label for="email">Email:</label>
-                <input type="email" id="email" name="email" required placeholder="seu.email@exemplo.com">
+                <input type="email" id="email" name="email" required placeholder="seu.email@exemplo.com" onblur="validarEmailDominio()">
+                <div id="emailWarning" class="user-format-warning" style="display:none;">
+                    O e-mail deve ser do domínio @gramadoparks.com.
+                </div>
             </div>
-            
+
             <div class="form-section">
                 <label>Tipo de Uso do Equipamento:</label>
                 <div class="radio-group">
@@ -586,7 +593,7 @@
                         <input type="radio" id="usoPermanente" name="tipoUso" value="P" checked>
                         Permanente (P)
                     </label>
-                    
+
                     <label>
                         <input type="radio" id="usoTemporario" name="tipoUso" value="T">
                         Temporário (T)
@@ -616,29 +623,98 @@
     <script>
         const setores = {
             "Snowland": [
-                "Alimentos e Bebidas (A&B)",
-                "Operações e Atrações",
-                "Atendimento ao Cliente",
-                "Comercial e Vendas",
-                "Administrativo e Corporativo",
-                "Infraestrutura e Manutenção",
-                "Logística e Suprimentos"
+                "A&B",
+                "ALMOXARIFADO",
+                "BILHETERIA",
+                "DP/AMD",
+                "FOTOS",
+                "GUARITA",
+                "MANUTENÇÃO",
+                "MARKETING",
+                "PA",
+                "SAC",
+                "TI",
+                "SOUVENIR",
+                "ARTISTICA"
             ],
             "Acquamotion": [
-                "Setor 1",
-                "Setor 2"
+                "Almoxarifado",
+                "Bilheteria",
+                "DP/ADM",
+                "Fotos",
+                "Guarita",
+                "Manutenção",
+                "Marketing",
+                "PA",
+                "SAC",
+                "TI",
+                "Souvenir",
+                "Artística"
             ],
-            "Buona Vitta": [
-                "Setor 1",
-                "Setor 2"
+            "Buona Vitta": [ // GVI, GBV, GER (agrupados como Buona Vitta)
+                "A&B",
+                "Administrativo",
+                "Concierge",
+                "Governança",
+                "Manutenção",
+                "Recepção",
+                "Terceiros"
             ],
-            "Bella": [
-                "Setor 1",
-                "Setor 2"
+            "Bella": [ // Bella Gramado
+                "A&B",
+                "Almoxarifado",
+                "Bilheteria",
+                "DP/AMD",
+                "Fotos",
+                "Guarita",
+                "Manutenção",
+                "Marketing",
+                "PA",
+                "SAC",
+                "TI",
+                "Souvenir",
+                "Artística"
             ],
-            "Escritório": [
-                "Setor 1",
-                "Setor 2"
+            "Escritório": [ // GPK (Escritório Central)
+                "BI",
+                "Comercial",
+                "Compras",
+                "Corporativo",
+                "Diretoria",
+                "Financeiro",
+                "Gente & Gestão",
+                "Jurídico",
+                "Manutenção",
+                "Marketing",
+                "Pós",
+                "TI"
+            ],
+            "YUP FOZ": [
+                "A&B",
+                "Administrativo",
+                "Bilheteria",
+                "Manutenção",
+                "SAC"
+            ],
+            "YUP RIO": [
+                "A&B",
+                "Administrativo",
+                "Bilheteria",
+                "Manutenção",
+                "SAC"
+            ],
+            "MUSEU": [
+                "Administrativo"
+            ],
+            "Acquaventura": [
+                "Bilheteria",
+                "Fotos",
+                "Manutenção",
+                "SAC",
+                "Sala de Vendas",
+                "Souvenir",
+                "TI",
+                "ADM"
             ]
         };
 
@@ -665,11 +741,11 @@
             const tipoUsuario = document.getElementById('tipoUsuario').value;
             const cpfField = document.getElementById('cpfField');
             const cnpjField = document.getElementById('cnpjField');
-            
+
             cpfField.style.display = tipoUsuario === 'Colaborador' ? 'block' : 'none';
             cnpjField.style.display = tipoUsuario === 'Prestador de Serviços' ? 'block' : 'none';
         }
-        
+
         function formatarCpf() {
             const cpfField = document.getElementById('cpf');
             let cpf = cpfField.value.replace(/\D/g, '');
@@ -692,19 +768,19 @@
                                 .replace(/\.(\d{3})(\d)/, '.$1/$2')
                                 .replace(/(\d{4})(\d{1,2})$/, '$1-$2');
         }
-       
+
         function validarFormatoUsuario() {
             const usuarioInput = document.getElementById('usuario');
             const warningElement = document.getElementById('usuarioWarning');
             let usuario = usuarioInput.value.trim();
-            
+
             // Converte o nome de usuário para minúsculas
             usuario = usuario.toLowerCase();
             usuarioInput.value = usuario;
-            
+
             // Verifica se tem exatamente um ponto e não começa/termina com ponto
             const isValid = /^[^.]+\.[^.]+$/.test(usuario);
-            
+
             if (!isValid && usuario.length > 0) {
                 warningElement.style.display = 'block';
                 usuarioInput.classList.add('invalid-input');
@@ -712,8 +788,25 @@
                 warningElement.style.display = 'none';
                 usuarioInput.classList.remove('invalid-input');
             }
-            
+
             return isValid;
+        }
+
+        function validarEmailDominio() {
+            const emailInput = document.getElementById('email');
+            const emailWarning = document.getElementById('emailWarning');
+            const email = emailInput.value.trim();
+            const requiredDomain = '@gramadoparks.com'; // Corrigido para incluir .com
+
+            if (email && !email.endsWith(requiredDomain)) {
+                emailWarning.style.display = 'block';
+                emailInput.classList.add('invalid-input');
+                return false;
+            } else {
+                emailWarning.style.display = 'none';
+                emailInput.classList.remove('invalid-input');
+                return true;
+            }
         }
 
         function validarFormulario() {
@@ -722,7 +815,7 @@
                 alert('Formato de usuário inválido! Por favor, use o formato "nome.sobrenome" (ex: maria.jose)');
                 return false;
             }
-            
+
             // Verifica se o usuário confirmou o nome
             const confirmacao = document.getElementById('confirmarUsuario').checked;
             if (!confirmacao) {
@@ -731,31 +824,27 @@
             }
 
             // Validações de CPF/CNPJ
+            const tipoUsuario = document.getElementById('tipoUsuario').value;
             const cpf = document.getElementById('cpf').value.replace(/\D/g, '');
             const cnpj = document.getElementById('cnpj').value.replace(/\D/g, '');
-            const tipoUsuario = document.getElementById('tipoUsuario').value;
 
-            if (tipoUsuario === 'Colaborador' && !validarCpf(cpf)) {
-                alert('CPF inválido');
+            if (tipoUsuario === 'Colaborador' && cpf.length !== 11) {
+                alert('CPF inválido. Por favor, digite um CPF válido com 11 dígitos.');
                 return false;
             }
 
-            if (tipoUsuario === 'Prestador de Serviços' && !validarCnpj(cnpj)) {
-                alert('CNPJ inválido');
+            if (tipoUsuario === 'Prestador de Serviços' && cnpj.length !== 14) {
+                alert('CNPJ inválido. Por favor, digite um CNPJ válido com 14 dígitos.');
+                return false;
+            }
+
+            // Validação do domínio do e-mail
+            if (!validarEmailDominio()) {
+                alert('O e-mail deve ser do domínio @gramadoparks.com.');
                 return false;
             }
 
             mostrarTelaDeCarregamento();
-            return true;
-        }
-
-        function validarCpf(cpf) {
-            if (cpf.length !== 11) return false;
-            return true;
-        }
-
-        function validarCnpj(cnpj) {
-            if (cnpj.length !== 14) return false;
             return true;
         }
 
@@ -765,14 +854,16 @@
             const percentage = document.getElementById('percentage');
             let width = 0;
 
-            loadingScreen.style.display = 'flex'; 
+            loadingScreen.style.display = 'flex';
 
             const interval = setInterval(() => {
                 if (width >= 100) {
                     clearInterval(interval);
-                    setTimeout(() => {
-                        window.location.href = '/formularios';
-                    }, 1000);
+                    // Redireciona ou faz o submit real do formulário após o carregamento
+                    // Para este exemplo, vamos apenas simular o redirecionamento
+                    // Em um ambiente real, você faria o submit do formulário aqui
+                    // document.querySelector('form').submit();
+                    window.location.href = '/formularios'; // Simula o redirecionamento
                 } else {
                     width++;
                     progress.style.width = width + '%';
