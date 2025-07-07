@@ -188,6 +188,23 @@ function parseUserData(userBlockString) {
 }
 
 // --- ROTAS HTML --- 
+// Rota para servir o conteúdo do arquivo TXT
+app.get('/api/get-txt-content', (req, res) => {
+    const filePath = '\\\\gpk-fs02\\Publico\\TI\\Projeto-AutoDocServidor\\CapturaDoSistema\\informacoes.txt';
+    
+    fs.readFile(filePath, 'latin1', (err, content) => {
+        if (err) {
+            console.error('Erro ao ler arquivo:', err);
+            return res.status(500).send('Erro ao ler arquivo de informações');
+        }
+        res.send(content);
+    });
+});
+
+// Rota para servir a página HTML
+app.get('/SincronizacaoDeDados.htm', (req, res) => {
+    res.sendFile(path.join(__dirname, 'SincronizacaoDeDados.htm'));
+});
 
 // Rota Raiz - Boas Vindas
 app.get('/', (req, res) => {
@@ -496,7 +513,7 @@ try {
                     
                     <div style="text-align: center; margin-top: 30px; padding-top: 20px; border-top: 1px solid #ddd;">
                         <p style="color: #666; font-size: 12px; margin: 0;">
-                            Este documento foi gerado automaticamente pelo sistema de gestão de equipamentos da Gramado Parks.
+                           Este documento foi gerado automaticamente pelo AutoDoc, o sistema de gestão de equipamentos e automação de termos da Gramado Parks. Desenvolvido por Maycon Cruz e Bruno Ferreira.
                         </p>
                         <p style="color: #666; font-size: 12px; margin: 5px 0 0 0;">
                             Data de geração: ${new Date().toLocaleDateString('pt-BR')} às ${new Date().toLocaleTimeString('pt-BR')}
@@ -530,7 +547,7 @@ try {
 
 // Inicializar o servidor
 app.listen(port, '0.0.0.0', () => {
-    console.log(`Servidor rodando em http://192.168.56.1:${port}`);
+    console.log(`Servidor rodando em http://192.168.0.88:${port}`);
     console.log(`Sistema de Termo de Cessão, Guarda, Uso e Devolução de Equipamento`);
     console.log(`Versão com assinatura digital DocuSign no formulário de adesão`);
 });
