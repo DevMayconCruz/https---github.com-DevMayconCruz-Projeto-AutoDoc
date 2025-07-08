@@ -15,11 +15,12 @@
         body {
             margin: 0;
             overflow: hidden;
-            /* Gradiente com as cores da Gramado Parks: verde, azul e laranja */
-            background: linear-gradient(135deg, #2E8B57 0%, #4682B4 50%, #FF8C00 100%);
+            /* Nova paleta de cores baseada no cabeçalho: verde escuro, bege/dourado e branco */
+            background: linear-gradient(135deg, #1a4a3a 0%, #2d5a4a 30%, #f5f1e8 70%, #ffffff 100%);
             font-family: 'Inter', sans-serif;
             color: #333;
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
             min-height: 100vh;
@@ -37,6 +38,74 @@
             pointer-events: none;
         }
 
+        /* Cabeçalho baseado na imagem fornecida */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 100px;
+            background: linear-gradient(90deg, #1a4a3a 0%, #2d5a4a 25%, #f5f1e8 75%, #1a4a3a 100%);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 40px;
+            z-index: 20;
+            box-shadow: 0 4px 20px rgba(26, 74, 58, 0.3);
+            border-bottom: 3px solid #d4af37;
+        }
+
+        .header-logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo-symbol {
+            width: 50px;
+            height: 50px;
+            background: #d4af37;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .logo-symbol::before {
+            content: 
+            color: #1a4a3a;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .header-brand {
+            color: white;
+            font-family: 'Playfair Display', serif;
+            font-size: 1.2rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .header-title {
+            flex: 1;
+            text-align: center;
+            color: #1a4a3a;
+            font-family: 'Inter', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            line-height: 1.3;
+        }
+
+        .header-form-label {
+            color: #1a4a3a;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
         .container {
             position: relative;
             z-index: 10;
@@ -48,9 +117,10 @@
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(20px);
             border-radius: 24px;
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 25px 50px rgba(26, 74, 58, 0.2);
+            border: 2px solid #d4af37;
             animation: slideUp 0.8s ease-out;
+            margin-top: 120px;
         }
 
         @keyframes slideUp {
@@ -74,7 +144,7 @@
             width: 100%;
             height: auto;
             margin-bottom: 30px;
-            filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.1));
+            filter: drop-shadow(0 4px 8px rgba(26, 74, 58, 0.2));
             animation: logoFloat 3s ease-in-out infinite;
         }
 
@@ -91,11 +161,11 @@
             font-family: 'Playfair Display', serif;
             font-size: 2.2rem;
             font-weight: 600;
-            color: #2d3748;
+            color: #1a4a3a;
             margin-bottom: 20px;
             line-height: 1.3;
-            /* Gradiente com as cores da marca */
-            background: linear-gradient(135deg, #2E8B57, #4682B4, #FF8C00);
+            /* Gradiente com as novas cores */
+            background: linear-gradient(135deg, #1a4a3a, #2d5a4a, #d4af37);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
@@ -104,10 +174,10 @@
 
         @keyframes titleGlow {
             from {
-                filter: drop-shadow(0 0 5px rgba(46, 139, 87, 0.3));
+                filter: drop-shadow(0 0 5px rgba(26, 74, 58, 0.3));
             }
             to {
-                filter: drop-shadow(0 0 15px rgba(70, 130, 180, 0.5));
+                filter: drop-shadow(0 0 15px rgba(212, 175, 55, 0.5));
             }
         }
 
@@ -115,15 +185,20 @@
             margin-bottom: 30px;
             font-size: 1.1rem;
             line-height: 1.7;
-            color: #4a5568;
+            color: #2d5a4a;
             font-weight: 400;
+            padding: 25px;
+            background: rgba(245, 241, 232, 0.8);
+            border-left: 4px solid #d4af37;
+            border-radius: 12px;
+            text-align: left;
         }
 
         .cta-text {
             font-size: 1rem;
-            color: #2d3748;
+            color: #1a4a3a;
             margin-bottom: 25px;
-            font-weight: 500;
+            font-weight: 600;
         }
 
         .button-container {
@@ -134,19 +209,20 @@
             padding: 16px 40px;
             font-size: 1.1rem;
             font-weight: 600;
-            /* Gradiente com as cores da Gramado Parks */
-            background: linear-gradient(135deg, #2E8B57, #4682B4);
+            /* Gradiente com as novas cores */
+            background: linear-gradient(135deg, #1a4a3a, #2d5a4a);
             color: white;
             border: none;
             border-radius: 50px;
             cursor: pointer;
             transition: all 0.3s ease;
-            box-shadow: 0 8px 25px rgba(46, 139, 87, 0.3);
+            box-shadow: 0 8px 25px rgba(26, 74, 58, 0.3);
             position: relative;
             overflow: hidden;
             font-family: 'Inter', sans-serif;
             text-transform: uppercase;
             letter-spacing: 1px;
+            border: 2px solid #d4af37;
         }
 
         button::before {
@@ -156,7 +232,7 @@
             left: -100%;
             width: 100%;
             height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.3), transparent);
             transition: left 0.5s;
         }
 
@@ -166,16 +242,17 @@
 
         button:hover {
             transform: translateY(-2px);
-            box-shadow: 0 12px 35px rgba(46, 139, 87, 0.4);
-            background: linear-gradient(135deg, #FF8C00, #2E8B57);
+            box-shadow: 0 12px 35px rgba(26, 74, 58, 0.4);
+            background: linear-gradient(135deg, #d4af37, #1a4a3a);
+            border-color: #1a4a3a;
         }
 
         button:active {
             transform: translateY(0);
-            box-shadow: 0 6px 20px rgba(46, 139, 87, 0.3);
+            box-shadow: 0 6px 20px rgba(26, 74, 58, 0.3);
         }
 
-        /* Decoração com as cores da marca */
+        /* Decoração com as novas cores */
         .decoration-dots {
             position: absolute;
             top: 20px;
@@ -192,17 +269,17 @@
         }
 
         .dot:nth-child(1) {
-            background-color: #2E8B57;
+            background-color: #1a4a3a;
             animation-delay: 0s;
         }
 
         .dot:nth-child(2) {
-            background-color: #4682B4;
+            background-color: #2d5a4a;
             animation-delay: 0.3s;
         }
 
         .dot:nth-child(3) {
-            background-color: #FF8C00;
+            background-color: #d4af37;
             animation-delay: 0.6s;
         }
 
@@ -219,9 +296,45 @@
 
         /* Responsividade aprimorada */
         @media (max-width: 768px) {
+            .header {
+                height: 80px;
+                padding: 0 20px;
+                flex-direction: column;
+                justify-content: center;
+                gap: 5px;
+            }
+
+            .header-logo {
+                gap: 10px;
+            }
+
+            .logo-symbol {
+                width: 35px;
+                height: 35px;
+            }
+
+            .logo-symbol::before {
+                font-size: 18px;
+            }
+
+            .header-brand {
+                font-size: 1rem;
+            }
+
+            .header-title {
+                font-size: 0.8rem;
+                text-align: center;
+            }
+
+            .header-form-label {
+                padding: 6px 15px;
+                font-size: 0.8rem;
+            }
+
             .container {
                 padding: 30px 25px;
                 margin: 20px;
+                margin-top: 100px;
                 border-radius: 20px;
             }
 
@@ -237,6 +350,7 @@
             .message-box {
                 font-size: 1rem;
                 margin-bottom: 25px;
+                padding: 20px;
             }
 
             .cta-text {
@@ -251,9 +365,41 @@
         }
 
         @media (max-width: 480px) {
+            .header {
+                height: 70px;
+                padding: 0 15px;
+            }
+
+            .header-logo {
+                gap: 8px;
+            }
+
+            .logo-symbol {
+                width: 30px;
+                height: 30px;
+            }
+
+            .logo-symbol::before {
+                font-size: 16px;
+            }
+
+            .header-brand {
+                font-size: 0.9rem;
+            }
+
+            .header-title {
+                font-size: 0.7rem;
+            }
+
+            .header-form-label {
+                padding: 5px 12px;
+                font-size: 0.7rem;
+            }
+
             .container {
                 padding: 25px 20px;
                 margin: 15px;
+                margin-top: 85px;
                 border-radius: 16px;
             }
 
@@ -269,6 +415,7 @@
             .message-box {
                 font-size: 0.95rem;
                 margin-bottom: 20px;
+                padding: 18px;
             }
 
             .cta-text {
@@ -283,9 +430,15 @@
         }
 
         @media (max-width: 360px) {
+            .header {
+                height: 60px;
+                padding: 0 10px;
+            }
+
             .container {
                 padding: 20px 15px;
                 margin: 10px;
+                margin-top: 75px;
             }
 
             .logo {
@@ -298,6 +451,7 @@
 
             .message-box {
                 font-size: 0.9rem;
+                padding: 15px;
             }
 
             button {
@@ -308,8 +462,13 @@
 
         /* Melhorias para telas muito pequenas */
         @media (max-height: 600px) {
+            .header {
+                height: 50px;
+            }
+
             .container {
                 padding: 20px;
+                margin-top: 65px;
             }
 
             .logo {
@@ -324,6 +483,7 @@
 
             .message-box {
                 margin-bottom: 20px;
+                padding: 15px;
             }
         }
 
@@ -344,8 +504,20 @@
 <body>
     <canvas id="fireworksCanvas"></canvas>
 
+    <!-- Cabeçalho baseado na imagem fornecida -->
+    <div class="header">
+        <div class="header-logo">
+            <div class="header-brand">Gramado Parks</div>
+        </div>
+        <div class="header-title">
+            FR.14.02.001 Termo de Posse e<br>
+            Responsabilidade para Uso de Equipamentos de TI
+        </div>
+        <div class="header-form-label">Formulário</div>
+    </div>
+
     <div class="container">
-        <!-- Decoração com as cores da marca -->
+        <!-- Decoração com as novas cores -->
         <div class="decoration-dots">
             <div class="dot"></div>
             <div class="dot"></div>
@@ -373,14 +545,14 @@
         const canvas = document.getElementById('fireworksCanvas');
         const ctx = canvas.getContext('2d');
 
-        // Cores da Gramado Parks para os fogos de artifício
+        // Novas cores baseadas na identidade visual
         const brandColors = [
-            '#2E8B57', // Verde
-            '#4682B4', // Azul
-            '#FF8C00', // Laranja
-            '#32CD32', // Verde claro
-            '#87CEEB', // Azul claro
-            '#FFA500'  // Laranja claro
+            '#1a4a3a', // Verde escuro
+            '#2d5a4a', // Verde médio
+            '#d4af37', // Dourado
+            '#f5f1e8', // Bege claro
+            '#ffffff', // Branco
+            '#b8860b'  // Dourado escuro
         ];
 
         // Redimensiona o canvas para o tamanho da janela
@@ -397,7 +569,7 @@
                 this.x = x;
                 this.y = y;
                 this.radius = Math.random() * 4 + 2;
-                // Usa as cores da marca
+                // Usa as novas cores da marca
                 this.color = brandColors[Math.floor(Math.random() * brandColors.length)];
                 this.speedX = (Math.random() - 0.5) * 4;
                 this.speedY = (Math.random() - 0.5) * 4;
@@ -421,7 +593,7 @@
                 if (this.sparkle) {
                     ctx.beginPath();
                     ctx.arc(this.x, this.y, this.radius * 0.5, 0, Math.PI * 2);
-                    ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
+                    ctx.fillStyle = 'rgba(212, 175, 55, 0.8)';
                     ctx.fill();
                 }
                 
@@ -444,11 +616,11 @@
             ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-            // Cria novos fogos de artifício
-            if (Math.random() < 0.04) {
+            // Cria novos fogos de artifício com frequência reduzida
+            if (Math.random() < 0.03) {
                 const x = Math.random() * canvas.width;
                 const y = Math.random() * canvas.height;
-                const particleCount = Math.random() * 40 + 30;
+                const particleCount = Math.random() * 30 + 20;
                 
                 for (let i = 0; i < particleCount; i++) {
                     fireworks.push(new Firework(x, y));
@@ -486,7 +658,7 @@
             
             // Redireciona após a animação
             setTimeout(() => {
-                window.location.href = "http://192.168.56.1:3000/normas-glpd";
+                window.location.href = "http://192.168.0.88:3000/normas-glpd";
             }, 500);
         });
 
@@ -497,7 +669,7 @@
                     setTimeout(() => {
                         const x = Math.random() * canvas.width;
                         const y = Math.random() * canvas.height;
-                        for (let j = 0; j < 50; j++) {
+                        for (let j = 0; j < 40; j++) {
                             fireworks.push(new Firework(x, y));
                         }
                     }, i * 300);
